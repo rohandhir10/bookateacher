@@ -139,6 +139,9 @@ export function createUser(data: {
   hourly_rate?: number | null;
   subjects?: string[] | null;
   availability?: Record<string, any> | null;
+  verified?: number;
+  status?: string;
+  avatar_url?: string | null;
 }) {
   const db = getDb();
   db.prepare(`

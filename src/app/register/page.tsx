@@ -8,6 +8,8 @@ export const metadata: Metadata = {
     "Create your account to find verified IELTS, TOEFL, and Spoken English tutors, or to become a tutor on bookateacher.in",
 };
 
+export const dynamic = "force-dynamic";
+
 export default function RegisterPage() {
   return (
     <div className="min-h-screen flex flex-col bg-bg-primary">
