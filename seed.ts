@@ -1,9 +1,8 @@
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import { createUser, getUserByEmail, getUserById, updateUser } from "./lib/db";
-import { hashPassword } from "./lib/auth-utils";
-import { SITE_URL } from "next/headers";
+import { createUser, getUserByEmail, getUserById, updateUser } from "./src/lib/db";
+import { hashPassword } from "./src/lib/auth-utils";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
