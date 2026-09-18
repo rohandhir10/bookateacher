@@ -2,6 +2,15 @@ import Link from "next/link";
 import { SearchForm } from "@/components/SearchForm";
 import { SUBJECT_LABELS, SUBJECT_DESCRIPTIONS } from "@/lib/utils";
 
+// ── Social proof counters ──
+const STATS = [
+  { value: "500+", label: "Students matched" },
+  { value: "50+", label: "Verified tutors" },
+  { value: "4.8★", label: "Average rating" },
+  { value: "92%", label: "Would recommend" },
+];
+
+// ── Trust items (icon + short headline + one-line proof) ──
 const TRUST_ITEMS = [
   {
     icon: (
@@ -11,7 +20,7 @@ const TRUST_ITEMS = [
       </svg>
     ),
     title: "Verified tutors",
-    desc: "Every tutor is vetted. Credentials checked. Background verified. No random profiles.",
+    desc: "Every tutor vetted — credentials checked, background verified, no random profiles.",
   },
   {
     icon: (
@@ -21,7 +30,7 @@ const TRUST_ITEMS = [
       </svg>
     ),
     title: "Fast matching",
-    desc: "Submit your requirements. We match you within 24 hours. No waiting weeks for a response.",
+    desc: "Submit your requirements. We match you within 24 hours — not weeks.",
   },
   {
     icon: (
@@ -32,8 +41,8 @@ const TRUST_ITEMS = [
           d="M15 7v2m0 0v2m0-2h2m-2 0H7" />
       </svg>
     ),
-    title: "Personal matchmaking",
-    desc: "A real person reviews your requirements and matches you with the right tutor. Not an algorithm.",
+    title: "Human matchmaking",
+    desc: "A real person reviews your needs and pairs you with the right tutor. Not an algorithm.",
   },
   {
     icon: (
@@ -45,65 +54,30 @@ const TRUST_ITEMS = [
       </svg>
     ),
     title: "Transparent pricing",
-    desc: "Know what you pay before you book. No hidden fees. No surprise charges. What you see is what you pay.",
+    desc: "Know what you pay before you book. No hidden fees, no surprise charges.",
   },
 ];
 
-const HOW_IT_WORKS = [
+// ── Testimonials ──
+const TESTIMONIALS = [
   {
-    step: "01",
-    title: "Tell us what you need",
-    desc: "Fill a short form — subject, goal, budget, preferred times. Takes under 2 minutes.",
+    quote: "I was stuck at Band 6.5 for months. My tutor gave me targeted feedback on writing and speaking. Went to 7.5 in 6 weeks.",
+    name: "Priya M.",
+    role: "IELTS student — Band 7.5",
+    initials: "PM",
   },
   {
-    step: "02",
-    title: "We match you personally",
-    desc: "A real person reviews your requirements and pairs you with the best-fit verified tutor.",
+    quote: "As a tutor, this platform is refreshing. I actually get leads that convert. Built a steady pipeline here.",
+    name: "Rahul K.",
+    role: "IELTS tutor — 8 years",
+    initials: "RK",
   },
   {
-    step: "03",
-    title: "Book your session",
-    desc: "Chat with your tutor directly, confirm the time, and book. Payment is simple — UPI, cards.",
+    quote: "Needed a TOEFL tutor fast before my test date. Matched within 24 hours. Got my target score.",
+    name: "Ananya S.",
+    role: "TOEFL student — 105/120",
+    initials: "AS",
   },
-  {
-    step: "04",
-    title: "Learn and improve",
-    desc: "Live 1-on-1 sessions. Mock tests. Personal feedback. Track your progress toward your goal.",
-  },
-];
-
-const FEATURES = [
-  {
-    title: "Certified IELTS tutors",
-    desc: "Ex-IDP, British Council-trained, band 8+ scorers. Professionals who know the test inside out.",
-  },
-  {
-    title: "TOEFL specialists",
-    desc: "Tutors who understand the TOEFL format, scoring, and strategies for each section.",
-  },
-  {
-    title: "Spoken English coaching",
-    desc: "Fluency, pronunciation, confidence. Sessions designed around real conversation, not scripts.",
-  },
-  {
-    title: "Mock tests & feedback",
-    desc: "Practice under real conditions. Detailed feedback on every section. Know exactly where you stand.",
-  },
-  {
-    title: "Personalized study plans",
-    desc: "No cookie-cutter approach. Your tutor builds a plan around your target score, timeline, and weak areas.",
-  },
-  {
-    title: "Online & offline options",
-    desc: "Learn from home via video call, or find a tutor in your city. You choose what works.",
-  },
-];
-
-const STATS = [
-  { value: "500+", label: "Students matched" },
-  { value: "50+", label: "Verified tutors" },
-  { value: "4.8★", label: "Average rating" },
-  { value: "92%", label: "Satisfaction rate" },
 ];
 
 export default function HomePage() {
@@ -112,7 +86,7 @@ export default function HomePage() {
       {/* ── Navigation ── */}
       <header className="sticky top-0 z-50 bg-bg-primary/90 backdrop-blur-sm border-b border-border">
         <div className="container flex items-center justify-between h-16">
-          <a
+          <Link
             href="/"
             className="flex items-center gap-2 font-semibold text-lg tracking-tight"
           >
@@ -125,127 +99,170 @@ export default function HomePage() {
               bookateacher
               <span className="text-sm text-foreground-subtle font-normal">.in</span>
             </span>
-          </a >
+          </Link>
 
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-7">
             <a href="#subjects" className="text-sm text-foreground-muted hover:text-foreground transition-colors">
               Subjects
             </a>
             <a href="#how-it-works" className="text-sm text-foreground-muted hover:text-foreground transition-colors">
               How it works
             </a>
-            <a href="#features" className="text-sm text-foreground-muted hover:text-foreground transition-colors">
-              Features
-            </a>
-            <a href="#trust" className="text-sm text-foreground-muted hover:text-foreground transition-colors">
-              Trust
+            <a href="#reviews" className="text-sm text-foreground-muted hover:text-foreground transition-colors">
+              Reviews
             </a>
           </nav>
 
           <div className="flex items-center gap-3">
-            <a
+            <Link
               href="/login"
               className="hidden sm:inline-flex text-sm text-foreground-muted hover:text-foreground transition-colors"
             >
               Sign in
-            </a>
-            <a
+            </Link>
+            <Link
               href="/register?role=tutor"
               className="hidden sm:inline-flex text-sm text-foreground-muted hover:text-foreground transition-colors"
             >
               For tutors
-            </a>
-            <a
-              href="/register"
-              className="btn btn-primary btn-sm"
-            >
+            </Link>
+            <Link href="/register" className="btn btn-primary btn-sm">
               Find a tutor
-            </a>
+            </Link>
           </div>
         </div>
       </header>
 
-      {/* ── Hero ── */}
+      {/* ── Hero ──
+          Rebuilt as a tight two-column unit:
+          - Left: eyebrow + headline + subhead + primary CTA + search pill
+          - Right: a dark card with the "how it works in 30s" value stack +
+            a micro testimonial pull quote for credibility
+      ── */}
       <section className="relative overflow-hidden pt-20 pb-24">
-        {/* Background decoration */}
+        {/* Background: one soft radial, kept quiet */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-accent-soft opacity-40 blur-3xl" />
           <div className="absolute -bottom-40 -left-40 w-[400px] h-[400px] rounded-full bg-accent-soft opacity-20 blur-3xl" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-accent-soft opacity-[0.03] blur-3xl" />
         </div>
 
         <div className="container relative">
-          <div className="max-w-3xl mx-auto text-center stagger-children">
-            {/* Label */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-soft text-accent text-xs font-semibold tracking-wide uppercase mb-6">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-              India&apos;s trusted tutor network
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            {/* Left column — the pitch */}
+            <div className=" stagger-children">
+              {/* Eyebrow */}
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-soft text-accent text-xs font-semibold tracking-wide uppercase mb-6">
+                <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                India&apos;s trusted tutor network
+              </div>
+
+              {/* Headline — tighter, flatter, no gradient-on-text crutch */}
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.05] mb-5">
+                Find a tutor who
+                <br />
+                <span className="text-accent">gets your goal</span>
+              </h1>
+
+              {/* Subhead — one breath, no filler */}
+              <p className="text-lg text-foreground-muted leading-relaxed max-w-xl mb-8">
+                Certified IELTS, TOEFL &amp; spoken English tutors. Live 1-on-1 coaching,
+                mock tests, and personal feedback. Book a session today — improve your score.
+              </p>
+
+              {/* Primary CTA — single clear action */}
+              <div className="flex flex-col sm:flex-row items-center gap-4 mb-10">
+                <Link href="/register" className="btn btn-primary btn-lg px-8">
+                  Find a tutor
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                      d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </Link>
+                <Link href="/register?role=tutor" className="btn btn-secondary btn-lg px-8">
+                  I&apos;m a tutor
+                </Link>
+              </div>
+
+              {/* Search pill — compact, right on the hero, no separate card */}
+              <div className="max-w-md">
+                <div className="flex items-center gap-2 bg-bg-secondary border border-border rounded-xl p-1.5 shadow-sm">
+                  <SearchForm />
+                  <div className="flex flex-wrap gap-1.5 px-1">
+                    {["IELTS", "TOEFL", "Spoken English"].map((s) => (
+                      <button
+                        key={s}
+                        type="button"
+                        className="text-xs px-2 py-0.5 rounded-full bg-white text-foreground-muted border border-border hover:text-foreground hover:border-foreground-subtle transition-colors"
+                      >
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <p className="text-xs text-foreground-subtle text-center mt-3">
+                  Browse verified tutors — no sign-up required
+                </p>
+              </div>
             </div>
 
-            {/* Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-6 leading-tight">
-              Find a{" "}
-              <span className="bg-gradient-to-r from-accent to-accent-hover bg-clip-text text-transparent">
-                verified tutor
-              </span>{" "}
-              for IELTS, TOEFL &{" "}
-              <br className="sm:hidden" />
-              Spoken English
-            </h1>
+            {/* Right column — dark card: fast value stack + punchy testimonial */}
+            <div className="relative">
+              <div className="bg-bg-inverse text-bg-primary rounded-2xl p-6 sm:p-8 shadow-lg border border-border-strong">
+                {/* Small label inside the dark card */}
+                <div className="text-accent text-xs font-semibold tracking-wide uppercase mb-4">
+                  How it works
+                </div>
 
-            {/* Subheadline */}
-            <p className="text-lg sm:text-xl text-foreground-muted leading-relaxed max-w-2xl mx-auto mb-10">
-              Connect with certified tutors for live 1-on-1 coaching, mock tests,
-              and personal feedback. Book a session in minutes. Improve your score.
-            </p>
-
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-              <a href="/register" className="btn btn-primary btn-lg px-8">
-                Find a tutor
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                    d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </a>
-              <a href="/register?role=tutor" className="btn btn-secondary btn-lg px-8">
-                I&apos;m a tutor
-              </a>
-            </div>
-
-            {/* Search bar — primary conversion element */}
-            <div className="max-w-xl mx-auto">
-              <div className="card p-2">
-                <SearchForm />
-                <div className="flex flex-wrap gap-2 px-3 pb-2 pt-1">
-                  {["IELTS", "TOEFL", "Spoken English", "GRE", "GMAT"].map((s) => (
-                    <button
-                      key={s}
-                      type="button"
-                      className="text-xs px-2.5 py-1 rounded-full bg-bg-secondary text-foreground-muted hover:text-foreground hover:bg-border-strong transition-colors"
-                    >
-                      {s}
-                    </button>
+                {/* 3-step compact stack */}
+                <ol className="space-y-4 mb-8">
+                  {[
+                    { n: "01", t: "Tell us what you need", d: "Subject, goal, budget, preferred times. Under 2 minutes." },
+                    { n: "02", t: "We match you personally", d: "A real person pairs you with the best-fit verified tutor." },
+                    { n: "03", t: "Book & learn", d: "Chat with your tutor, confirm the time, and book. UPI, cards." },
+                  ].map((item) => (
+                    <li key={item.n} className="flex gap-4">
+                      <span className="flex-shrink-0 w-7 h-7 rounded-full bg-accent/20 text-accent flex items-center justify-center text-xs font-semibold">
+                        {item.n}
+                      </span>
+                      <div>
+                        <div className="font-medium text-sm mb-0.5">{item.t}</div>
+                        <div className="text-xs text-foreground-muted leading-relaxed">{item.d}</div>
+                      </div>
+                    </li>
                   ))}
+                </ol>
+
+                {/* Micro testimonial pull quote — adds social proof without a whole section */}
+                <div className="border-t border-white/10 pt-5">
+                  <div className="flex items-center gap-1 text-accent mb-2">
+                    {"★★★★★"}
+                  </div>
+                  <p className="text-sm text-white/80 leading-relaxed mb-4">
+                    &ldquo;Matched within 24 hours. Got my target score.&rdquo;
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-full bg-accent/20 text-accent flex items-center justify-center text-xs font-semibold">
+                      AS
+                    </div>
+                    <div className="text-xs">
+                      <div className="font-medium text-white/90">Ananya S.</div>
+                      <div className="text-foreground-subtle">TOEFL — 105/120</div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <p className="text-xs text-foreground-subtle text-center mt-3">
-                Browse verified tutors in these subjects — no sign-up required
-              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── Stats bar ── */}
-      <section className="py-10 border-y border-border bg-bg-secondary/30">
+      {/* ── Stats bar — kept but flatter: one line, no separate container per stat ── */}
+      <section className="py-8 border-y border-border bg-bg-secondary/30">
         <div className="container">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-2">
             {STATS.map((stat) => (
               <div key={stat.label} className="text-center">
-                <div className="text-2xl sm:text-3xl font-bold text-accent mb-1">
-                  {stat.value}
-                </div>
+                <div className="text-2xl sm:text-3xl font-bold text-accent">{stat.value}</div>
                 <div className="text-sm text-foreground-muted">{stat.label}</div>
               </div>
             ))}
@@ -253,55 +270,40 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Subjects ── */}
-      <section id="subjects" className="py-20">
+      {/* ── Subjects — single tight row of pills/links, not a grid of cards ──
+          Reason: subject tiles read as filler. A subject strip is scannable and
+          converts as a secondary nav into subject pages. */}
+      <section id="subjects" className="py-16">
         <div className="container">
-          <div className="text-center mb-12">
+          <div className="text-center mb-10">
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
               Subjects we cover
             </h2>
             <p className="text-foreground-muted max-w-lg mx-auto">
-              From IELTS to spoken English, our tutors help you achieve your goals
-              with personalized, live coaching.
+              From IELTS to spoken English — personalized, live coaching.
             </p>
           </div>
 
-          <div className="card-grid">
+          <div className="flex flex-wrap justify-center gap-3">
             {Object.entries(SUBJECT_LABELS).map(([slug, label]) => (
-              <a
+              <Link
                 key={slug}
                 href={`/subjects/${slug}`}
-                className="card p-5 hover:shadow-md hover:-translate-y-0.5 transition-all group"
+                className="group flex items-center gap-2 px-4 py-2 rounded-full bg-bg-secondary border border-border text-sm font-medium text-foreground hover:bg-accent hover:text-accent-fg hover:border-accent transition-all"
               >
-                <div className="flex items-start justify-between gap-4 mb-3">
-                  <div className="w-10 h-10 rounded-xl bg-accent-soft flex items-center justify-center">
-                    <svg className="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                    </svg>
-                  </div>
-                  <span className="badge bg-accent-soft text-accent">Popular</span>
-                </div>
-                <h3 className="font-semibold text-foreground text-lg mb-1 group-hover:text-accent transition-colors">
-                  {label}
-                </h3>
-                <p className="text-sm text-foreground-muted leading-relaxed">
-                  {SUBJECT_DESCRIPTIONS[slug]}
-                </p>
-                <div className="mt-3 flex items-center gap-1 text-sm text-accent group-hover:translate-x-1 transition-transform">
-                  Find tutors
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                      d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </div>
-              </a>
+                <span>{label}</span>
+                <svg className="w-3.5 h-3.5 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all"
+                  fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                    d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── How it works ── */}
+      {/* ── How it works — kept but as a compact timeline, not 4 cards with big numbers ── */}
       <section id="how-it-works" className="py-20 bg-bg-secondary/30">
         <div className="container">
           <div className="text-center mb-12">
@@ -314,28 +316,27 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-4 gap-6">
-            {HOW_IT_WORKS.map((item) => (
-              <div key={item.step} className="relative">
-                {item.step !== "01" && (
-                  <div className="hidden md:block absolute top-4 left-0 w-8 h-px bg-border-strong" />
-                )}
-                <div className="card p-5 text-center h-full">
-                  <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center mx-auto mb-4">
-                    <span className="text-white font-bold text-sm">{item.step}</span>
-                  </div>
-                  <h3 className="font-semibold text-foreground mb-2">{item.title}</h3>
-                  <p className="text-sm text-foreground-muted leading-relaxed">
-                    {item.desc}
-                  </p>
-                </div>
+          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+            {[
+              { step: "01", title: "Tell us what you need", desc: "Fill a short form — subject, goal, budget, preferred times. Takes under 2 minutes." },
+              { step: "02", title: "We match you personally", desc: "A real person reviews your requirements and pairs you with the best-fit verified tutor." },
+              { step: "03", title: "Book your session", desc: "Chat with your tutor directly, confirm the time, and book. Payment is simple — UPI, cards." },
+              { step: "04", title: "Learn and improve", desc: "Live 1-on-1 sessions. Mock tests. Personal feedback. Track your progress toward your goal." },
+            ].map((item, i) => (
+              <div key={item.step} className="relative pl-6 border-l-2 border-border-strong">
+                <span className="absolute -left-[0.75rem] top-0 w-5 h-5 rounded-full border-2 border-border-strong bg-bg-primary flex items-center justify-center text-xs font-semibold text-foreground-muted">
+                  {item.step}
+                </span>
+                <h3 className="font-semibold text-foreground mb-1">{item.title}</h3>
+                <p className="text-sm text-foreground-muted leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── Features ── */}
+      {/* ── Why bookateacher.in — flat 2×3 feature grid, not cards with icons inside boxes ──
+          Each feature: title + one line. Visual noise dropped. */}
       <section id="features" className="py-20">
         <div className="container">
           <div className="text-center mb-12">
@@ -347,27 +348,25 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {FEATURES.map((feature) => (
-              <div
-                key={feature.title}
-                className="card p-5 hover:shadow-md transition-all group"
-              >
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-accent-soft flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <svg className="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                        d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1 group-hover:text-accent transition-colors">
-                      {feature.title}
-                    </h3>
-                    <p className="text-sm text-foreground-muted leading-relaxed">
-                      {feature.desc}
-                    </p>
-                  </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 max-w-5xl mx-auto">
+            {[
+              { title: "Certified IELTS tutors", desc: "Ex-IDP, British Council-trained, band 8+ scorers. Know the test inside out." },
+              { title: "TOEFL specialists", desc: "Tutors who understand the TOEFL format, scoring, and section strategies." },
+              { title: "Spoken English coaching", desc: "Fluency, pronunciation, confidence — real conversation, not scripts." },
+              { title: "Mock tests & feedback", desc: "Practice under real conditions. Detailed feedback on every section." },
+              { title: "Personalized study plans", desc: "No cookie-cutter approach. Your tutor builds a plan around your score, timeline, weak areas." },
+              { title: "Online & offline options", desc: "Learn from home via video call, or find a tutor in your city. Your choice." },
+            ].map((f) => (
+              <div key={f.title} className="flex gap-3">
+                <div className="flex-shrink-0 w-6 h-6 rounded-full bg-accent-soft flex items-center justify-center mt-0.5">
+                  <svg className="w-3 h-3 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5}
+                      d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground mb-0.5">{f.title}</h3>
+                  <p className="text-sm text-foreground-muted leading-relaxed">{f.desc}</p>
                 </div>
               </div>
             ))}
@@ -375,7 +374,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Trust ── */}
+      {/* ── Trust — kept as a compact grid of 4, not cards with icons inside boxes.
+          Labels only; no decorative icon boxes. */}
       <section id="trust" className="py-20 bg-bg-secondary/30">
         <div className="container">
           <div className="text-center mb-12">
@@ -387,110 +387,87 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-4xl mx-auto">
             {TRUST_ITEMS.map((item) => (
-              <div key={item.title} className="card p-5">
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-accent-soft flex items-center justify-center flex-shrink-0">
-                    {item.icon}
+              <div key={item.title} className="flex gap-3">
+                <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-accent-soft flex items-center justify-center">
+                  {item.icon}
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground mb-1">{item.title}</h3>
+                  <p className="text-sm text-foreground-muted leading-relaxed">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Testimonials — kept but compact: 3 across, no big card padding.
+          The dark card in the hero already carries one testimonial; this is the fuller set. */}
+      <section id="reviews" className="py-20">
+        <div className="container">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
+              What students and tutors say
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-5 max-w-5xl mx-auto">
+            {TESTIMONIALS.map((t) => (
+              <div key={t.name} className="bg-bg-secondary border border-border rounded-2xl p-6">
+                <div className="flex items-center gap-1 text-accent mb-3 text-sm">
+                  {"★★★★★"}
+                </div>
+                <p className="text-sm text-foreground-muted leading-relaxed mb-5">
+                  &ldquo;{t.quote}&rdquo;
+                </p>
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full bg-accent-soft flex items-center justify-center text-xs font-semibold text-accent">
+                    {t.initials}
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground mb-1">{item.title}</h3>
-                    <p className="text-sm text-foreground-muted leading-relaxed">
-                      {item.desc}
-                    </p>
+                    <div className="text-sm font-medium text-foreground">{t.name}</div>
+                    <div className="text-xs text-foreground-subtle">{t.role}</div>
                   </div>
                 </div>
               </div>
             ))}
           </div>
-
-          {/* Testimonials */}
-          <div className="mt-12">
-            <h3 className="text-center font-semibold text-foreground mb-8">
-              What students and tutors say
-            </h3>
-            <div className="grid md:grid-cols-3 gap-5">
-              {[
-                {
-                  quote: "I was stuck at Band 6.5 for months. My tutor at bookateacher.in gave me targeted feedback on my writing and speaking. Went to 7.5 in 6 weeks.",
-                  name: "Priya M.",
-                  role: "IELTS student — Band 7.5",
-                  avatar: "PM",
-                },
-                {
-                  quote: "As a tutor, this platform is refreshing. I actually get leads that convert. The students are serious. I&apos;ve built a steady pipeline here.",
-                  name: "Rahul K.",
-                  role: "IELTS tutor — 8 years experience",
-                  avatar: "RK",
-                },
-                {
-                  quote: "I needed a TOEFL tutor quickly before my test date. bookateacher.in matched me within 24 hours. The tutor was excellent and I got my target score.",
-                  name: "Ananya S.",
-                  role: "TOEFL student — 105/120",
-                  avatar: "AS",
-                },
-              ].map((t) => (
-                <div key={t.name} className="card p-5">
-                  <div className="flex items-center gap-1 text-accent mb-3">
-                    {"★".repeat(5)}
-                  </div>
-                  <p className="text-sm text-foreground-muted leading-relaxed mb-4">
-                    &ldquo;{t.quote}&rdquo;
-                  </p>
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-accent-soft flex items-center justify-center text-xs font-semibold text-accent">
-                      {t.avatar}
-                    </div>
-                    <div>
-                      <div className="text-sm font-medium text-foreground">{t.name}</div>
-                      <div className="text-xs text-foreground-subtle">{t.role}</div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
 
-      {/* ── CTA ── */}
+      {/* ── CTA — tighter, one strong panel, no over-decorated blue blob card ── */}
       <section className="py-20">
         <div className="container">
-          <div className="card p-8 sm:p-12 text-center relative overflow-hidden">
-            {/* Background accent */}
-            <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-accent-soft opacity-40 blur-3xl pointer-events-none" />
-            <div className="absolute -bottom-20 -left-20 w-60 h-60 rounded-full bg-accent-soft opacity-20 blur-3xl pointer-events-none" />
-
-            <div className="relative">
-              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">
-                Ready to improve your score?
-              </h2>
-              <p className="text-foreground-muted max-w-md mx-auto mb-8">
-                Join hundreds of students who&apos;ve found their perfect tutor on
-                bookateacher.in. Start with a free consultation.
-              </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="/register" className="btn btn-primary btn-lg px-8">
-                  Find a tutor now
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                      d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </a>
-                <a href="/register?role=tutor" className="btn btn-secondary btn-lg px-8">
-                  Become a tutor
-                </a>
-              </div>
-              <p className="text-xs text-foreground-subtle mt-4">
-                No commitment. No hidden fees. Cancel anytime.
-              </p>
+          <div className="bg-accent text-accent-fg rounded-2xl p-8 sm:p-12 text-center shadow-lg">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-4">
+              Ready to improve your score?
+            </h2>
+            <p className="text-accent-soft max-w-md mx-auto mb-8 leading-relaxed">
+              Join hundreds of students who&apos;ve found their perfect tutor on
+              bookateacher.in. Start with a free consultation.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link href="/register" className="bg-accent-fg text-accent hover:bg-accent-hover px-7 py-3 rounded-lg font-medium transition-colors inline-flex items-center gap-2">
+                Find a tutor now
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                    d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
+              <Link href="/register?role=tutor" className="bg-accent-fg/10 text-accent-fg border border-accent-fg/20 hover:bg-accent-fg/20 px-7 py-3 rounded-lg font-medium transition-colors">
+                Become a tutor
+              </Link>
             </div>
+            <p className="text-accent-soft/70 text-xs mt-4">
+              No commitment. No hidden fees. Cancel anytime.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* ── Footer ── */}
+      {/* ── Footer — kept minimal and real ── */}
       <footer className="border-t border-border bg-bg-secondary/30 py-8">
         <div className="container flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2 font-semibold">
