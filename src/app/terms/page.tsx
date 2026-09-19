@@ -4,6 +4,26 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Terms of Service | bookateacher.in",
   description: "Terms of Service for bookateacher.in — the IELTS, TOEFL, and Spoken English tutoring platform.",
+  openGraph: {
+    title: "Terms of Service | bookateacher.in",
+    description: "Terms of Service for bookateacher.in — the IELTS, TOEFL, and Spoken English tutoring platform.",
+    type: "website",
+    locale: "en_IN",
+    siteName: "bookateacher.in",
+    url: "https://bookateacher.in/terms",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Terms of Service | bookateacher.in",
+    description: "Terms of Service for bookateacher.in — the IELTS, TOEFL, and Spoken English tutoring platform.",
+  },
+  alternates: {
+    canonical: "https://bookateacher.in/terms",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function TermsPage() {
@@ -15,14 +35,13 @@ export default function TermsPage() {
             href="/"
             className="flex items-center gap-2 font-semibold text-lg tracking-tight"
           >
-            <svg className="w-6 h-6" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="32" height="32" rx="8" fill="#14213D" />
-              <path d="M8 11h16M8 16h12M8 21h8"
-                stroke="white" strokeWidth="2.5" strokeLinecap="round" />
-            </svg>
-            <span>
-              bookateacher
-              <span className="text-sm text-foreground-subtle font-normal">.in</span>
+            <span className="w-8 h-8 rounded bg-[#14213D] flex items-center justify-center flex-shrink-0">
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                <path d="M3 8h18M3 12h13M3 16h9" stroke="white" strokeWidth="2.5" strokeLinecap="round" />
+              </svg>
+            </span>
+            <span style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+              bookateacher<span className="text-foreground-subtle font-normal">.in</span>
             </span>
           </Link>
         </div>
@@ -30,6 +49,13 @@ export default function TermsPage() {
 
       <main className="flex-1">
         <div className="container py-12 max-w-3xl">
+          {/* Breadcrumb */}
+          <nav className="flex gap-2 mb-4 text-xs text-foreground-muted" aria-label="Breadcrumb">
+            <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
+            <span>/</span>
+            <span className="text-foreground font-medium">Terms of Service</span>
+          </nav>
+
           <div className="mb-8">
             <h1 className="text-2xl font-bold text-foreground mb-2">Terms of Service</h1>
             <p className="text-foreground-muted">Last updated: 19 September 2026</p>

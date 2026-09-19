@@ -1,9 +1,35 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { FAQ_DATA, getHomepageJsonLd, FAQ_SCHEMA, COURSE_SCHEMA } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "bookateacher.in — From 6.5 to 7.5. In six weeks.",
-  description: "Certified IELTS, TOEFL, and Spoken English tutors across India. Live 1-on-1 coaching, mock tests, personal feedback. Book a session today.",
+  description: "Certified IELTS, TOEFL, and Spoken English tutors across India. Live 1-on-1 coaching, mock tests under real test conditions, and personal feedback. Book a session today.",
+  openGraph: {
+    title: "bookateacher.in — From 6.5 to 7.5. In six weeks.",
+    description: "Certified IELTS, TOEFL, and Spoken English tutors across India. Live 1-on-1 coaching, mock tests under real test conditions, and personal feedback.",
+    type: "website",
+    locale: "en_IN",
+    siteName: "bookateacher.in",
+    url: "https://bookateacher.in",
+    images: [
+      {
+        url: "https://bookateacher.in/og-default.svg",
+        width: 1200,
+        height: 630,
+        alt: "bookateacher.in — From 6.5 to 7.5. In six weeks.",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "bookateacher.in — From 6.5 to 7.5. In six weeks.",
+    description: "Certified IELTS, TOEFL, and Spoken English tutors across India.",
+    images: ["https://bookateacher.in/og-default.svg"],
+  },
+  alternates: {
+    canonical: "https://bookateacher.in",
+  },
 };
 
 const INK = "#14213D";
@@ -293,6 +319,26 @@ export default function HomePage() {
           <p style={{ fontSize: "0.8125rem", color: MUTED, textAlign: "right" }}>© 2026 bookateacher.in — Made in India</p>
         </div>
       </footer>
+
+      {/* ── Structured data (JSON-LD) ── */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: "https://bookateacher.in" },
+          ],
+        }) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: FAQ_SCHEMA }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(COURSE_SCHEMA) }}
+      />
 
       {/* ── Motion ── */}
       <style>{`

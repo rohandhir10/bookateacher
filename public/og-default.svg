@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FAF7F0"/>
+      <stop offset="100%" stop-color="#F2ECE0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <!-- Left accent bar -->
+  <rect x="0" y="0" width="8" height="630" fill="#14213D"/>
+  <!-- Bottom accent -->
+  <rect x="0" y="610" width="1200" height="20" fill="#14213D"/>
+
+  <!-- Logo mark -->
+  <g transform="translate(60, 60)">
+    <rect width="48" height="48" rx="8" fill="#14213D"/>
+    <path d="M12 24h24M12 32h18M12 40h12" stroke="#FAF7F0" stroke-width="3" stroke-linecap="round" fill="none"/>
+  </g>
+  <text x="120" y="90" font-family="Georgia, serif" font-size="28" font-weight="600" fill="#14213D">bookateacher</text>
+  <text x="120" y="115" font-family="Inter, sans-serif" font-size="16" fill="#6B6557">.in</text>
+
+  <!-- Main headline -->
+  <text x="60" y="220" font-family="Georgia, serif" font-size="72" font-weight="600" fill="#14213D" letter-spacing="-2">
+    From 6.5 to 7.5.
+  </text>
+  <text x="60" y="290" font-family="Georgia, serif" font-size="72" font-weight="600" fill="#B23A2E" letter-spacing="-2">
+    In six weeks.
+  </text>
+
+  <!-- Subheadline -->
+  <text x="60" y="370" font-family="Inter, sans-serif" font-size="22" fill="#3D4A63">
+    Certified IELTS, TOEFL &amp; Spoken English tutors across India.
+  </text>
+  <text x="60" y="405" font-family="Inter, sans-serif" font-size="22" fill="#3D4A63">
+    Live 1-on-1 coaching. Mock tests. Personal feedback.
+  </text>
+
+  <!-- Score pills -->
+  <g transform="translate(60, 460)">
+    <rect x="0" y="0" width="180" height="48" rx="8" fill="#14213D"/>
+    <text x="20" y="31" font-family="Georgia, serif" font-size="24" font-weight="600" fill="#B23A2E">Band 7.5</text>
+  </g>
+  <g transform="translate(260, 460)">
+    <rect x="0" y="0" width="180" height="48" rx="8" fill="#2F5233"/>
+    <text x="20" y="31" font-family="Georgia, serif" font-size="24" font-weight="600" fill="#FAF7F0">105/120 TOEFL</text>
+  </g>
+  <g transform="translate(460, 460)">
+    <rect x="0" y="0" width="200" height="48" rx="8" fill="#FAF7F0" stroke="#14213D" stroke-width="2"/>
+    <text x="20" y="31" font-family="Inter, sans-serif" font-size="18" font-weight="600" fill="#14213D">Book a session</text>
+  </g>
+
+  <!-- URL -->
+  <text x="60" y="580" font-family="Inter, sans-serif" font-size="18" fill="#6B6557">
+    bookateacher.in
+  </text>
+</svg>
