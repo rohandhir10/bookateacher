@@ -33,4 +33,10 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["better-sqlite3"],
 };
 
+// Only allow rewrites in production; disable during dev so next dev serves page.tsx
+// const isProd = process.env.NODE_ENV === "production";
+// if (!isProd) {
+//   delete nextConfig.rewrites;
+// }
+
 export default nextConfig;

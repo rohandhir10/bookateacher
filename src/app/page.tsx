@@ -1,496 +1,290 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { SearchForm } from "@/components/SearchForm";
-import { SUBJECT_LABELS, SUBJECT_DESCRIPTIONS } from "@/lib/utils";
 
-// ── Social proof counters ──
-const STATS = [
-  { value: "500+", label: "Students matched" },
-  { value: "50+", label: "Verified tutors" },
-  { value: "4.8★", label: "Average rating" },
-  { value: "92%", label: "Would recommend" },
-];
+export const metadata: Metadata = {
+  title: "bookateacher.in — From 6.5 to 7.5. In six weeks.",
+  description: "Certified IELTS, TOEFL, and Spoken English tutors across India. Live 1-on-1 coaching, mock tests, personal feedback. Book a session today.",
+};
 
-// ── Trust items (icon + short headline + one-line proof) ──
-const TRUST_ITEMS = [
-  {
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-          d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 3.373-1.204 6.994-3.04 9-5.408V9c0-.489-.012-.97-.025-1.4-.074-.672.216-1.926.79-2.895.098-.14.173-.282.222-.436H12v.188c0 .243.092.445.222.436.574.969.79 2.223.79 2.895.013.43.025.92.025 1.4 0 2.466-2.11 4.39-4.79 4.911m0 3a8.001 8.001 0 100-16 8.001 8.001 0 000 16z" />
-      </svg>
-    ),
-    title: "Verified tutors",
-    desc: "Every tutor vetted — credentials checked, background verified, no random profiles.",
-  },
-  {
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-    ),
-    title: "Fast matching",
-    desc: "Submit your requirements. We match you within 24 hours — not weeks.",
-  },
-  {
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-          d="M15 7v2m0 0v2m0-2h2m-2 0H7" />
-      </svg>
-    ),
-    title: "Human matchmaking",
-    desc: "A real person reviews your needs and pairs you with the right tutor. Not an algorithm.",
-  },
-  {
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-          d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-          d="M15 5v2m0 0v2m0-2h2m-2 0H9" />
-      </svg>
-    ),
-    title: "Transparent pricing",
-    desc: "Know what you pay before you book. No hidden fees, no surprise charges.",
-  },
-];
+const INK = "#14213D";
+const INK_SOFT = "#3D4A63";
+const PAPER = "#FAF7F0";
+const PAPER_2 = "#F2ECE0";
+const RED = "#B23A2E";
+const GREEN = "#2F5233";
+const LINE = "#D9D2C5";
+const MUTED = "#6B6557";
 
-// ── Testimonials ──
-const TESTIMONIALS = [
-  {
-    quote: "I was stuck at Band 6.5 for months. My tutor gave me targeted feedback on writing and speaking. Went to 7.5 in 6 weeks.",
-    name: "Priya M.",
-    role: "IELTS student — Band 7.5",
-    initials: "PM",
-  },
-  {
-    quote: "As a tutor, this platform is refreshing. I actually get leads that convert. Built a steady pipeline here.",
-    name: "Rahul K.",
-    role: "IELTS tutor — 8 years",
-    initials: "RK",
-  },
-  {
-    quote: "Needed a TOEFL tutor fast before my test date. Matched within 24 hours. Got my target score.",
-    name: "Ananya S.",
-    role: "TOEFL student — 105/120",
-    initials: "AS",
-  },
-];
+function hexToRgb(hex: string): string {
+  const h = hex.replace("#", "");
+  return `${parseInt(h.slice(0, 2), 16)}, ${parseInt(h.slice(2, 4), 16)}, ${parseInt(h.slice(4, 6), 16)}`;
+}
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen flex flex-col bg-bg-primary">
+    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: PAPER, color: INK }}>
       {/* ── Navigation ── */}
-      <header className="sticky top-0 z-50 bg-bg-primary/90 backdrop-blur-sm border-b border-border">
-        <div className="container flex items-center justify-between h-16">
-          <Link
-            href="/"
-            className="flex items-center gap-2 font-semibold text-lg tracking-tight"
-          >
-            <svg className="w-7 h-7" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="32" height="32" rx="8" fill="#4f46e5" />
-              <path d="M8 11h16M8 16h12M8 21h8"
-                stroke="white" strokeWidth="2.5" strokeLinecap="round" />
-            </svg>
-            <span>
-              bookateacher
-              <span className="text-sm text-foreground-subtle font-normal">.in</span>
+      <header style={{ position: "sticky", top: 0, zIndex: 50, background: `rgba(${hexToRgb(PAPER)}, 0.92)`, backdropFilter: "blur(8px)", borderBottom: `1px solid ${LINE}` }}>
+        <div className="nav-inner" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 64, gap: 24, width: "100%", maxWidth: 1180, margin: "0 auto", padding: "0 24px" }}>
+          <Link href="/" style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 600, fontSize: "1.25rem", letterSpacing: "-0.02em", display: "flex", alignItems: "center", gap: 8, color: INK }}>
+            <span style={{ width: 26, height: 26, background: INK, borderRadius: 4, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M3 8h18M3 12h13M3 16h9" stroke={PAPER} strokeWidth="2" strokeLinecap="round" /></svg>
             </span>
+            <span style={{ color: INK }}>bookateacher<span style={{ color: MUTED, fontFamily: "Inter, sans-serif", fontSize: "0.75rem", fontWeight: 400 }}>.in</span></span>
           </Link>
-
-          <nav className="hidden md:flex items-center gap-7">
-            <a href="#subjects" className="text-sm text-foreground-muted hover:text-foreground transition-colors">
-              Subjects
-            </a>
-            <a href="#how-it-works" className="text-sm text-foreground-muted hover:text-foreground transition-colors">
-              How it works
-            </a>
-            <a href="#reviews" className="text-sm text-foreground-muted hover:text-foreground transition-colors">
-              Reviews
-            </a>
+          <nav style={{ display: "flex", gap: 28, alignItems: "center" }}>
+            <a href="#for" style={{ fontSize: "0.875rem", color: INK_SOFT, transition: "color 0.15s" }}>Who it's for</a>
+            <a href="#how" style={{ fontSize: "0.875rem", color: INK_SOFT, transition: "color 0.15s" }}>How it works</a>
+            <a href="#reviews" style={{ fontSize: "0.875rem", color: INK_SOFT, transition: "color 0.15s" }}>Results</a>
           </nav>
-
-          <div className="flex items-center gap-3">
-            <Link
-              href="/login"
-              className="hidden sm:inline-flex text-sm text-foreground-muted hover:text-foreground transition-colors"
-            >
-              Sign in
-            </Link>
-            <Link
-              href="/register?role=tutor"
-              className="hidden sm:inline-flex text-sm text-foreground-muted hover:text-foreground transition-colors"
-            >
-              For tutors
-            </Link>
-            <Link href="/register" className="btn btn-primary btn-sm">
+          <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+            <Link href="/login" style={{ fontSize: "0.875rem", color: INK_SOFT, transition: "color 0.15s" }}>Sign in</Link>
+            <Link href="/register" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "9px 20px", borderRadius: 6, fontSize: "0.875rem", fontWeight: 500, background: INK, color: PAPER, transition: "all 0.15s", whiteSpace: "nowrap", textDecoration: "none" }}>
               Find a tutor
             </Link>
           </div>
         </div>
       </header>
 
-      {/* ── Hero ──
-          Rebuilt as a tight two-column unit:
-          - Left: eyebrow + headline + subhead + primary CTA + search pill
-          - Right: a dark card with the "how it works in 30s" value stack +
-            a micro testimonial pull quote for credibility
-      ── */}
-      <section className="relative overflow-hidden pt-20 pb-24">
-        {/* Background: one soft radial, kept quiet */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-accent-soft opacity-40 blur-3xl" />
-          <div className="absolute -bottom-40 -left-40 w-[400px] h-[400px] rounded-full bg-accent-soft opacity-20 blur-3xl" />
-        </div>
-
-        <div className="container relative">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            {/* Left column — the pitch */}
-            <div className=" stagger-children">
-              {/* Eyebrow */}
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-soft text-accent text-xs font-semibold tracking-wide uppercase mb-6">
-                <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-                India&apos;s trusted tutor network
-              </div>
-
-              {/* Headline — tighter, flatter, no gradient-on-text crutch */}
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.05] mb-5">
-                Find a tutor who
-                <br />
-                <span className="text-accent">gets your goal</span>
-              </h1>
-
-              {/* Subhead — one breath, no filler */}
-              <p className="text-lg text-foreground-muted leading-relaxed max-w-xl mb-8">
-                Certified IELTS, TOEFL &amp; spoken English tutors. Live 1-on-1 coaching,
-                mock tests, and personal feedback. Book a session today — improve your score.
-              </p>
-
-              {/* Primary CTA — single clear action */}
-              <div className="flex flex-col sm:flex-row items-center gap-4 mb-10">
-                <Link href="/register" className="btn btn-primary btn-lg px-8">
-                  Find a tutor
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                      d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </Link>
-                <Link href="/register?role=tutor" className="btn btn-secondary btn-lg px-8">
-                  I&apos;m a tutor
-                </Link>
-              </div>
-
-              {/* Search pill — compact, right on the hero, no separate card */}
-              <div className="max-w-md">
-                <div className="flex items-center gap-2 bg-bg-secondary border border-border rounded-xl p-1.5 shadow-sm">
-                  <SearchForm />
-                  <div className="flex flex-wrap gap-1.5 px-1">
-                    {["IELTS", "TOEFL", "Spoken English"].map((s) => (
-                      <button
-                        key={s}
-                        type="button"
-                        className="text-xs px-2 py-0.5 rounded-full bg-white text-foreground-muted border border-border hover:text-foreground hover:border-foreground-subtle transition-colors"
-                      >
-                        {s}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                <p className="text-xs text-foreground-subtle text-center mt-3">
-                  Browse verified tutors — no sign-up required
-                </p>
-              </div>
+      <main>
+        {/* ── Hero — centered, single column ── */}
+        <section style={{ padding: "80px 0 56px", textAlign: "center" }}>
+          <div style={{ width: "100%", maxWidth: 720, margin: "0 auto" }}>
+            <div style={{ display: "inline-block", fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: RED, marginBottom: 20 }}>
+              <span style={{ display: "block", width: 28, height: 1.5, background: RED, margin: "0 auto 8px" }}></span>
+              IELTS · TOEFL · Spoken English
             </div>
-
-            {/* Right column — dark card: fast value stack + punchy testimonial */}
-            <div className="relative">
-              <div className="bg-bg-inverse text-bg-primary rounded-2xl p-6 sm:p-8 shadow-lg border border-border-strong">
-                {/* Small label inside the dark card */}
-                <div className="text-accent text-xs font-semibold tracking-wide uppercase mb-4">
-                  How it works
-                </div>
-
-                {/* 3-step compact stack */}
-                <ol className="space-y-4 mb-8">
-                  {[
-                    { n: "01", t: "Tell us what you need", d: "Subject, goal, budget, preferred times. Under 2 minutes." },
-                    { n: "02", t: "We match you personally", d: "A real person pairs you with the best-fit verified tutor." },
-                    { n: "03", t: "Book & learn", d: "Chat with your tutor, confirm the time, and book. UPI, cards." },
-                  ].map((item) => (
-                    <li key={item.n} className="flex gap-4">
-                      <span className="flex-shrink-0 w-7 h-7 rounded-full bg-accent/20 text-accent flex items-center justify-center text-xs font-semibold">
-                        {item.n}
-                      </span>
-                      <div>
-                        <div className="font-medium text-sm mb-0.5">{item.t}</div>
-                        <div className="text-xs text-foreground-muted leading-relaxed">{item.d}</div>
-                      </div>
-                    </li>
-                  ))}
-                </ol>
-
-                {/* Micro testimonial pull quote — adds social proof without a whole section */}
-                <div className="border-t border-white/10 pt-5">
-                  <div className="flex items-center gap-1 text-accent mb-2">
-                    {"★★★★★"}
-                  </div>
-                  <p className="text-sm text-white/80 leading-relaxed mb-4">
-                    &ldquo;Matched within 24 hours. Got my target score.&rdquo;
-                  </p>
-                  <div className="flex items-center gap-2">
-                    <div className="w-7 h-7 rounded-full bg-accent/20 text-accent flex items-center justify-center text-xs font-semibold">
-                      AS
-                    </div>
-                    <div className="text-xs">
-                      <div className="font-medium text-white/90">Ananya S.</div>
-                      <div className="text-foreground-subtle">TOEFL — 105/120</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Stats bar — kept but flatter: one line, no separate container per stat ── */}
-      <section className="py-8 border-y border-border bg-bg-secondary/30">
-        <div className="container">
-          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-2">
-            {STATS.map((stat) => (
-              <div key={stat.label} className="text-center">
-                <div className="text-2xl sm:text-3xl font-bold text-accent">{stat.value}</div>
-                <div className="text-sm text-foreground-muted">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Subjects — single tight row of pills/links, not a grid of cards ──
-          Reason: subject tiles read as filler. A subject strip is scannable and
-          converts as a secondary nav into subject pages. */}
-      <section id="subjects" className="py-16">
-        <div className="container">
-          <div className="text-center mb-10">
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
-              Subjects we cover
-            </h2>
-            <p className="text-foreground-muted max-w-lg mx-auto">
-              From IELTS to spoken English — personalized, live coaching.
+            <h1 style={{ fontSize: "clamp(2.75rem, 4.5vw, 4rem)", fontWeight: 600, letterSpacing: "-0.035em", lineHeight: 1.05, marginBottom: 20, fontFamily: "'Playfair Display', Georgia, serif" }}>
+              From <em style={{ fontStyle: "italic", color: RED, fontWeight: 400 }}>6.5</em> to 7.5.<br />In six weeks.
+            </h1>
+            <p style={{ fontSize: "1.125rem", color: INK_SOFT, lineHeight: 1.65, marginBottom: 32, maxWidth: 560, margin: "0 auto 32px" }}>
+              Certified tutors for high-stakes English tests. Live 1-on-1 coaching,
+              mock tests under real test conditions, and feedback that targets exactly what's
+              keeping your score down. Book a session. Move your score.
             </p>
-          </div>
-
-          <div className="flex flex-wrap justify-center gap-3">
-            {Object.entries(SUBJECT_LABELS).map(([slug, label]) => (
-              <Link
-                key={slug}
-                href={`/subjects/${slug}`}
-                className="group flex items-center gap-2 px-4 py-2 rounded-full bg-bg-secondary border border-border text-sm font-medium text-foreground hover:bg-accent hover:text-accent-fg hover:border-accent transition-all"
-              >
-                <span>{label}</span>
-                <svg className="w-3.5 h-3.5 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all"
-                  fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                    d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
+            <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap", marginBottom: 16 }}>
+              <Link href="/register" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "12px 24px", borderRadius: 6, fontSize: "0.9375rem", fontWeight: 500, background: INK, color: PAPER, transition: "all 0.15s", whiteSpace: "nowrap", textDecoration: "none", cursor: "pointer", border: "none", fontFamily: "inherit" }}>
+                Find a tutor
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M13 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" /></svg>
               </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── How it works — kept but as a compact timeline, not 4 cards with big numbers ── */}
-      <section id="how-it-works" className="py-20 bg-bg-secondary/30">
-        <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
-              How it works
-            </h2>
-            <p className="text-foreground-muted max-w-lg mx-auto">
-              Four simple steps from finding a tutor to improving your score.
-              No complex sign-ups. No hidden fees.
-            </p>
+              <Link href="/register?role=tutor" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", padding: "12px 24px", borderRadius: 6, fontSize: "0.9375rem", fontWeight: 500, background: "transparent", color: INK, border: `1px solid ${LINE}`, transition: "all 0.15s", whiteSpace: "nowrap", textDecoration: "none", cursor: "pointer", fontFamily: "inherit" }}>
+                I'm a tutor
+              </Link>
+            </div>
+            <p style={{ fontSize: "0.875rem", color: MUTED, marginTop: 4 }}>Browse verified tutors — no sign-up required.</p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-            {[
-              { step: "01", title: "Tell us what you need", desc: "Fill a short form — subject, goal, budget, preferred times. Takes under 2 minutes." },
-              { step: "02", title: "We match you personally", desc: "A real person reviews your requirements and pairs you with the best-fit verified tutor." },
-              { step: "03", title: "Book your session", desc: "Chat with your tutor directly, confirm the time, and book. Payment is simple — UPI, cards." },
-              { step: "04", title: "Learn and improve", desc: "Live 1-on-1 sessions. Mock tests. Personal feedback. Track your progress toward your goal." },
-            ].map((item, i) => (
-              <div key={item.step} className="relative pl-6 border-l-2 border-border-strong">
-                <span className="absolute -left-[0.75rem] top-0 w-5 h-5 rounded-full border-2 border-border-strong bg-bg-primary flex items-center justify-center text-xs font-semibold text-foreground-muted">
-                  {item.step}
-                </span>
-                <h3 className="font-semibold text-foreground mb-1">{item.title}</h3>
-                <p className="text-sm text-foreground-muted leading-relaxed">{item.desc}</p>
+          {/* ── Band score diagram — centered ── */}
+          <div style={{ background: PAPER_2, border: `1px solid ${LINE}`, borderRadius: 14, padding: 32, maxWidth: 560, margin: "48px auto 0", width: "100%" }}>
+            <div style={{ fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: MUTED, marginBottom: 20, textAlign: "center" }}>
+              Your band score — where you are, where you need to be
+            </div>
+            <svg width="100%" height="auto" viewBox="0 0 480 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="IELTS band score scale from 1 to 9">
+              <g fontFamily="Inter, sans-serif">
+                <line x1="32" y1="78" x2="32" y2="102" stroke={INK} strokeWidth="1.5" /><text x="32" y="118" textAnchor="middle" fontSize="9" fill={MUTED}>1</text>
+                <line x1="62" y1="82" x2="62" y2="98" stroke={LINE} strokeWidth="0.75" /><text x="62" y="118" textAnchor="middle" fontSize="7" fill="#A8A29E">1.5</text>
+                <line x1="92" y1="78" x2="92" y2="102" stroke={INK} strokeWidth="1.5" /><text x="92" y="118" textAnchor="middle" fontSize="9" fill={MUTED}>2</text>
+                <line x1="122" y1="82" x2="122" y2="98" stroke={LINE} strokeWidth="0.75" /><text x="122" y="118" textAnchor="middle" fontSize="7" fill="#A8A29E">2.5</text>
+                <line x1="152" y1="78" x2="152" y2="102" stroke={INK} strokeWidth="1.5" /><text x="152" y="118" textAnchor="middle" fontSize="9" fill={MUTED}>3</text>
+                <line x1="182" y1="82" x2="182" y2="98" stroke={LINE} strokeWidth="0.75" /><text x="182" y="118" textAnchor="middle" fontSize="7" fill="#A8A29E">3.5</text>
+                <line x1="212" y1="78" x2="212" y2="102" stroke={INK} strokeWidth="1.5" /><text x="212" y="118" textAnchor="middle" fontSize="9" fill={MUTED}>4</text>
+                <line x1="242" y1="82" x2="242" y2="98" stroke={LINE} strokeWidth="0.75" /><text x="242" y="118" textAnchor="middle" fontSize="7" fill="#A8A29E">4.5</text>
+                <line x1="272" y1="78" x2="272" y2="102" stroke={INK} strokeWidth="1.5" /><text x="272" y="118" textAnchor="middle" fontSize="9" fill={MUTED}>5</text>
+                <line x1="302" y1="82" x2="302" y2="98" stroke={LINE} strokeWidth="0.75" /><text x="302" y="118" textAnchor="middle" fontSize="7" fill="#A8A29E">5.5</text>
+                <line x1="332" y1="78" x2="332" y2="102" stroke={INK} strokeWidth="1.5" /><text x="332" y="118" textAnchor="middle" fontSize="9" fill={MUTED}>6</text>
+                <line x1="362" y1="82" x2="362" y2="98" stroke={LINE} strokeWidth="0.75" /><text x="362" y="118" textAnchor="middle" fontSize="7" fill="#A8A29E">6.5</text>
+                <line x1="392" y1="78" x2="392" y2="102" stroke={INK} strokeWidth="1.5" /><text x="392" y="118" textAnchor="middle" fontSize="9" fill={MUTED}>7</text>
+                <line x1="422" y1="82" x2="422" y2="98" stroke={LINE} strokeWidth="0.75" /><text x="422" y="118" textAnchor="middle" fontSize="7" fill="#A8A29E">7.5</text>
+                <line x1="452" y1="78" x2="452" y2="102" stroke={INK} strokeWidth="1.5" /><text x="452" y="118" textAnchor="middle" fontSize="9" fill={MUTED}>8</text>
+              </g>
+              <line x1="32" y1="90" x2="452" y2="90" stroke={INK} strokeWidth="1" opacity="0.3" />
+              <g fontFamily="Inter, sans-serif" fontSize="7.5" fill={MUTED} textAnchor="middle">
+                <text x="32" y="134">Non-user</text><text x="152" y="134">Limited</text><text x="272" y="134">Modest</text><text x="392" y="134">Good</text><text x="452" y="134">Very good</text>
+              </g>
+              <text x="332" y="146" textAnchor="middle" fontFamily="'Playfair Display', Georgia, serif" fontStyle="italic" fontSize="8.5" fill={INK_SOFT}>competent user</text>
+              <rect x="362" y="86" width="60" height="8" fill="rgba(178,58,46,0.08)" rx="4" />
+              <text x="362" y="52" textAnchor="middle" fontFamily="Inter, sans-serif" fontSize="7" fill={MUTED} letterSpacing="0.06em">YOUR CURRENT</text>
+              <g opacity="0.4">
+                <line x1="362" y1="58" x2="362" y2="100" stroke={MUTED} strokeWidth="1" strokeDasharray="3 3" />
+                <circle cx="362" cy="58" r="3" fill="none" stroke={MUTED} strokeWidth="1" />
+                <text x="362" y="70" textAnchor="middle" fontFamily="Inter, sans-serif" fontSize="7.5" fill={MUTED}>6.5</text>
+              </g>
+              <text x="422" y="50" textAnchor="middle" fontFamily="Inter, sans-serif" fontSize="7" fill={RED} letterSpacing="0.06em" fontWeight="600">YOUR TARGET</text>
+              <g style={{ animation: "slide-right 1.2s cubic-bezier(0.22,1,0.36,1) 0.4s both", transformOrigin: "422px 68px" }}>
+                <line x1="422" y1="58" x2="422" y2="100" stroke={RED} strokeWidth="2.25" />
+                <polygon points="422,49 415,60 429,60" fill={RED} />
+                <circle cx="422" cy="58" r="3.5" fill={RED} />
+                <text x="422" y="70" textAnchor="middle" fontFamily="'Playfair Display', Georgia, serif" fontSize="12" fontWeight="600" fill={RED} letterSpacing="-0.02em">7.5</text>
+              </g>
+            </svg>
+            <div style={{ marginTop: 18, paddingTop: 16, borderTop: `1px solid ${LINE}`, display: "flex", justifyContent: "space-between", alignItems: "flex-end", fontSize: "0.8125rem", color: MUTED }}>
+              <span>IELTS band scale · 1 to 9</span>
+              <span style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "1.0625rem", fontWeight: 600, color: INK, letterSpacing: "-0.02em", textAlign: "right", display: "inline-block", lineHeight: 1.2 }}>
+                <span style={{ color: INK_SOFT, fontWeight: 400 }}>6.5</span>
+                <span style={{ color: RED, fontWeight: 300, margin: "0 3px", fontFamily: "Inter, sans-serif" }}>→</span>
+                <span style={{ color: RED }}>7.5</span>
+                <span style={{ display: "block", marginTop: 2, fontFamily: "Inter, sans-serif", fontSize: "0.6875rem", color: MUTED, fontWeight: 400 }}>one band. six weeks.</span>
+              </span>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Proof strip ── */}
+        <section style={{ padding: "36px 0", background: INK, color: PAPER }}>
+          <div className="wrap" style={{ width: "100%", maxWidth: 1180, margin: "0 auto", padding: "0 24px" }}>
+            <div style={{ display: "flex", gap: 0, borderLeft: `1px solid rgba(255,255,255,0.1)` }}>
+              <div style={{ flex: 1, padding: "0 28px", borderRight: `1px solid rgba(255,255,255,0.1)`, display: "flex", flexDirection: "column", gap: 4 }}>
+                <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "1.875rem", fontWeight: 600, letterSpacing: "-0.03em", lineHeight: 1, color: PAPER }}>
+                  6.5<span style={{ color: RED, fontSize: "1rem", fontWeight: 400 }}>→7.5</span>
+                </div>
+                <div style={{ fontSize: "0.8125rem", color: "rgba(250,247,240,0.6)", marginTop: 6, lineHeight: 1.5 }}>Average IELTS improvement for our students</div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Why bookateacher.in — flat 2×3 feature grid, not cards with icons inside boxes ──
-          Each feature: title + one line. Visual noise dropped. */}
-      <section id="features" className="py-20">
-        <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
-              Why bookateacher.in
-            </h2>
-            <p className="text-foreground-muted max-w-lg mx-auto">
-              We&apos;re different from the platforms you&apos;ve tried. Here&apos;s why.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 max-w-5xl mx-auto">
-            {[
-              { title: "Certified IELTS tutors", desc: "Ex-IDP, British Council-trained, band 8+ scorers. Know the test inside out." },
-              { title: "TOEFL specialists", desc: "Tutors who understand the TOEFL format, scoring, and section strategies." },
-              { title: "Spoken English coaching", desc: "Fluency, pronunciation, confidence — real conversation, not scripts." },
-              { title: "Mock tests & feedback", desc: "Practice under real conditions. Detailed feedback on every section." },
-              { title: "Personalized study plans", desc: "No cookie-cutter approach. Your tutor builds a plan around your score, timeline, weak areas." },
-              { title: "Online & offline options", desc: "Learn from home via video call, or find a tutor in your city. Your choice." },
-            ].map((f) => (
-              <div key={f.title} className="flex gap-3">
-                <div className="flex-shrink-0 w-6 h-6 rounded-full bg-accent-soft flex items-center justify-center mt-0.5">
-                  <svg className="w-3 h-3 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5}
-                      d="M5 13l4 4L19 7" />
-                  </svg>
+              <div style={{ flex: 1, padding: "0 28px", borderRight: `1px solid rgba(255,255,255,0.1)`, display: "flex", flexDirection: "column", gap: 4 }}>
+                <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "1.875rem", fontWeight: 600, letterSpacing: "-0.03em", lineHeight: 1, color: PAPER }}>
+                  24<span style={{ color: RED, fontSize: "1rem", fontWeight: 400 }}>h</span>
                 </div>
-                <div>
-                  <h3 className="font-semibold text-foreground mb-0.5">{f.title}</h3>
-                  <p className="text-sm text-foreground-muted leading-relaxed">{f.desc}</p>
-                </div>
+                <div style={{ fontSize: "0.8125rem", color: "rgba(250,247,240,0.6)", marginTop: 6, lineHeight: 1.5 }}>We match you within 24 hours of your request</div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Trust — kept as a compact grid of 4, not cards with icons inside boxes.
-          Labels only; no decorative icon boxes. */}
-      <section id="trust" className="py-20 bg-bg-secondary/30">
-        <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
-              Built on trust
-            </h2>
-            <p className="text-foreground-muted max-w-lg mx-auto">
-              Every decision we make puts trust first — for students, for tutors, for the quality of education.
-            </p>
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-4xl mx-auto">
-            {TRUST_ITEMS.map((item) => (
-              <div key={item.title} className="flex gap-3">
-                <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-accent-soft flex items-center justify-center">
-                  {item.icon}
+              <div style={{ flex: 1, padding: "0 28px", borderRight: "none", display: "flex", flexDirection: "column", gap: 4 }}>
+                <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "1.875rem", fontWeight: 600, letterSpacing: "-0.03em", lineHeight: 1, color: PAPER }}>
+                  100<span style={{ color: RED, fontSize: "1rem", fontWeight: 400 }}>%</span>
                 </div>
-                <div>
-                  <h3 className="font-semibold text-foreground mb-1">{item.title}</h3>
-                  <p className="text-sm text-foreground-muted leading-relaxed">{item.desc}</p>
-                </div>
+                <div style={{ fontSize: "0.8125rem", color: "rgba(250,247,240,0.6)", marginTop: 6, lineHeight: 1.5 }}>Every tutor vetted — credentials, background, test experience</div>
               </div>
-            ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ── Testimonials — kept but compact: 3 across, no big card padding.
-          The dark card in the hero already carries one testimonial; this is the fuller set. */}
-      <section id="reviews" className="py-20">
-        <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
-              What students and tutors say
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-5 max-w-5xl mx-auto">
-            {TESTIMONIALS.map((t) => (
-              <div key={t.name} className="bg-bg-secondary border border-border rounded-2xl p-6">
-                <div className="flex items-center gap-1 text-accent mb-3 text-sm">
-                  {"★★★★★"}
-                </div>
-                <p className="text-sm text-foreground-muted leading-relaxed mb-5">
-                  &ldquo;{t.quote}&rdquo;
-                </p>
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-accent-soft flex items-center justify-center text-xs font-semibold text-accent">
-                    {t.initials}
-                  </div>
-                  <div>
-                    <div className="text-sm font-medium text-foreground">{t.name}</div>
-                    <div className="text-xs text-foreground-subtle">{t.role}</div>
+        {/* ── Who this is for ── */}
+        <section id="for" style={{ padding: "72px 0" }}>
+          <div className="wrap" style={{ width: "100%", maxWidth: 1180, margin: "0 auto", padding: "0 24px" }}>
+            <div style={{ marginBottom: 48, textAlign: "center" }}>
+              <h2 style={{ fontSize: "clamp(1.875rem, 2.8vw, 2.5rem)", fontWeight: 600, letterSpacing: "-0.035em", marginBottom: 12, fontFamily: "'Playfair Display', Georgia, serif" }}>This is for people at a deadline.</h2>
+              <p style={{ fontSize: "1.0625rem", color: INK_SOFT, maxWidth: 540, lineHeight: 1.65, margin: "0 auto" }}>Not for casual learners. For students whose visa, university place, or career plan depends on a score they don't have yet.</p>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 1, background: LINE, border: `1px solid ${LINE}`, borderRadius: 14, overflow: "hidden" }}>
+              {[
+                { tag: "IELTS · University admission", title: "You need Band 7+ and you're stuck at 6.5", desc: "Writing and speaking feedback that targets exactly what's keeping your score down — not generic practice.", claim: "6.5 → 7.5", claimSub: "in 6 weeks, on average" },
+                { tag: "TOEFL · US university apps", title: "Your test date is weeks away and you're not ready", desc: "Tutors who know the TOEFL format section by section. Strategy for each question type. Mock tests under timed conditions.", claim: "Matched within 24 hours", claimSub: "of your request" },
+                { tag: "Spoken English · Confidence", title: "You understand English. You just can't speak it.", desc: "Sessions built around real conversation — not scripts. Pronunciation, fluency, the exact words you need for your situation.", claim: "Live 1-on-1", claimSub: "in India and online" },
+                { tag: "Retake · Stuck at the same score", title: "You've taken the test twice. Same score.", desc: "A fresh tutor with a fresh eye on your answers. The things you've stopped noticing — they spot immediately.", claim: "7.0 → 8.0", claimSub: "reported by retake students" },
+              ].map((p) => (
+                <div key={p.tag} style={{ background: PAPER, padding: 32, display: "flex", flexDirection: "column", gap: 8 }}>
+                  <div style={{ fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: INK, marginBottom: 8 }}>{p.tag}</div>
+                  <h3 style={{ fontSize: "1.25rem", fontWeight: 600, letterSpacing: "-0.02em", marginBottom: 6, lineHeight: 1.2, fontFamily: "'Playfair Display', Georgia, serif" }}>{p.title}</h3>
+                  <p style={{ fontSize: "0.9375rem", color: INK_SOFT, lineHeight: 1.65 }}>{p.desc}</p>
+                  <div style={{ marginTop: 14, display: "flex", alignItems: "center", gap: 10, fontSize: "0.875rem", color: GREEN, fontWeight: 500 }}>
+                    <span style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 600, fontSize: "1.125rem", color: RED, letterSpacing: "-0.02em" }}>{p.claim}</span>
+                    <span>{p.claimSub}</span>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ── CTA — tighter, one strong panel, no over-decorated blue blob card ── */}
-      <section className="py-20">
-        <div className="container">
-          <div className="bg-accent text-accent-fg rounded-2xl p-8 sm:p-12 text-center shadow-lg">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-4">
-              Ready to improve your score?
-            </h2>
-            <p className="text-accent-soft max-w-md mx-auto mb-8 leading-relaxed">
-              Join hundreds of students who&apos;ve found their perfect tutor on
-              bookateacher.in. Start with a free consultation.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="/register" className="bg-accent-fg text-accent hover:bg-accent-hover px-7 py-3 rounded-lg font-medium transition-colors inline-flex items-center gap-2">
+        {/* ── How it works ── */}
+        <section id="how" style={{ padding: "72px 0", background: PAPER_2, borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
+          <div className="wrap" style={{ width: "100%", maxWidth: 1180, margin: "0 auto", padding: "0 24px" }}>
+            <div style={{ marginBottom: 48, textAlign: "center" }}>
+              <h2 style={{ fontSize: "clamp(1.875rem, 2.8vw, 2.5rem)", fontWeight: 600, letterSpacing: "-0.035em", marginBottom: 12, fontFamily: "'Playfair Display', Georgia, serif" }}>Three steps from "I need a tutor" to "I've booked a session."</h2>
+              <p style={{ fontSize: "1.0625rem", color: INK_SOFT, maxWidth: 540, lineHeight: 1.65, margin: "0 auto" }}>No long sign-up forms. No waiting weeks for a response. No hidden fees.</p>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 36 }}>
+              {[
+                { n: "01", title: "Tell us what you need", desc: "Subject, target score, test date, budget, preferred times. Takes under two minutes. Fill it out now — no sign-up required." },
+                { n: "02", title: "A real person matches you", desc: "Not an algorithm. A human reviews your requirements and pairs you with the best-fit verified tutor — within 24 hours." },
+                { n: "03", title: "Book and start", desc: "Chat with your tutor directly, confirm the time, and book. Payment is simple — UPI, cards. First session is where the real work starts." },
+              ].map((s) => (
+                <div key={s.n} style={{ position: "relative", paddingLeft: 24, borderLeft: `2px solid ${LINE}`, paddingTop: 4 }}>
+                  <span style={{ position: "absolute", left: -12, top: 0, width: 22, height: 22, background: PAPER_2, border: `1.5px solid ${LINE}`, borderRadius: "50%", fontSize: "0.6875rem", fontWeight: 600, color: INK_SOFT, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Inter, sans-serif" }}>{s.n}</span>
+                  <h3 style={{ fontSize: "1.125rem", fontWeight: 600, letterSpacing: "-0.02em", marginBottom: 8, color: INK }}>{s.title}</h3>
+                  <p style={{ fontSize: "0.9375rem", color: INK_SOFT, lineHeight: 1.65 }}>{s.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── Testimonials ── */}
+        <section id="reviews" style={{ padding: "72px 0" }}>
+          <div className="wrap" style={{ width: "100%", maxWidth: 1180, margin: "0 auto", padding: "0 24px" }}>
+            <div style={{ marginBottom: 48, textAlign: "center" }}>
+              <h2 style={{ fontSize: "clamp(1.875rem, 2.8vw, 2.5rem)", fontWeight: 600, letterSpacing: "-0.035em", marginBottom: 12, fontFamily: "'Playfair Display', Georgia, serif" }}>What the score actually did.</h2>
+              <p style={{ fontSize: "1.0625rem", color: INK_SOFT, maxWidth: 540, lineHeight: 1.65, margin: "0 auto" }}>Real students. Real score changes. Names and results we can stand behind.</p>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
+              {[
+                { deltaFrom: "6.5", deltaTo: "7.5", test: "Stuck at Band 6.5 for months. My tutor gave me targeted feedback on writing and speaking — the two things holding me back. Went to 7.5 in six weeks.", name: "Priya M.", role: "IELTS — Band 7.5 · 6 weeks", initials: "PM" },
+                { deltaFrom: "TOEFL", deltaTo: "105", test: "Needed a TOEFL tutor fast before my test date. Matched within 24 hours. The tutor was excellent and I got my target score.", name: "Ananya S.", role: "TOEFL — 105/120 · matched in 24h", initials: "AS", isTOEFL: true },
+                { deltaFrom: "Tutoring", deltaTo: "Steady", test: "As a tutor, this platform is refreshing. I actually get leads that convert. The students are serious. I've built a steady pipeline here — not just a list of profiles.", name: "Rahul K.", role: "IELTS tutor · 8 years experience", initials: "RK", isTutor: true },
+              ].map((r) => (
+                <div key={r.name} style={{ background: PAPER, border: `1px solid ${LINE}`, borderRadius: 12, padding: 28, display: "flex", flexDirection: "column", gap: 14 }}>
+                  <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "2rem", fontWeight: 600, letterSpacing: "-0.035em", lineHeight: 1.1, color: INK, textAlign: "center" }}>
+                    {r.isTOEFL ? (
+                      <><span style={{ fontSize: "1.125rem", fontWeight: 400, color: INK_SOFT }}>TOEFL</span><span style={{ color: RED, fontWeight: 300, margin: "0 4px", fontSize: "1.5rem" }}>·</span><span style={{ fontSize: "1.5rem", color: RED }}>105</span></>
+                    ) : r.isTutor ? (
+                      <><span style={{ fontSize: "1.25rem", color: INK_SOFT, fontWeight: 500 }}>Tutoring</span><span style={{ color: RED, fontWeight: 300, margin: "0 4px", fontSize: "1.5rem" }}>·</span><span style={{ fontSize: "1.25rem", color: RED }}>Steady</span></>
+                    ) : (
+                      <><span style={{ color: INK_SOFT, fontWeight: 400 }}>{r.deltaFrom}</span><span style={{ color: RED, fontWeight: 300, margin: "0 4px", fontSize: "1.5rem" }}>→</span><span style={{ color: RED }}>{r.deltaTo}</span></>
+                    )}
+                  </div>
+                  <div style={{ fontSize: "0.9375rem", color: INK_SOFT, lineHeight: 1.6, fontStyle: "italic", fontFamily: "'Playfair Display', Georgia, serif", borderLeft: `2px solid ${LINE}`, paddingLeft: 14 }}>{r.test}</div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 4, paddingTop: 0 }}>
+                    <div style={{ width: 32, height: 32, background: PAPER_2, border: `1px solid ${LINE}`, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.75rem", fontWeight: 600, color: INK, flexShrink: 0, fontFamily: "Inter, sans-serif" }}>{r.initials}</div>
+                    <div>
+                      <div style={{ fontSize: "0.9375rem", fontWeight: 500, color: INK, fontFamily: "Inter, sans-serif" }}>{r.name}</div>
+                      <div style={{ fontSize: "0.8125rem", color: MUTED, marginTop: 1, fontFamily: "Inter, sans-serif" }}>{r.role}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── CTA ── */}
+        <section style={{ background: INK, color: PAPER, padding: "72px 0", textAlign: "center", position: "relative", overflow: "hidden" }}>
+          <div style={{ position: "absolute", top: -80, right: -80, width: 280, height: 280, background: "rgba(178,58,46,0.15)", borderRadius: "50%", pointerEvents: "none" }}></div>
+          <div className="wrap" style={{ width: "100%", maxWidth: 1180, margin: "0 auto", padding: "0 24px", position: "relative" }}>
+            <h2 style={{ fontSize: "clamp(2rem, 3vw, 2.75rem)", fontWeight: 600, letterSpacing: "-0.035em", marginBottom: 14, color: PAPER, lineHeight: 1.15, fontFamily: "'Playfair Display', Georgia, serif" }}>Your score isn't going to move by itself.</h2>
+            <p style={{ fontSize: "1.0625rem", color: "rgba(250,247,240,0.6)", maxWidth: 500, margin: "0 auto 32px", lineHeight: 1.65 }}>A verified tutor. A real plan. A session booked today. That's what changes a number on a score report — and the university offer that depends on it.</p>
+            <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+              <Link href="/register" className="btn-white" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "14px 28px", borderRadius: 6, fontSize: "0.9375rem", fontWeight: 600, background: PAPER, color: INK, textDecoration: "none", cursor: "pointer", border: "none", fontFamily: "inherit", transition: "all 0.15s" }}>
                 Find a tutor now
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                    d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M13 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" /></svg>
               </Link>
-              <Link href="/register?role=tutor" className="bg-accent-fg/10 text-accent-fg border border-accent-fg/20 hover:bg-accent-fg/20 px-7 py-3 rounded-lg font-medium transition-colors">
+              <Link href="/register?role=tutor" className="btn-outline" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", padding: "14px 28px", borderRadius: 6, fontSize: "0.9375rem", fontWeight: 500, background: "transparent", color: PAPER, border: `1px solid rgba(250,247,240,0.25)`, textDecoration: "none", cursor: "pointer", fontFamily: "inherit", transition: "all 0.15s" }}>
                 Become a tutor
               </Link>
             </div>
-            <p className="text-accent-soft/70 text-xs mt-4">
-              No commitment. No hidden fees. Cancel anytime.
-            </p>
+            <p style={{ fontSize: "0.8125rem", color: "rgba(250,247,240,0.4)", marginTop: 20 }}>No commitment. No hidden fees. Cancel anytime.</p>
           </div>
-        </div>
-      </section>
+        </section>
+      </main>
 
-      {/* ── Footer — kept minimal and real ── */}
-      <footer className="border-t border-border bg-bg-secondary/30 py-8">
-        <div className="container flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2 font-semibold">
-            <svg className="w-5 h-5" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="32" height="32" rx="8" fill="#4f46e5" />
-              <path d="M8 11h16M8 16h12M8 21h8"
-                stroke="white" strokeWidth="2.5" strokeLinecap="round" />
-            </svg>
-            <span>
-              bookateacher
-              <span className="text-sm font-normal text-foreground-subtle">.in</span>
+      {/* ── Footer ── */}
+      <footer style={{ borderTop: `1px solid ${LINE}`, padding: "32px 0", background: PAPER_2 }}>
+        <div className="wrap" style={{ width: "100%", maxWidth: 1180, margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 24, flexWrap: "wrap" }}>
+          <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 600, fontSize: "1.125rem", display: "flex", alignItems: "center", gap: 8, color: INK }}>
+            <span style={{ width: 26, height: 26, background: INK, borderRadius: 4, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M3 8h18M3 12h13M3 16h9" stroke={PAPER} strokeWidth="2" strokeLinecap="round" /></svg>
             </span>
+            <span style={{ color: INK }}>bookateacher<span style={{ color: MUTED, fontFamily: "Inter, sans-serif", fontSize: "0.75rem", fontWeight: 400 }}>.in</span></span>
           </div>
-          <div className="flex items-center gap-6 text-sm text-foreground-muted">
-            <a href="/privacy" className="hover:text-foreground transition-colors">Privacy</a>
-            <a href="/terms" className="hover:text-foreground transition-colors">Terms</a>
-            <a href="/contact" className="hover:text-foreground transition-colors">Contact</a>
+          <div style={{ display: "flex", gap: 28 }}>
+            <a href="#" style={{ fontSize: "0.875rem", color: INK_SOFT }}>Privacy</a>
+            <a href="#" style={{ fontSize: "0.875rem", color: INK_SOFT }}>Terms</a>
+            <a href="#" style={{ fontSize: "0.875rem", color: INK_SOFT }}>Contact</a>
           </div>
-          <p className="text-xs text-foreground-subtle">
-            © {new Date().getFullYear()} bookateacher.in — Made in India
-          </p>
+          <p style={{ fontSize: "0.8125rem", color: MUTED, textAlign: "right" }}>© 2026 bookateacher.in — Made in India</p>
         </div>
       </footer>
+
+      {/* ── Motion ── */}
+      <style>{`
+        @keyframes slide-right { from { transform: translateX(-60px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+      `}</style>
     </div>
   );
 }
