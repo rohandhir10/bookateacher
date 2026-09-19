@@ -335,6 +335,18 @@ export function getLeads(opts?: { status?: string; limit?: number }): any[] {
   return db.prepare(sql).all(...params);
 }
 
+export function getLeadsForStudent(studentEmail: string): any[] {
+  const db = getDb();
+  return db
+    .prepare(
+      `SELECT * FROM leads
+       WHERE email = ?
+       ORDER BY created_at DESC
+       LIMIT 1`,
+    )
+    .all(studentEmail);
+}
+
 export function getLeadById(id: string): any | undefined {
   const db = getDb();
   return db.prepare("SELECT * FROM leads WHERE id = ?").get(id);

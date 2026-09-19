@@ -59,6 +59,46 @@ export function RegisterForm() {
         redirect: false,
       });
 
+      // If student, also create a lead so the matching flow has something to show
+      if (parsed.role === "student") {
+        try {
+          const leadRes = await fetch("/api/leads", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              action: "create-lead",
+              data: {
+                name: parsed.name,
+                email: parsed.email,
+                phone: "",
+                subject: formData.subject || "ielts",
+                goal: formData.goal || undefined,
+                budget_per_hour: formData.budget_per_hour
+                  ? Number(formData.budget_per_hour)
+                  : undefined,
+                preferred_days: formData.preferred_days.length > 0
+                  ? formData.preferred_days
+                  : undefined,
+                preferred_times: formData.preferred_times.length > 0
+                  ? formData.preferred_times
+                  : undefined,
+                online_or_local: formData.online_or_local,
+                location: formData.location || undefined,
+                current_level: formData.current_level || undefined,
+                challenge: formData.challenge || undefined,
+              },
+            }),
+          });
+          const leadJson = await leadRes.json();
+          if (leadRes.ok && leadJson.leadId) {
+            router.push(`/matching-status?leadId=${leadJson.leadId}`);
+            return;
+          }
+        } catch {
+          // Lead creation failed — fall through to dashboard
+        }
+      }
+
       setSuccess(true);
       router.refresh();
     } catch (err) {

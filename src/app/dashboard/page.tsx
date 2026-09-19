@@ -1,12 +1,15 @@
 import { auth } from "@/lib/auth";
-import { getSessionsForStudent } from "@/lib/db";
+import { getSessionsForStudent, getLeadsForStudent } from "@/lib/db";
 import { redirect } from "next/navigation";
+import { SUBJECT_LABELS } from "@/lib/utils";
 
 export default async function StudentDashboardPage() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
   const sessions = getSessionsForStudent(session.user.id);
+  const leads = getLeadsForStudent(session.user.email);
+  const activeLead = leads[0];
 
   return (
     <div className="min-h-screen bg-bg-primary">
@@ -45,6 +48,51 @@ export default async function StudentDashboardPage() {
               </div>
             </div>
           </div>
+
+          {/* Matching status card */}
+          {activeLead && (
+            <a
+              href={`/matching-status?leadId=${activeLead.id}`}
+              className="block card p-6 sm:p-8 bg-accent-soft border border-accent border-opacity-30 hover:bg-accent-soft hover:border-accent hover:border-opacity-50 transition-all mb-8"
+            >
+              <div className="flex items-start gap-4">
+                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-accent text-accent-fg flex items-center justify-center">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-lg font-semibold text-foreground truncate">
+                      Track your match request
+                    </h2>
+                    <span className={`text-xs font-semibold ${
+                      activeLead.status === "new"
+                        ? "bg-foreground-subtle/10 text-foreground-muted"
+                        : activeLead.status === "contacted"
+                        ? "bg-accent-soft text-accent"
+                        : "bg-success-soft text-success"
+                    } px-2 py-0.5 rounded-full`}>
+                      {activeLead.status}
+                    </span>
+                  </div>
+                  <p className="text-sm text-foreground-muted mt-1">
+                    {activeLead.status === "new"
+                      ? "A human is reviewing your request. Track progress here."
+                      : activeLead.status === "contacted"
+                      ? "A tutor is being assigned. See where things stand."
+                      : "Your match is confirmed. Check the details."}
+                  </p>
+                  <p className="text-xs text-foreground-subtle mt-2">
+                    Requested {activeLead.created_at ? new Intl.DateTimeFormat("en-IN", { day: "numeric", month: "short" }).format(new Date(activeLead.created_at)) : ""}
+                    · {activeLead.subject === "ielts" || activeLead.subject === "toefl"
+                      ? activeLead.subject
+                      : SUBJECT_LABELS[activeLead.subject] ?? activeLead.subject}
+                  </p>
+                </div>
+              </div>
+            </a>
+          )}
 
           {/* Sessions */}
           <div className="card p-6">
@@ -95,7 +143,7 @@ export default async function StudentDashboardPage() {
                         </span>
                       </div>
                       <div className="text-sm text-foreground-muted mt-0.5">
-                        {formatDateTime(session.scheduled_at)} ·{" "}
+                        {formatDateTime(session.scheduled_at)} ·
                         {formatDuration(session.duration_minutes)}
                       </div>
                       {session.meeting_link && (
@@ -166,7 +214,7 @@ function StudentDashboardLayout({
             className="flex items-center gap-2 font-semibold text-lg"
           >
             <svg className="w-6 h-6" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="32" height="32" rx="8" fill="#4f46e5" />
+              <rect width="32" height="32" rx="8" fill="#14213D" />
               <path d="M8 11h16M8 16h12M8 21h8"
                 stroke="white" strokeWidth="2.5" strokeLinecap="round" />
             </svg>

@@ -179,7 +179,7 @@ export default function HomePage() {
                 { q: "What if I don't get matched with someone good?", a: "You can reject your first match for free — no questions, no wait. We'll send another within 24 hours. If your first session doesn't feel right, message us and we'll re-match you. You're not locked into anyone." },
                 { q: "What's your refund policy if I don't like the first session?", a: "If you don't feel the session was worth it, we refund the session fee in full — including any trial session fee, if applicable. Email us within 48 hours. Most students stay after the first session, but the option is there." },
                 { q: "How fast can you match me if my test is in 10 days?", a: "We match within 24 hours even on short timelines — we keep a pool of available tutors for exactly this. But be realistic: 10 days is enough for targeted strategy and final polish, not a full overhaul. Tell us your test date upfront and we'll suggest a realistic plan." },
-                { q: "How much does it cost?", a: "Tutor rates vary by experience and subject — typically ₹800–₹2,500 per hour for test prep. You see the rate before you book. No hidden fees, no platform commission on the tutor side (at launch). Trial sessions are often free or discounted — check the tutor's profile." },
+                { q: "How much does it cost?", a: "Tutor rates vary by experience and subject — typically ₹800–₹2,500 per hour for test prep. You see the rate before you book. Payment is collected at booking time through Razorpay (UPI, cards). No hidden fees. Trial sessions may be free or discounted — check the tutor's profile." },
                 { q: "Can I chat with a tutor before booking?", a: "Yes — every tutor profile has a message button. Send a short intro, ask about their approach, and see if it's a fit before you pay. Most tutors reply within a few hours." },
                 { q: "What if my English is very basic — is this still for me?", a: "If you're below Band 4, we'll be honest: 1:1 test-prep coaching works best from Band 5+ where there's a foundation to build on. For absolute beginners, we can suggest general English tutors first. Tell us your current level in the form and we'll guide you." },
               ].map(({ q, a }, i) => (
@@ -224,7 +224,7 @@ export default function HomePage() {
           <div className="wrap" style={{ width: "100%", maxWidth: 1180, margin: "0 auto", padding: "0 24px" }}>
             <div style={{ marginBottom: 48, textAlign: "center" }}>
               <h2 style={{ fontSize: "clamp(1.875rem, 2.8vw, 2.5rem)", fontWeight: 600, letterSpacing: "-0.035em", marginBottom: 12, fontFamily: "'Playfair Display', Georgia, serif" }}>What the score actually did.</h2>
-              <p style={{ fontSize: "1.0625rem", color: INK_SOFT, maxWidth: 540, lineHeight: 1.65, margin: "0 auto" }}>Real students. Real score changes. Names and results we can stand behind.</p>
+              <p style={{ fontSize: "1.0625rem", color: INK_SOFT, maxWidth: 540, lineHeight: 1.65, margin: "0 auto" }}>Real students. Real score changes. These are early results — representative, not the best we've done.</p>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
               {[
@@ -286,9 +286,9 @@ export default function HomePage() {
             <span style={{ color: INK }}>bookateacher<span style={{ color: MUTED, fontFamily: "Inter, sans-serif", fontSize: "0.75rem", fontWeight: 400 }}>.in</span></span>
           </div>
           <div style={{ display: "flex", gap: 28 }}>
-            <a href="#" style={{ fontSize: "0.875rem", color: INK_SOFT }}>Privacy</a>
-            <a href="#" style={{ fontSize: "0.875rem", color: INK_SOFT }}>Terms</a>
-            <a href="#" style={{ fontSize: "0.875rem", color: INK_SOFT }}>Contact</a>
+            <a href="/privacy" style={{ fontSize: "0.875rem", color: INK_SOFT }}>Privacy</a>
+            <a href="/terms" style={{ fontSize: "0.875rem", color: INK_SOFT }}>Terms</a>
+            <a href="/contact" style={{ fontSize: "0.875rem", color: INK_SOFT }}>Contact</a>
           </div>
           <p style={{ fontSize: "0.8125rem", color: MUTED, textAlign: "right" }}>© 2026 bookateacher.in — Made in India</p>
         </div>
