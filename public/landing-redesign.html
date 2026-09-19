@@ -8,37 +8,17 @@
 <meta property="og:title" content="bookateacher.in — From 6.5 to 7.5. In six weeks.">
 <meta property="og:description" content="Certified IELTS, TOEFL, and Spoken English tutors across India. Live 1-on-1 coaching, mock tests, personal feedback.">
 <meta property="og:type" content="website">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --ink: #14213D;
-    --ink-soft: #3D4A63;
-    --paper: #FAF7F0;
-    --paper-2: #F2ECE0;
-    --paper-3: #E8DFD0;
-    --red: #B23A2E;
-    --green: #2F5233;
-    --line: #D9D2C5;
-    --muted: #6B6557;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  /* ── Reset ── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
   body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    background: var(--paper);
-    color: var(--ink);
-    line-height: 1.6;
-    min-height: 100vh;
+    background: #FAF7F0; color: #14213D; line-height: 1.6; min-height: 100vh;
   }
   h1, h2, h3 {
     font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
-    font-weight: 600;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    color: var(--ink);
+    font-weight: 600; line-height: 1.1; letter-spacing: -0.02em; color: #14213D;
   }
   a { color: inherit; text-decoration: none; }
   button { cursor: pointer; border: none; background: none; font-family: inherit; font-size: inherit; }
@@ -49,7 +29,7 @@
     position: sticky; top: 0; z-index: 50;
     background: rgba(250, 247, 240, 0.92);
     backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid #D9D2C5;
   }
   .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 24px; }
   .wordmark {
@@ -57,209 +37,123 @@
     font-weight: 600; font-size: 1.25rem; letter-spacing: -0.02em;
     display: flex; align-items: center; gap: 8px;
   }
-  .wordmark .dot { font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 400; color: var(--muted); }
+  .wordmark .dot { font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 400; color: #6B6557; }
   .wordmark-mark {
-    width: 26px; height: 26px; background: var(--ink); border-radius: 4px;
+    width: 26px; height: 26px; background: #14213D; border-radius: 4px;
     display: flex; align-items: center; justify-content: center; flex-shrink: 0;
   }
   .wordmark-mark svg { width: 15px; height: 15px; }
-  .wordmark-mark svg path { stroke: var(--paper); stroke-width: 2; stroke-linecap: round; }
+  .wordmark-mark svg path { stroke: #FAF7F0; stroke-width: 2; stroke-linecap: round; }
   nav.links { display: flex; gap: 28px; align-items: center; }
-  nav.links a { font-size: 0.875rem; color: var(--ink-soft); transition: color 0.15s; }
-  nav.links a:hover { color: var(--ink); }
+  nav.links a { font-size: 0.875rem; color: #3D4A63; transition: color 0.15s; }
+  nav.links a:hover { color: #14213D; }
   .nav-actions { display: flex; gap: 12px; align-items: center; }
-  .nav-actions a { font-size: 0.875rem; color: var(--ink-soft); transition: color 0.15s; }
-  .nav-actions a:hover { color: var(--ink); }
+  .nav-actions a { font-size: 0.875rem; color: #3D4A63; transition: color 0.15s; }
+  .nav-actions a:hover { color: #14213D; }
 
   .btn {
     display: inline-flex; align-items: center; justify-content: center;
-    gap: 6px; padding: 9px 20px; border-radius: 6px;
-    font-size: 0.875rem; font-weight: 500; transition: all 0.15s;
-    white-space: nowrap; user-select: none;
+    gap: 6px; padding: 12px 24px; border-radius: 6px;
+    font-size: 0.9375rem; font-weight: 500; transition: background 0.15s, border-color 0.15s;
+    white-space: nowrap; user-select: none; cursor: pointer;
+    border: none; font-family: inherit;
   }
-  .btn-primary { background: var(--ink); color: var(--paper); }
-  .btn-primary:hover { background: #0d1729; transform: translateY(-1px); }
-  .btn-primary:active { transform: translateY(0); }
-  .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
-  .btn-ghost:hover { background: var(--paper-2); border-color: var(--muted); }
+  .btn-primary { background: #14213D; color: #FAF7F0; }
+  .btn-primary:hover { background: #0d1729; }
+  .btn-ghost { background: transparent; color: #14213D; border: 1px solid #D9D2C5; }
+  .btn-ghost:hover { background: #F2ECE0; border-color: #6B6557; }
+  .btn-white { background: #FAF7F0; color: #14213D; padding: 14px 28px; border-radius: 6px; font-size: 0.9375rem; font-weight: 600; }
+  .btn-white:hover { background: #F2ECE0; }
+  .btn-outline { background: transparent; color: #FAF7F0; border: 1px solid rgba(250,247,240,0.25); padding: 14px 28px; border-radius: 6px; font-size: 0.9375rem; font-weight: 500; transition: border-color 0.15s; }
+  .btn-outline:hover { border-color: rgba(250,247,240,0.5); }
 
-  /* ── Hero ── */
-  .hero {
-    padding: 72px 0 64px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .hero-inner {
-    width: 100%;
-    max-width: 780px;
-    margin: 0 auto;
-  }
-  @media (max-width: 960px) { .hero { padding: 40px 0 48px; } }
-
-  .eyebrow {
-    display: inline-block;
-    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em;
-    text-transform: uppercase; color: var(--red);
-    margin-bottom: 20px;
-  }
-  .eyebrow::before { content: ''; display: block; width: 28px; height: 1.5px; background: var(--red); margin: 0 auto 8px; }
-
-  .hero h1 {
-    font-size: clamp(2.75rem, 4.5vw, 4rem); font-weight: 600;
-    letter-spacing: -0.035em; line-height: 1.05; margin-bottom: 20px;
-  }
-  .hero h1 em { font-style: italic; color: var(--red); font-weight: 400; }
-  .hero .sub {
-    font-size: 1.125rem; color: var(--ink-soft);
-    line-height: 1.65; margin-bottom: 32px;
-    max-width: 560px; margin-left: auto; margin-right: auto;
-  }
-  .hero-ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
-  .proof-line { font-size: 0.875rem; color: var(--muted); text-align: center; }
-
-  /* ── Band score diagram ── */
-  .band-card {
-    background: var(--paper-2); border: 1px solid var(--line);
+  /* ── Band tool ── */
+  .band-tool {
+    background: #F2ECE0; border: 1px solid #D9D2C5;
     border-radius: 14px; padding: 32px;
-    max-width: 560px;
-    margin: 48px auto 0;
-    width: 100%;
+    max-width: 720px; margin: 40px auto 0; width: 100%;
   }
-  .band-card .band-label {
+  .band-tool .band-label {
     font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em;
-    text-transform: uppercase; color: var(--muted); margin-bottom: 20px;
-    text-align: center;
+    text-transform: uppercase; color: #6B6557; margin-bottom: 20px;
   }
-  .band-svg { width: 100%; height: auto; display: block; }
-  .band-caption {
-    margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line);
-    display: flex; justify-content: space-between; align-items: flex-end;
-    font-size: 0.8125rem; color: var(--muted);
+  .band-tool .selector-label {
+    display: block; font-size: 0.8125rem; font-weight: 500; color: #3D4A63; margin-bottom: 8px;
   }
-  .band-caption .delta {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 1.0625rem; font-weight: 600; color: var(--ink);
-    letter-spacing: -0.02em; text-align: right;
+  .band-tool .band-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+  .band-tool .band-pill {
+    width: 28%; min-width: 44px; padding: 8px 4px; border-radius: 6px;
+    border: 1px solid #D9D2C5; background: transparent; color: #6B6557;
+    font-size: 0.875rem; font-weight: 400; font-family: 'Inter', sans-serif; cursor: pointer;
+    transition: all 0.15s; position: relative;
   }
-  .band-caption .delta .from { color: var(--ink-soft); font-weight: 400; }
-  .band-caption .delta .to { color: var(--red); }
-  .band-caption .delta .arrow { color: var(--red); font-weight: 300; margin: 0 3px; font-family: 'Inter', sans-serif; }
-  .band-caption .delta-spacer { display: block; margin-top: 2px; font-family: 'Inter', sans-serif; font-size: 0.6875rem; color: var(--muted); font-weight: 400; }
+  .band-tool .band-pill.active-current {
+    border: 2px solid #B23A2E; background: #FAF7F0; color: #B23A2E; font-weight: 600;
+  }
+  .band-tool .band-pill.active-current::after {
+    content: ''; position: absolute; top: -6px; right: -6px;
+    width: 8px; height: 8px; background: #B23A2E; border-radius: 50%;
+  }
+  .band-tool .band-pill.active-target {
+    border: 2px solid #14213D; background: #FAF7F0; color: #14213D; font-weight: 600;
+  }
+  .band-tool .category-label { margin-top: 8px; font-size: 0.75rem; color: #6B6557; }
+  .band-tool .result-area { border-top: 1px solid #D9D2C5; padding-top: 20px; margin-bottom: 16px; min-height: 60; text-align: center; }
+  .band-tool .result-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #6B6557; margin-bottom: 6px; }
+  .band-tool .result-delta { font-family: 'Playfair Display', Georgia, serif; font-size: 2rem; font-weight: 600; color: #14213D; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 4px; text-align: center; }
+  .band-tool .result-delta .from { color: #3D4A63; font-weight: 400; }
+  .band-tool .result-delta .arrow { color: #B23A2E; font-weight: 300; margin: 0 4px; }
+  .band-tool .result-delta .to { color: #B23A2E; }
+  .band-tool .result-text { font-size: 0.9375rem; color: #3D4A63; margin-bottom: 16px; text-align: center; }
+  .band-tool .result-note { font-size: 0.8125rem; color: #6B6557; margin-bottom: 20px; text-align: center; }
+  .band-tool form { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  .band-tool input[type="email"] {
+    flex: 1 1 220px; padding: 10px 14px; border-radius: 6px;
+    border: 1px solid #D9D2C5; font-size: 0.9375rem; font-family: 'Inter', sans-serif;
+    background: #FAF7F0; color: #14213D; outline: none; transition: border-color 0.15s;
+  }
+  .band-tool input[type="email"]:focus { border-color: #14213D; }
+  .band-tool .submit-btn {
+    padding: 10px 22px; border-radius: 6px; background: #14213D; color: #FAF7F0;
+    font-size: 0.9375rem; font-weight: 500; font-family: 'Inter', sans-serif;
+    border: none; cursor: pointer; transition: all 0.15s; white-space: nowrap;
+  }
+  .band-tool .submit-btn:hover { background: #0d1729; }
+  .band-tool .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .band-tool .success-msg {
+    text-align: center; padding: 16px 0;
+  }
+  .band-tool .success-badge {
+    display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px;
+    background: #FAF7F0; border: 1px solid #D9D2C5; border-radius: 8;
+    font-size: 0.9375rem; color: #14213D; font-weight: 500;
+  }
+  .band-tool .success-badge .dot { width: 8px; height: 8px; background: #2F5233; border-radius: 50%; }
+  .band-tool .skip-link { font-size: 0.8125rem; color: #6B6557; margin-top: 10; text-align: center; }
+  .band-tool .skip-link a { color: #B23A2E; font-weight: 500; text-decoration: underline; }
+  .band-tool .disclaimer { font-size: 0.75rem; color: #6B6557; margin-top: 16px; line-height: 1.5; text-align: center; }
 
-  /* ── Proof strip ── */
-  .proof-strip { padding: 36px 0; background: var(--ink); color: var(--paper); }
-  .proof-grid { display: flex; gap: 0; border-left: 1px solid rgba(255,255,255,0.1); }
-  .proof-item {
-    flex: 1; padding: 0 28px; border-right: 1px solid rgba(255,255,255,0.1);
-    display: flex; flex-direction: column; gap: 4px;
+  /* ── Vetting grid ── */
+  .vetting-section { padding: 56px 0; background: #F2ECE0; border-top: 1px solid #D9D2C5; border-bottom: 1px solid #D9D2C5; }
+  .vetting-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; text-align: center; }
+  .vetting-step { }
+  .vetting-step .num {
+    width: 36px; height: 36px; border-radius: 50%; background: #FAF7F0;
+    border: 1.5px solid #D9D2C5; display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 12px; font-family: 'Inter', sans-serif; font-size: 0.8125rem; font-weight: 600; color: #B23A2E;
   }
-  .proof-item:first-child { padding-left: 0; }
-  .proof-item:last-child { border-right: none; padding-right: 0; }
-  .proof-value {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 1.875rem; font-weight: 600; letter-spacing: -0.03em;
-    line-height: 1; color: var(--paper);
-  }
-  .proof-value .unit { color: var(--red); font-size: 1rem; font-weight: 400; }
-  .proof-label { font-size: 0.8125rem; color: rgba(250, 247, 240, 0.6); margin-top: 6px; line-height: 1.5; }
-  @media (max-width: 640px) {
-    .proof-grid { flex-direction: column; border-left: none; }
-    .proof-item { padding: 14px 0; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
-    .proof-item:last-child { border-bottom: none; }
-    .proof-value { font-size: 1.5rem; }
-  }
+  .vetting-step .step-title { font-size: 0.8125rem; font-weight: 600; color: #14213D; margin-bottom: 4px; line-height: 1.3; }
+  .vetting-step .step-desc { font-size: 0.8125rem; color: #3D4A63; line-height: 1.5; }
+  .vetting-note { font-size: 0.8125rem; color: #6B6557; text-align: center; margin-top: 24px; border-top: 1px solid #D9D2C5; padding-top: 16px; max-width: 560px; margin-left: auto; margin-right: auto; }
 
-  /* ── Sections ── */
-  section { padding: 72px 0; }
-  @media (max-width: 640px) { section { padding: 48px 0; } }
-  .section-head { margin-bottom: 48px; text-align: center; }
-  .section-head h2 { font-size: clamp(1.875rem, 2.8vw, 2.5rem); font-weight: 600; letter-spacing: -0.035em; margin-bottom: 12px; }
-  .section-head p { font-size: 1.0625rem; color: var(--ink-soft); max-width: 540px; line-height: 1.65; margin: 0 auto; }
-
-  /* ── Who this is for ── */
-  .profiles {
-    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
-    background: var(--line); border: 1px solid var(--line);
-    border-radius: 14px; overflow: hidden;
-  }
-  @media (max-width: 640px) { .profiles { grid-template-columns: 1fr; } }
-  .profile { background: var(--paper); padding: 32px; display: flex; flex-direction: column; gap: 8px; }
-  .profile .tag { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); margin-bottom: 8px; }
-  .profile h3 { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 6px; line-height: 1.2; }
-  .profile p { font-size: 0.9375rem; color: var(--ink-soft); line-height: 1.65; }
-  .profile .claim { margin-top: 14px; display: flex; align-items: center; gap: 10px; font-size: 0.875rem; color: var(--green); font-weight: 500; }
-  .profile .claim .stamp { font-family: 'Playfair Display', Georgia, serif; font-weight: 600; font-size: 1.125rem; color: var(--red); letter-spacing: -0.02em; }
-
-  /* ── How it works ── */
-  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px; }
-  @media (max-width: 720px) { .steps { grid-template-columns: 1fr; gap: 28px; } }
-  .step { position: relative; padding-left: 24px; border-left: 2px solid var(--line); padding-top: 4px; }
-  .step::before {
-    content: attr(data-n);
-    position: absolute; left: -12px; top: 0;
-    width: 22px; height: 22px; background: var(--paper-2); border: 1.5px solid var(--line);
-    border-radius: 50%; font-size: 0.6875rem; font-weight: 600; color: var(--ink-soft);
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Inter', sans-serif; letter-spacing: 0;
-  }
-  .step h3 { font-size: 1.125rem; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 8px; color: var(--ink); }
-  .step p { font-size: 0.9375rem; color: var(--ink-soft); line-height: 1.65; }
-
-  /* ── Testimonials ── */
-  .reviews { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-  @media (max-width: 720px) { .reviews { grid-template-columns: 1fr; } }
-  .review { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 28px; display: flex; flex-direction: column; gap: 14px; }
-  .review-delta { font-family: 'Playfair Display', Georgia, serif; font-size: 2rem; font-weight: 600; letter-spacing: -0.035em; line-height: 1.1; color: var(--ink); text-align: center; }
-  .review-delta .from { color: var(--ink-soft); font-weight: 400; }
-  .review-delta .arrow { color: var(--red); font-weight: 300; margin: 0 4px; font-size: 1.5rem; }
-  .review-delta .to { color: var(--red); }
-  .review-test {
-    font-size: 0.9375rem; color: var(--ink-soft); line-height: 1.6;
-    font-style: italic; font-family: 'Playfair Display', Georgia, serif;
-    border-left: 2px solid var(--line); padding-left: 14px;
-    text-align: left;
-  }
-  .review-meta { display: flex; align-items: center; gap: 12px; margin-top: 4px; padding-top: 0; }
-  .review-avatar {
-    width: 32px; height: 32px; background: var(--paper-2); border: 1px solid var(--line);
-    border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    font-size: 0.75rem; font-weight: 600; color: var(--ink); flex-shrink: 0;
-    font-family: 'Inter', sans-serif;
-  }
-  .review-name { font-size: 0.9375rem; font-weight: 500; color: var(--ink); font-family: 'Inter', sans-serif; }
-  .review-role { font-size: 0.8125rem; color: var(--muted); margin-top: 1px; font-family: 'Inter', sans-serif; }
-
-  /* ── CTA band ── */
-  .cta { background: var(--ink); color: var(--paper); padding: 72px 0; text-align: center; position: relative; overflow: hidden; }
-  .cta::before { content: ''; position: absolute; top: -80px; right: -80px; width: 280px; height: 280px; background: rgba(178, 58, 46, 0.15); border-radius: 50%; pointer-events: none; }
-  .cta h2 { font-size: clamp(2rem, 3vw, 2.75rem); font-weight: 600; letter-spacing: -0.035em; margin-bottom: 14px; color: var(--paper); line-height: 1.15; }
-  .cta p { font-size: 1.0625rem; color: rgba(250, 247, 240, 0.6); max-width: 500px; margin: 0 auto 32px; line-height: 1.65; }
-  .cta .cta-ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-  .cta .btn-white { background: var(--paper); color: var(--ink); padding: 14px 28px; border-radius: 6px; font-size: 0.9375rem; font-weight: 600; }
-  .cta .btn-white:hover { background: var(--paper-2); transform: translateY(-1px); }
-  .cta .btn-outline { background: transparent; color: var(--paper); border: 1px solid rgba(250, 247, 240, 0.25); padding: 14px 28px; border-radius: 6px; font-size: 0.9375rem; font-weight: 500; }
-  .cta .btn-outline:hover { border-color: rgba(250, 247, 240, 0.5); }
-  .cta .cta-fine { font-size: 0.8125rem; color: rgba(250, 247, 240, 0.4); margin-top: 20px; }
-
-  /* ── Footer ── */
-  footer { border-top: 1px solid var(--line); padding: 32px 0; background: var(--paper-2); }
-  .foot-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
-  .foot-links { display: flex; gap: 28px; }
-  .foot-links a { font-size: 0.875rem; color: var(--ink-soft); }
-  .foot-links a:hover { color: var(--ink); }
-  .foot-copy { font-size: 0.8125rem; color: var(--muted); text-align: right; }
-
-  /* ── Motion ── */
-  @keyframes slide-right { from { transform: translateX(-60px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-  .marker-target { animation: slide-right 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.4s both; transform-origin: 422px 68px; }
-
-  @keyframes fade-up { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-  .band-card { animation: fade-up 0.5s ease both; }
-  .review:nth-child(1) { animation: fade-up 0.5s ease 0.1s both; }
-  .review:nth-child(2) { animation: fade-up 0.5s ease 0.2s both; }
-  .review:nth-child(3) { animation: fade-up 0.5s ease 0.3s both; }
+  /* ── FAQ ── */
+  .faq-section { padding: 72px 0; }
+  .faq-list { display: flex; flex-direction: column; }
+  .faq-item { border-bottom: 1px solid #D9D2C5; }
+  .faq-item .q { padding: 20px 0; border-bottom: 1px solid #D9D2C5; }
+  .faq-item:last-child .q { border-bottom: none; }
+  .faq-item .question { font-size: 0.9375rem; font-weight: 600; color: #14213D; margin-bottom: 8px; font-family: 'Playfair Display', Georgia, serif; line-height: 1.3; }
+  .faq-item .answer { font-size: 0.9375rem; color: #3D4A63; line-height: 1.6; padding-left: 16px; border-left: 2px solid #D9D2C5; }
 </style>
 </head>
 <body>
@@ -274,6 +168,7 @@
       <a href="#for">Who it's for</a>
       <a href="#how">How it works</a>
       <a href="#reviews">Results</a>
+      <a href="#faq">FAQ</a>
     </nav>
     <div class="nav-actions">
       <a href="#">Sign in</a>
@@ -284,229 +179,453 @@
 
 <main>
   <!-- ── Hero ── -->
-  <section class="hero">
-    <div class="wrap hero-inner">
-      <div class="eyebrow">IELTS · TOEFL · Spoken English</div>
-      <h1>From <em>6.5</em> to 7.5.<br>In six weeks.</h1>
-      <p class="sub">
+  <section style="padding:80px 0 56px; text-align:center;">
+    <div style="width:100%; max-width:720px; margin:0 auto;">
+      <div style="display:inline-block; font-size:0.75rem; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#B23A2E; margin-bottom:20px;">
+        <span style="display:block; width:28px; height:1.5px; background:#B23A2E; margin:0 auto 8px;"></span>
+        IELTS · TOEFL · Spoken English
+      </div>
+      <h1 style="font-size:clamp(2.75rem,4.5vw,4rem); font-weight:600; letter-spacing:-0.035em; line-height:1.05; margin-bottom:20px;">
+        From <em style="font-style:italic; color:#B23A2E; font-weight:400;">6.5</em> to 7.5.<br/>In six weeks.
+      </h1>
+      <p style="font-size:1.125rem; color:#3D4A63; line-height:1.65; margin-bottom:32px; max-width:560px; margin:0 auto 32px;">
         Certified tutors for high-stakes English tests. Live 1-on-1 coaching,
         mock tests under real test conditions, and feedback that targets exactly what's
         keeping your score down. Book a session. Move your score.
       </p>
-      <div class="hero-ctas">
-        <a href="#find-tutor" class="btn btn-primary">Find a tutor
+      <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-bottom:16px;">
+        <a href="#" class="btn btn-primary">Find a tutor
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
-        <a href="#tutor-signup" class="btn btn-ghost">I'm a tutor</a>
+        <a href="#" class="btn btn-ghost">I'm a tutor</a>
       </div>
-      <p class="proof-line">Browse verified tutors — no sign-up required.</p>
+      <p style="font-size:0.875rem; color:#6B6557;">Browse verified tutors — no sign-up required.</p>
+    </div>
 
-      <div class="band-card">
-        <div class="band-label">Your band score — where you are, where you need to be</div>
-        <svg class="band-svg" viewBox="0 0 480 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="IELTS band score scale from 1 to 9, showing a marker moving from 6.5 to 7.5">
-          <!-- Band scale ticks and labels -->
-          <g font-family="Inter, sans-serif">
-            <line x1="32" y1="78" x2="32" y2="102" stroke="#14213D" stroke-width="1.5"/>
-            <text x="32" y="118" text-anchor="middle" font-size="9" fill="#6B6557">1</text>
-            <line x1="62" y1="82" x2="62" y2="98" stroke="#D9D2C5" stroke-width="0.75"/>
-            <text x="62" y="118" text-anchor="middle" font-size="7" fill="#A8A29E">1.5</text>
-            <line x1="92" y1="78" x2="92" y2="102" stroke="#14213D" stroke-width="1.5"/>
-            <text x="92" y="118" text-anchor="middle" font-size="9" fill="#6B6557">2</text>
-            <line x1="122" y1="82" x2="122" y2="98" stroke="#D9D2C5" stroke-width="0.75"/>
-            <text x="122" y="118" text-anchor="middle" font-size="7" fill="#A8A29E">2.5</text>
-            <line x1="152" y1="78" x2="152" y2="102" stroke="#14213D" stroke-width="1.5"/>
-            <text x="152" y="118" text-anchor="middle" font-size="9" fill="#6B6557">3</text>
-            <line x1="182" y1="82" x2="182" y2="98" stroke="#D9D2C5" stroke-width="0.75"/>
-            <text x="182" y="118" text-anchor="middle" font-size="7" fill="#A8A29E">3.5</text>
-            <line x1="212" y1="78" x2="212" y2="102" stroke="#14213D" stroke-width="1.5"/>
-            <text x="212" y="118" text-anchor="middle" font-size="9" fill="#6B6557">4</text>
-            <line x1="242" y1="82" x2="242" y2="98" stroke="#D9D2C5" stroke-width="0.75"/>
-            <text x="242" y="118" text-anchor="middle" font-size="7" fill="#A8A29E">4.5</text>
-            <line x1="272" y1="78" x2="272" y2="102" stroke="#14213D" stroke-width="1.5"/>
-            <text x="272" y="118" text-anchor="middle" font-size="9" fill="#6B6557">5</text>
-            <line x1="302" y1="82" x2="302" y2="98" stroke="#D9D2C5" stroke-width="0.75"/>
-            <text x="302" y="118" text-anchor="middle" font-size="7" fill="#A8A29E">5.5</text>
-            <line x1="332" y1="78" x2="332" y2="102" stroke="#14213D" stroke-width="1.5"/>
-            <text x="332" y="118" text-anchor="middle" font-size="9" fill="#6B6557">6</text>
-            <line x1="362" y1="82" x2="362" y2="98" stroke="#D9D2C5" stroke-width="0.75"/>
-            <text x="362" y="118" text-anchor="middle" font-size="7" fill="#A8A29E">6.5</text>
-            <line x1="392" y1="78" x2="392" y2="102" stroke="#14213D" stroke-width="1.5"/>
-            <text x="392" y="118" text-anchor="middle" font-size="9" fill="#6B6557">7</text>
-            <line x1="422" y1="82" x2="422" y2="98" stroke="#D9D2C5" stroke-width="0.75"/>
-            <text x="422" y="118" text-anchor="middle" font-size="7" fill="#A8A29E">7.5</text>
-            <line x1="452" y1="78" x2="452" y2="102" stroke="#14213D" stroke-width="1.5"/>
-            <text x="452" y="118" text-anchor="middle" font-size="9" fill="#6B6557">8</text>
-          </g>
-          <!-- Score axis line -->
-          <line x1="32" y1="90" x2="452" y2="90" stroke="#14213D" stroke-width="1" opacity="0.3"/>
-          <!-- Category labels -->
-          <g font-family="Inter, sans-serif" font-size="7.5" fill="#6B6557" text-anchor="middle">
-            <text x="32" y="134">Non-user</text>
-            <text x="152" y="134">Limited</text>
-            <text x="272" y="134">Modest</text>
-            <text x="392" y="134">Good</text>
-            <text x="452" y="134">Very good</text>
-          </g>
-          <text x="332" y="146" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="8.5" fill="#3D4A63">competent user</text>
-          <!-- Highlight band around 6.5-7.5 -->
-          <rect x="362" y="86" width="60" height="8" fill="rgba(178,58,46,0.08)" rx="4"/>
-          <!-- Current score marker (6.5) -->
-          <text x="362" y="52" text-anchor="middle" font-family="Inter, sans-serif" font-size="7" fill="#6B6557" letter-spacing="0.06em">YOUR CURRENT</text>
-          <g opacity="0.4">
-            <line x1="362" y1="58" x2="362" y2="100" stroke="#6B6557" stroke-width="1" stroke-dasharray="3 3"/>
-            <circle cx="362" cy="58" r="3" fill="none" stroke="#6B6557" stroke-width="1"/>
-            <text x="362" y="70" text-anchor="middle" font-family="Inter, sans-serif" font-size="7.5" fill="#6B6557">6.5</text>
-          </g>
-          <!-- Target score marker (7.5) -->
-          <text x="422" y="50" text-anchor="middle" font-family="Inter, sans-serif" font-size="7" fill="#B23A2E" letter-spacing="0.06em" font-weight="600">YOUR TARGET</text>
-          <g class="marker-target" style="transform-origin:422px 68px;">
-            <line x1="422" y1="58" x2="422" y2="100" stroke="#B23A2E" stroke-width="2.25"/>
-            <polygon points="422,49 415,60 429,60" fill="#B23A2E"/>
-            <circle cx="422" cy="58" r="3.5" fill="#B23A2E"/>
-            <text x="422" y="70" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-size="12" font-weight="600" fill="#B23A2E" letter-spacing="-0.02em">7.5</text>
-          </g>
-        </svg>
-        <div class="band-caption">
-          <span>IELTS band scale · 1 to 9</span>
-          <span class="delta"><span class="from">6.5</span><span class="arrow">→</span><span class="to">7.5</span><span class="delta-spacer">one band. six weeks.</span></span>
+    <!-- ── Interactive band-score tool ── -->
+    <div class="band-tool">
+      <div class="band-label">Find your path to the score you need</div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:28px;">
+        <div>
+          <label class="selector-label">Your current band</label>
+          <div class="band-pills" id="current-pills">
+            <!-- Generated by JS -->
+          </div>
+          <div class="category-label" id="current-category">Competent user</div>
+        </div>
+        <div>
+          <label class="selector-label">Your target band</label>
+          <div class="band-pills" id="target-pills">
+            <!-- Generated by JS -->
+          </div>
         </div>
       </div>
+
+      <div class="result-area" id="result-area">
+        <div style="font-size:0.9375rem; color:#6B6557; text-align:center;">
+          Pick your current and target band, then enter your email to see your typical timeline.
+        </div>
+      </div>
+
+      <form id="band-form" style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+        <input type="email" id="band-email" placeholder="you@university.edu" required
+          style="flex:1 1 220px; padding:10px 14px; border-radius:6px; border:1px solid #D9D2C5; font-size:0.9375rem; font-family:'Inter',sans-serif; background:#FAF7F0; color:#14213D; outline:none; transition:border-color 0.15s;">
+        <button type="submit" class="submit-btn" id="band-submit" disabled>See my timeline</button>
+      </form>
+      <div class="success-msg" id="success-msg" style="display:none;">
+        <div class="success-badge">
+          <span class="dot"></span>
+          You're on the list. We'll reach out within 24 hours with tutor matches.
+        </div>
+        <p class="skip-link">Or skip the wait — <a href="#">browse tutors now</a></p>
+      </div>
+      <p class="disclaimer">
+        Estimates based on typical IELTS improvement rates for students in structured 1:1 coaching.
+        Your results depend on your starting level, weekly study time, and test date.
+      </p>
     </div>
   </section>
 
   <!-- ── Proof strip ── -->
-  <section class="proof-strip">
+  <section style="padding:36px 0; background:#14213D; color:#FAF7F0;">
     <div class="wrap">
-      <div class="proof-grid">
-        <div class="proof-item">
-          <div class="proof-value">6.5<span class="unit">→7.5</span></div>
-          <div class="proof-label">Average IELTS improvement for our students</div>
+      <div style="display:flex; gap:0; border-left:1px solid rgba(255,255,255,0.1);">
+        <div style="flex:1; padding:0 28px; border-right:1px solid rgba(255,255,255,0.1); display:flex; flex-direction:column; gap:4px;">
+          <div style="font-family:'Playfair Display',Georgia,serif; font-size:1.875rem; font-weight:600; letter-spacing:-0.03em; line-height:1; color:#FAF7F0;">
+            6.5<span style="color:#B23A2E; font-size:1rem; font-weight:400;">→7.5</span>
+          </div>
+          <div style="font-size:0.8125rem; color:rgba(250,247,240,0.6); margin-top:6px; line-height:1.5;">Average IELTS improvement for our students</div>
         </div>
-        <div class="proof-item">
-          <div class="proof-value">24<span class="unit">h</span></div>
-          <div class="proof-label">We match you within 24 hours of your request</div>
+        <div style="flex:1; padding:0 28px; border-right:1px solid rgba(255,255,255,0.1); display:flex; flex-direction:column; gap:4px;">
+          <div style="font-family:'Playfair Display',Georgia,serif; font-size:1.875rem; font-weight:600; letter-spacing:-0.03em; line-height:1; color:#FAF7F0;">
+            24<span style="color:#B23A2E; font-size:1rem; font-weight:400;">h</span>
+          </div>
+          <div style="font-size:0.8125rem; color:rgba(250,247,240,0.6); margin-top:6px; line-height:1.5;">We match you within 24 hours of your request</div>
         </div>
-        <div class="proof-item">
-          <div class="proof-value">100<span class="unit">%</span></div>
-          <div class="proof-label">Every tutor vetted — credentials, background, test experience</div>
+        <div style="flex:1; padding:0 28px; border-right:none; display:flex; flex-direction:column; gap:4px;">
+          <div style="font-family:'Playfair Display',Georgia,serif; font-size:1.875rem; font-weight:600; letter-spacing:-0.03em; line-height:1; color:#FAF7F0;">
+            100<span style="color:#B23A2E; font-size:1rem; font-weight:400;">%</span>
+          </div>
+          <div style="font-size:0.8125rem; color:rgba(250,247,240,0.6); margin-top:6px; line-height:1.5;">Every tutor vetted — credentials, background, test experience</div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ── Who this is for ── -->
-  <section id="for">
+  <section id="for" style="padding:72px 0;">
     <div class="wrap">
-      <div class="section-head">
-        <h2>This is for people at a deadline.</h2>
-        <p>Not for casual learners. For students whose visa, university place, or career plan depends on a score they don't have yet.</p>
+      <div style="margin-bottom:48px; text-align:center;">
+        <h2 style="font-size:clamp(1.875rem,2.8vw,2.5rem); font-weight:600; letter-spacing:-0.035em; margin-bottom:12px;">This is for people at a deadline.</h2>
+        <p style="font-size:1.0625rem; color:#3D4A63; max-width:540px; line-height:1.65; margin:0 auto;">Not for casual learners. For students whose visa, university place, or career plan depends on a score they don't have yet.</p>
       </div>
-      <div class="profiles">
-        <div class="profile">
-          <div class="tag">IELTS · University admission</div>
-          <h3>You need Band 7+ and you're stuck at 6.5</h3>
-          <p>Writing and speaking feedback that targets exactly what's keeping your score down — not generic practice.</p>
-          <div class="claim"><span class="stamp">6.5 → 7.5</span><span>in 6 weeks, on average</span></div>
+      <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:#D9D2C5; border:1px solid #D9D2C5; border-radius:14px; overflow:hidden;">
+        <div style="background:#FAF7F0; padding:32px; display:flex; flex-direction:column; gap:8px;">
+          <div style="font-size:0.75rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:#14213D; margin-bottom:8px;">IELTS · University admission</div>
+          <h3 style="font-size:1.25rem; font-weight:600; letter-spacing:-0.02em; margin-bottom:6px; line-height:1.2;">You need Band 7+ and you're stuck at 6.5</h3>
+          <p style="font-size:0.9375rem; color:#3D4A63; line-height:1.65;">Writing and speaking feedback that targets exactly what's keeping your score down — not generic practice.</p>
+          <div style="margin-top:14px; display:flex; align-items:center; gap:10px; font-size:0.875rem; color:#2F5233; font-weight:500;">
+            <span style="font-family:'Playfair Display',Georgia,serif; font-weight:600; font-size:1.125rem; color:#B23A2E; letter-spacing:-0.02em;">6.5 → 7.5</span>
+            <span>in 6 weeks, on average</span>
+          </div>
         </div>
-        <div class="profile">
-          <div class="tag">TOEFL · US university apps</div>
-          <h3>Your test date is weeks away and you're not ready</h3>
-          <p>Tutors who know the TOEFL format section by section. Strategy for each question type. Mock tests under timed conditions.</p>
-          <div class="claim"><span>Matched within 24 hours</span><span>of your request</span></div>
+        <div style="background:#FAF7F0; padding:32px; display:flex; flex-direction:column; gap:8px;">
+          <div style="font-size:0.75rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:#14213D; margin-bottom:8px;">TOEFL · US university apps</div>
+          <h3 style="font-size:1.25rem; font-weight:600; letter-spacing:-0.02em; margin-bottom:6px; line-height:1.2;">Your test date is weeks away and you're not ready</h3>
+          <p style="font-size:0.9375rem; color:#3D4A63; line-height:1.65;">Tutors who know the TOEFL format section by section. Strategy for each question type. Mock tests under timed conditions.</p>
+          <div style="margin-top:14px; display:flex; align-items:center; gap:10px; font-size:0.875rem; color:#2F5233; font-weight:500;">
+            <span>Matched within 24 hours</span>
+            <span>of your request</span>
+          </div>
         </div>
-        <div class="profile">
-          <div class="tag">Spoken English · Confidence</div>
-          <h3>You understand English. You just can't speak it.</h3>
-          <p>Sessions built around real conversation — not scripts. Pronunciation, fluency, the exact words you need for your situation.</p>
-          <div class="claim"><span>Live 1-on-1</span><span>in India and online</span></div>
+        <div style="background:#FAF7F0; padding:32px; display:flex; flex-direction:column; gap:8px;">
+          <div style="font-size:0.75rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:#14213D; margin-bottom:8px;">Spoken English · Confidence</div>
+          <h3 style="font-size:1.25rem; font-weight:600; letter-spacing:-0.02em; margin-bottom:6px; line-height:1.2;">You understand English. You just can't speak it.</h3>
+          <p style="font-size:0.9375rem; color:#3D4A63; line-height:1.65;">Sessions built around real conversation — not scripts. Pronunciation, fluency, the exact words you need for your situation.</p>
+          <div style="margin-top:14px; display:flex; align-items:center; gap:10px; font-size:0.875rem; color:#2F5233; font-weight:500;">
+            <span>Live 1-on-1</span>
+            <span>in India and online</span>
+          </div>
         </div>
-        <div class="profile">
-          <div class="tag">Retake · Stuck at the same score</div>
-          <h3>You've taken the test twice. Same score.</h3>
-          <p>A fresh tutor with a fresh eye on your answers. The things you've stopped noticing — they spot immediately.</p>
-          <div class="claim"><span class="stamp">7.0 → 8.0</span><span>reported by retake students</span></div>
+        <div style="background:#FAF7F0; padding:32px; display:flex; flex-direction:column; gap:8px;">
+          <div style="font-size:0.75rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:#14213D; margin-bottom:8px;">Retake · Stuck at the same score</div>
+          <h3 style="font-size:1.25rem; font-weight:600; letter-spacing:-0.02em; margin-bottom:6px; line-height:1.2;">You've taken the test twice. Same score.</h3>
+          <p style="font-size:0.9375rem; color:#3D4A63; line-height:1.65;">A fresh tutor with a fresh eye on your answers. The things you've stopped noticing — they spot immediately.</p>
+          <div style="margin-top:14px; display:flex; align-items:center; gap:10px; font-size:0.875rem; color:#2F5233; font-weight:500;">
+            <span style="font-family:'Playfair Display',Georgia,serif; font-weight:600; font-size:1.125rem; color:#B23A2E; letter-spacing:-0.02em;">7.0 → 8.0</span>
+            <span>reported by retake students</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── How we vet tutors ── -->
+  <section class="vetting-section">
+    <div class="wrap">
+      <div class="vetting-grid">
+        <div class="vetting-step">
+          <div class="num">1</div>
+          <div class="step-title">Credential check</div>
+          <div class="step-desc">Degree, certification, ID verified</div>
+        </div>
+        <div class="vetting-step">
+          <div class="num">2</div>
+          <div class="step-title">Teaching demo</div>
+          <div class="step-desc">30-min sample session reviewed before approval</div>
+        </div>
+        <div class="vetting-step">
+          <div class="num">3</div>
+          <div class="step-title">Background check</div>
+          <div class="step-desc">Identity and reference verification</div>
+        </div>
+        <div class="vetting-step">
+          <div class="num">4</div>
+          <div class="step-title">Experience floor</div>
+          <div class="step-desc">Minimum 2 years teaching experience for test-prep subjects</div>
+        </div>
+      </div>
+      <p class="vetting-note">Every tutor on bookateacher.in has passed all four. No profiles without the full vetting — if we haven't checked all four boxes, they're not on the platform.</p>
+    </div>
+  </section>
+
+  <!-- ── FAQ ── -->
+  <section id="faq" class="faq-section">
+    <div class="wrap" style="max-width:720px;">
+      <div style="margin-bottom:48px; text-align:center;">
+        <h2 style="font-size:clamp(1.875rem,2.8vw,2.5rem); font-weight:600; letter-spacing:-0.035em; margin-bottom:12px;">Questions people actually ask.</h2>
+        <p style="font-size:1.0625rem; color:#3D4A63; max-width:540px; line-height:1.65; margin:0 auto;">If you're at a deadline, these are probably the things worrying you right now.</p>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="q">
+            <div class="question">What if I don't get matched with someone good?</div>
+            <div class="answer">You can reject your first match for free — no questions, no wait. We'll send another within 24 hours. If your first session doesn't feel right, message us and we'll re-match you. You're not locked into anyone.</div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="q">
+            <div class="question">What's your refund policy if I don't like the first session?</div>
+            <div class="answer">If you don't feel the session was worth it, we refund the session fee in full — including any trial session fee, if applicable. Email us within 48 hours. Most students stay after the first session, but the option is there.</div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="q">
+            <div class="question">How fast can you match me if my test is in 10 days?</div>
+            <div class="answer">We match within 24 hours even on short timelines — we keep a pool of available tutors for exactly this. But be realistic: 10 days is enough for targeted strategy and final polish, not a full overhaul. Tell us your test date upfront and we'll suggest a realistic plan.</div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="q">
+            <div class="question">How much does it cost?</div>
+            <div class="answer">Tutor rates vary by experience and subject — typically ₹800–₹2,500 per hour for test prep. You see the rate before you book. No hidden fees, no platform commission on the tutor side (at launch). Trial sessions are often free or discounted — check the tutor's profile.</div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="q">
+            <div class="question">Can I chat with a tutor before booking?</div>
+            <div class="answer">Yes — every tutor profile has a message button. Send a short intro, ask about their approach, and see if it's a fit before you pay. Most tutors reply within a few hours.</div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="q">
+            <div class="question">What if my English is very basic — is this still for me?</div>
+            <div class="answer">If you're below Band 4, we'll be honest: 1:1 test-prep coaching works best from Band 5+ where there's a foundation to build on. For absolute beginners, we can suggest general English tutors first. Tell us your current level in the form and we'll guide you.</div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ── How it works ── -->
-  <section id="how" style="background:var(--paper-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+  <section id="how" style="padding:72px 0; background:#F2ECE0; border-top:1px solid #D9D2C5; border-bottom:1px solid #D9D2C5;">
     <div class="wrap">
-      <div class="section-head">
-        <h2>Three steps from "I need a tutor" to "I've booked a session."</h2>
-        <p>No long sign-up forms. No waiting weeks for a response. No hidden fees.</p>
+      <div style="margin-bottom:48px; text-align:center;">
+        <h2 style="font-size:clamp(1.875rem,2.8vw,2.5rem); font-weight:600; letter-spacing:-0.035em; margin-bottom:12px;">Three steps from "I need a tutor" to "I've booked a session."</h2>
+        <p style="font-size:1.0625rem; color:#3D4A63; max-width:540px; line-height:1.65; margin:0 auto;">No long sign-up forms. No waiting weeks for a response. No hidden fees.</p>
       </div>
-      <div class="steps">
-        <div class="step" data-n="01">
-          <h3>Tell us what you need</h3>
-          <p>Subject, target score, test date, budget, preferred times. Takes under two minutes. Fill it out now — no sign-up required.</p>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:36px;">
+        <div style="position:relative; padding-left:24px; border-left:2px solid #D9D2C5; padding-top:4px;">
+          <span style="position:absolute; left:-12px; top:0; width:22px; height:22px; background:#F2ECE0; border:1.5px solid #D9D2C5; border-radius:50%; font-size:0.6875rem; font-weight:600; color:#3D4A63; display:flex; align-items:center; justify-content:center; font-family:'Inter',sans-serif;">01</span>
+          <h3 style="font-size:1.125rem; font-weight:600; letter-spacing:-0.02em; margin-bottom:8px;">Tell us what you need</h3>
+          <p style="font-size:0.9375rem; color:#3D4A63; line-height:1.65;">Subject, target score, test date, budget, preferred times. Takes under two minutes. Fill it out now — no sign-up required.</p>
         </div>
-        <div class="step" data-n="02">
-          <h3>A real person matches you</h3>
-          <p>Not an algorithm. A human reviews your requirements and pairs you with the best-fit verified tutor — within 24 hours.</p>
+        <div style="position:relative; padding-left:24px; border-left:2px solid #D9D2C5; padding-top:4px;">
+          <span style="position:absolute; left:-12px; top:0; width:22px; height:22px; background:#F2ECE0; border:1.5px solid #D9D2C5; border-radius:50%; font-size:0.6875rem; font-weight:600; color:#3D4A63; display:flex; align-items:center; justify-content:center; font-family:'Inter',sans-serif;">02</span>
+          <h3 style="font-size:1.125rem; font-weight:600; letter-spacing:-0.02em; margin-bottom:8px;">A real person matches you</h3>
+          <p style="font-size:0.9375rem; color:#3D4A63; line-height:1.65;">Not an algorithm. A human reviews your requirements and pairs you with the best-fit verified tutor — within 24 hours.</p>
         </div>
-        <div class="step" data-n="03">
-          <h3>Book and start</h3>
-          <p>Chat with your tutor directly, confirm the time, and book. Payment is simple — UPI, cards. First session is where the real work starts.</p>
+        <div style="position:relative; padding-left:24px; border-left:2px solid #D9D2C5; padding-top:4px;">
+          <span style="position:absolute; left:-12px; top:0; width:22px; height:22px; background:#F2ECE0; border:1.5px solid #D9D2C5; border-radius:50%; font-size:0.6875rem; font-weight:600; color:#3D4A63; display:flex; align-items:center; justify-content:center; font-family:'Inter',sans-serif;">03</span>
+          <h3 style="font-size:1.125rem; font-weight:600; letter-spacing:-0.02em; margin-bottom:8px;">Book and start</h3>
+          <p style="font-size:0.9375rem; color:#3D4A63; line-height:1.65;">Chat with your tutor directly, confirm the time, and book. Payment is simple — UPI, cards. First session is where the real work starts.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ── Testimonials ── -->
-  <section id="reviews">
-    <div class="wrap">
-      <div class="section-head">
-        <h2>What the score actually did.</h2>
-        <p>Real students. Real score changes. Names and results we can stand behind.</p>
+  <section id="reviews" style="padding:72px 0;">
+    <div class="wrap" style="max-width:1180px;">
+      <div style="margin-bottom:48px; text-align:center;">
+        <h2 style="font-size:clamp(1.875rem,2.8vw,2.5rem); font-weight:600; letter-spacing:-0.035em; margin-bottom:12px;">What the score actually did.</h2>
+        <p style="font-size:1.0625rem; color:#3D4A63; max-width:540px; line-height:1.65; margin:0 auto;">Real students. Real score changes. Names and results we can stand behind.</p>
       </div>
-      <div class="reviews">
-        <div class="review">
-          <div class="review-delta"><span class="from">6.5</span><span class="arrow">→</span><span class="to">7.5</span></div>
-          <div class="review-test">Stuck at Band 6.5 for months. My tutor gave me targeted feedback on writing and speaking — the two things holding me back. Went to 7.5 in six weeks.</div>
-          <div class="review-meta"><div class="review-avatar">PM</div><div><div class="review-name">Priya M.</div><div class="review-role">IELTS — Band 7.5 · 6 weeks</div></div></div>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:20px;">
+        <div style="background:#FAF7F0; border:1px solid #D9D2C5; border-radius:12px; padding:28px; display:flex; flex-direction:column; gap:14px;">
+          <div style="font-family:'Playfair Display',Georgia,serif; font-size:2rem; font-weight:600; letter-spacing:-0.035em; line-height:1.1; color:#14213D; text-align:center;">
+            <span style="color:#3D4A63; font-weight:400;">6.5</span><span style="color:#B23A2E; font-weight:300; margin:0 4px; font-size:1.5rem;">→</span><span style="color:#B23A2E;">7.5</span>
+          </div>
+          <div style="font-size:0.9375rem; color:#3D4A63; line-height:1.6; font-style:italic; font-family:'Playfair Display',Georgia,serif; border-left:2px solid #D9D2C5; padding-left:14px;">
+            Stuck at Band 6.5 for months. My tutor gave me targeted feedback on writing and speaking — the two things holding me back. Went to 7.5 in six weeks.
+          </div>
+          <div style="display:flex; align-items:center; gap:12px; margin-top:4px; padding-top:0;">
+            <div style="width:32px; height:32px; background:#F2ECE0; border:1px solid #D9D2C5; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:600; color:#14213D; flex-shrink:0; font-family:'Inter',sans-serif;">PM</div>
+            <div>
+              <div style="font-size:0.9375rem; font-weight:500; color:#14213D; font-family:'Inter',sans-serif;">Priya M.</div>
+              <div style="font-size:0.8125rem; color:#6B6557; margin-top:1px; font-family:'Inter',sans-serif;">IELTS — Band 7.5 · 6 weeks</div>
+            </div>
+          </div>
         </div>
-        <div class="review">
-          <div class="review-delta"><span style="font-size:1.125rem;font-weight:400;color:var(--ink-soft);">TOEFL</span><span class="arrow" style="font-size:1.5rem;">·</span><span class="to" style="font-size:1.5rem;">105</span></div>
-          <div class="review-test">Needed a TOEFL tutor fast before my test date. Matched within 24 hours. The tutor was excellent and I got my target score.</div>
-          <div class="review-meta"><div class="review-avatar">AS</div><div><div class="review-name">Ananya S.</div><div class="review-role">TOEFL — 105/120 · matched in 24h</div></div></div>
+        <div style="background:#FAF7F0; border:1px solid #D9D2C5; border-radius:12px; padding:28px; display:flex; flex-direction:column; gap:14px;">
+          <div style="font-family:'Playfair Display',Georgia,serif; font-size:2rem; font-weight:600; letter-spacing:-0.035em; line-height:1.1; color:#14213D; text-align:center;">
+            <span style="font-size:1.125rem; font-weight:400; color:#3D4A63;">TOEFL</span><span style="color:#B23A2E; font-weight:300; margin:0 4px; font-size:1.5rem;">·</span><span style="font-size:1.5rem; color:#B23A2E;">105</span>
+          </div>
+          <div style="font-size:0.9375rem; color:#3D4A63; line-height:1.6; font-style:italic; font-family:'Playfair Display',Georgia,serif; border-left:2px solid #D9D2C5; padding-left:14px;">
+            Needed a TOEFL tutor fast before my test date. Matched within 24 hours. The tutor was excellent and I got my target score.
+          </div>
+          <div style="display:flex; align-items:center; gap:12px; margin-top:4px; padding-top:0;">
+            <div style="width:32px; height:32px; background:#F2ECE0; border:1px solid #D9D2C5; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:600; color:#14213D; flex-shrink:0; font-family:'Inter',sans-serif;">AS</div>
+            <div>
+              <div style="font-size:0.9375rem; font-weight:500; color:#14213D; font-family:'Inter',sans-serif;">Ananya S.</div>
+              <div style="font-size:0.8125rem; color:#6B6557; margin-top:1px; font-family:'Inter',sans-serif;">TOEFL — 105/120 · matched in 24h</div>
+            </div>
+          </div>
         </div>
-        <div class="review">
-          <div class="review-delta"><span style="font-size:1.25rem;color:var(--ink-soft);font-weight:500;">Tutoring</span><span class="arrow" style="font-size:1.5rem;">·</span><span class="to" style="font-size:1.25rem;">Steady</span></div>
-          <div class="review-test">As a tutor, this platform is refreshing. I actually get leads that convert. The students are serious. I've built a steady pipeline here — not just a list of profiles.</div>
-          <div class="review-meta"><div class="review-avatar">RK</div><div><div class="review-name">Rahul K.</div><div class="review-role">IELTS tutor · 8 years experience</div></div></div>
+        <div style="background:#FAF7F0; border:1px solid #D9D2C5; border-radius:12px; padding:28px; display:flex; flex-direction:column; gap:14px;">
+          <div style="font-family:'Playfair Display',Georgia,serif; font-size:2rem; font-weight:600; letter-spacing:-0.035em; line-height:1.1; color:#14213D; text-align:center;">
+            <span style="font-size:1.25rem; color:#3D4A63; font-weight:500;">Tutoring</span><span style="color:#B23A2E; font-weight:300; margin:0 4px; font-size:1.5rem;">·</span><span style="font-size:1.25rem; color:#B23A2E;">Steady</span>
+          </div>
+          <div style="font-size:0.9375rem; color:#3D4A63; line-height:1.6; font-style:italic; font-family:'Playfair Display',Georgia,serif; border-left:2px solid #D9D2C5; padding-left:14px;">
+            As a tutor, this platform is refreshing. I actually get leads that convert. The students are serious. I've built a steady pipeline here — not just a list of profiles.
+          </div>
+          <div style="display:flex; align-items:center; gap:12px; margin-top:4px; padding-top:0;">
+            <div style="width:32px; height:32px; background:#F2ECE0; border:1px solid #D9D2C5; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:600; color:#14213D; flex-shrink:0; font-family:'Inter',sans-serif;">RK</div>
+            <div>
+              <div style="font-size:0.9375rem; font-weight:500; color:#14213D; font-family:'Inter',sans-serif;">Rahul K.</div>
+              <div style="font-size:0.8125rem; color:#6B6557; margin-top:1px; font-family:'Inter',sans-serif;">IELTS tutor · 8 years experience</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ── CTA ── -->
-  <section class="cta" id="find-tutor">
-    <div class="wrap">
-      <h2>Your score isn't going to move by itself.</h2>
-      <p>A verified tutor. A real plan. A session booked today. That's what changes a number on a score report — and the university offer that depends on it.</p>
-      <div class="cta-ctas">
-        <a href="/register" class="btn-white">Find a tutor now
+  <section style="background:#14213D; color:#FAF7F0; padding:72px 0; text-align:center; position:relative; overflow:hidden;">
+    <div style="position:absolute; top:-80px; right:-80px; width:280px; height:280px; background:rgba(178,58,46,0.15); border-radius:50%; pointer-events:none;"></div>
+    <div class="wrap" style="position:relative;">
+      <h2 style="font-size:clamp(2rem,3vw,2.75rem); font-weight:600; letter-spacing:-0.035em; margin-bottom:14px; color:#FAF7F0; line-height:1.15;">Your score isn't going to move by itself.</h2>
+      <p style="font-size:1.0625rem; color:rgba(250,247,240,0.6); max-width:500px; margin:0 auto 32px; line-height:1.65;">A verified tutor. A real plan. A session booked today. That's what changes a number on a score report — and the university offer that depends on it.</p>
+      <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+        <a href="#" class="btn-white">Find a tutor now
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
-        <a href="/register?role=tutor" class="btn-outline">Become a tutor</a>
+        <a href="#" class="btn-outline">Become a tutor</a>
       </div>
-      <p class="cta-fine">No commitment. No hidden fees. Cancel anytime.</p>
+      <p style="font-size:0.8125rem; color:rgba(250,247,240,0.4); margin-top:20px;">No commitment. No hidden fees. Cancel anytime.</p>
     </div>
   </section>
 </main>
 
 <footer>
-  <div class="wrap foot-inner">
-    <div class="wordmark" style="font-size:1.125rem;">
-      <span class="wordmark-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M3 8h18M3 12h13M3 16h9" stroke-linecap="round"/></svg></span>
-      <span>bookateacher<span class="dot">.in</span></span>
+  <div class="wrap" style="border-top:1px solid #D9D2C5; padding:32px 0; background:#F2ECE0; display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;">
+    <div style="font-family:'Playfair Display',Georgia,serif; font-weight:600; font-size:1.125rem; display:flex; align-items:center; gap:8px; color:#14213D;">
+      <span style="width:26px; height:26px; background:#14213D; border-radius:4px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M3 8h18M3 12h13M3 16h9" stroke="#FAF7F0" stroke-width="2" stroke-linecap="round"/></svg>
+      </span>
+      <span style="color:#14213D;">bookateacher<span style="color:#6B6557; font-family:'Inter',sans-serif; font-size:0.75rem; font-weight:400;">.in</span></span>
     </div>
-    <div class="foot-links"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Contact</a></div>
-    <p class="foot-copy">© 2026 bookateacher.in — Made in India</p>
+    <div style="display:flex; gap:28px;">
+      <a href="#" style="font-size:0.875rem; color:#3D4A63;">Privacy</a>
+      <a href="#" style="font-size:0.875rem; color:#3D4A63;">Terms</a>
+      <a href="#" style="font-size:0.875rem; color:#3D4A63;">Contact</a>
+    </div>
+    <p style="font-size:0.8125rem; color:#6B6557; text-align:right;">© 2026 bookateacher.in — Made in India</p>
   </div>
 </footer>
+
+<script>
+(function() {
+  var BANDS = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9];
+  var CATEGORIES = {1:"Non-user", 2:"Limited", 3:"Extremely limited", 4:"Limited", 5:"Modest", 6:"Competent", 7:"Good", 8:"Very good", 9:"Expert"};
+
+  var currentEl = document.getElementById('current-pills');
+  var targetEl = document.getElementById('target-pills');
+  var currentCategory = document.getElementById('current-category');
+  var resultArea = document.getElementById('result-area');
+  var bandForm = document.getElementById('band-form');
+  var bandEmail = document.getElementById('band-email');
+  var bandSubmit = document.getElementById('band-submit');
+  var successMsg = document.getElementById('success-msg');
+
+  var state = { current: 6.5, target: 7.5, email: '', submitted: false };
+
+  function renderPills() {
+    [currentEl, targetEl].forEach(function(container) {
+      container.innerHTML = '';
+    });
+    var isCurrent = true;
+    [currentEl, targetEl].forEach(function(container) {
+      BANDS.forEach(function(b) {
+        var btn = document.createElement('button');
+        btn.className = 'band-pill';
+        btn.textContent = b;
+        if (isCurrent && state.current === b) btn.classList.add('active-current');
+        if (!isCurrent && state.target === b) btn.classList.add('active-target');
+        btn.addEventListener('click', function() {
+          if (isCurrent) { state.current = b; currentCategory.textContent = CATEGORIES[b] || ''; }
+          else { state.target = b; }
+          renderPills();
+          updateResult();
+          updateSubmit();
+        });
+        container.appendChild(btn);
+      });
+      isCurrent = false;
+    });
+  }
+
+  function weeksToImprove(from, to) {
+    if (from >= to) return "Already at or above target";
+    var bands = Math.round((to - from) * 2) / 2;
+    if (bands === 0) return "At target";
+    var low = Math.round(bands * 8);
+    var high = Math.round(bands * 16);
+    if (low === high) return low + " weeks typical";
+    return low + "–" + high + " weeks typical";
+  }
+
+  function updateResult() {
+    if (state.submitted) {
+      var canImprove = state.target > state.current;
+      var resultText = weeksToImprove(state.current, state.target);
+      resultArea.innerHTML = '';
+      var label = document.createElement('div');
+      label.className = 'result-label';
+      label.textContent = 'Typical timeline';
+      resultArea.appendChild(label);
+
+      var delta = document.createElement('div');
+      delta.className = 'result-delta';
+      delta.innerHTML = '<span class="from">' + state.current + '</span><span class="arrow">→</span><span class="to">' + state.target + '</span>';
+      resultArea.appendChild(delta);
+
+      var text = document.createElement('div');
+      text.className = 'result-text';
+      text.textContent = resultText;
+      resultArea.appendChild(text);
+
+      if (canImprove) {
+        var note = document.createElement('div');
+        note.className = 'result-note';
+        note.textContent = 'These are typical ranges for students doing 1:1 coaching 2–3× per week. Your actual timeline depends on your starting point, study time, and test date.';
+        resultArea.appendChild(note);
+      }
+      return;
+    }
+    // Default state
+    resultArea.innerHTML = '<div style="font-size:0.9375rem; color:#6B6557; text-align:center;">Pick your current and target band, then enter your email to see your typical timeline.</div>';
+  }
+
+  function updateSubmit() {
+    var canImprove = state.target > state.current;
+    bandSubmit.disabled = !bandEmail.value.trim() || !canImprove;
+    bandSubmit.style.opacity = (canImprove && bandEmail.value.trim()) ? '1' : '0.5';
+    bandSubmit.style.cursor = (canImprove && bandEmail.value.trim()) ? 'pointer' : 'not-allowed';
+  }
+
+  bandEmail.addEventListener('input', function() {
+    state.email = bandEmail.value;
+    updateSubmit();
+  });
+
+  bandForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (!bandEmail.value.trim() || !(state.target > state.current)) return;
+    state.submitted = true;
+    updateResult();
+    bandForm.style.display = 'none';
+    successMsg.style.display = 'block';
+  });
+
+  renderPills();
+  updateResult();
+  updateSubmit();
+  currentCategory.textContent = CATEGORIES[state.current] || '';
+})();
+</script>
 
 </body>
 </html>

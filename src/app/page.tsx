@@ -20,6 +20,15 @@ function hexToRgb(hex: string): string {
   return `${parseInt(h.slice(0, 2), 16)}, ${parseInt(h.slice(2, 4), 16)}, ${parseInt(h.slice(4, 6), 16)}`;
 }
 
+import BandScoreTool from "@/components/BandScoreTool";
+
+const VETTING_STEPS = [
+  "Credential check — degree, certification, ID verified",
+  "Teaching demo — 30-min sample session reviewed before approval",
+  "Background check — identity and reference verification",
+  "Minimum 2 years teaching experience for test-prep subjects",
+];
+
 export default function HomePage() {
   return (
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: PAPER, color: INK }}>
@@ -75,57 +84,8 @@ export default function HomePage() {
           </div>
 
           {/* ── Band score diagram — centered ── */}
-          <div style={{ background: PAPER_2, border: `1px solid ${LINE}`, borderRadius: 14, padding: 32, maxWidth: 560, margin: "48px auto 0", width: "100%" }}>
-            <div style={{ fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: MUTED, marginBottom: 20, textAlign: "center" }}>
-              Your band score — where you are, where you need to be
-            </div>
-            <svg width="100%" height="auto" viewBox="0 0 480 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="IELTS band score scale from 1 to 9">
-              <g fontFamily="Inter, sans-serif">
-                <line x1="32" y1="78" x2="32" y2="102" stroke={INK} strokeWidth="1.5" /><text x="32" y="118" textAnchor="middle" fontSize="9" fill={MUTED}>1</text>
-                <line x1="62" y1="82" x2="62" y2="98" stroke={LINE} strokeWidth="0.75" /><text x="62" y="118" textAnchor="middle" fontSize="7" fill="#A8A29E">1.5</text>
-                <line x1="92" y1="78" x2="92" y2="102" stroke={INK} strokeWidth="1.5" /><text x="92" y="118" textAnchor="middle" fontSize="9" fill={MUTED}>2</text>
-                <line x1="122" y1="82" x2="122" y2="98" stroke={LINE} strokeWidth="0.75" /><text x="122" y="118" textAnchor="middle" fontSize="7" fill="#A8A29E">2.5</text>
-                <line x1="152" y1="78" x2="152" y2="102" stroke={INK} strokeWidth="1.5" /><text x="152" y="118" textAnchor="middle" fontSize="9" fill={MUTED}>3</text>
-                <line x1="182" y1="82" x2="182" y2="98" stroke={LINE} strokeWidth="0.75" /><text x="182" y="118" textAnchor="middle" fontSize="7" fill="#A8A29E">3.5</text>
-                <line x1="212" y1="78" x2="212" y2="102" stroke={INK} strokeWidth="1.5" /><text x="212" y="118" textAnchor="middle" fontSize="9" fill={MUTED}>4</text>
-                <line x1="242" y1="82" x2="242" y2="98" stroke={LINE} strokeWidth="0.75" /><text x="242" y="118" textAnchor="middle" fontSize="7" fill="#A8A29E">4.5</text>
-                <line x1="272" y1="78" x2="272" y2="102" stroke={INK} strokeWidth="1.5" /><text x="272" y="118" textAnchor="middle" fontSize="9" fill={MUTED}>5</text>
-                <line x1="302" y1="82" x2="302" y2="98" stroke={LINE} strokeWidth="0.75" /><text x="302" y="118" textAnchor="middle" fontSize="7" fill="#A8A29E">5.5</text>
-                <line x1="332" y1="78" x2="332" y2="102" stroke={INK} strokeWidth="1.5" /><text x="332" y="118" textAnchor="middle" fontSize="9" fill={MUTED}>6</text>
-                <line x1="362" y1="82" x2="362" y2="98" stroke={LINE} strokeWidth="0.75" /><text x="362" y="118" textAnchor="middle" fontSize="7" fill="#A8A29E">6.5</text>
-                <line x1="392" y1="78" x2="392" y2="102" stroke={INK} strokeWidth="1.5" /><text x="392" y="118" textAnchor="middle" fontSize="9" fill={MUTED}>7</text>
-                <line x1="422" y1="82" x2="422" y2="98" stroke={LINE} strokeWidth="0.75" /><text x="422" y="118" textAnchor="middle" fontSize="7" fill="#A8A29E">7.5</text>
-                <line x1="452" y1="78" x2="452" y2="102" stroke={INK} strokeWidth="1.5" /><text x="452" y="118" textAnchor="middle" fontSize="9" fill={MUTED}>8</text>
-              </g>
-              <line x1="32" y1="90" x2="452" y2="90" stroke={INK} strokeWidth="1" opacity="0.3" />
-              <g fontFamily="Inter, sans-serif" fontSize="7.5" fill={MUTED} textAnchor="middle">
-                <text x="32" y="134">Non-user</text><text x="152" y="134">Limited</text><text x="272" y="134">Modest</text><text x="392" y="134">Good</text><text x="452" y="134">Very good</text>
-              </g>
-              <text x="332" y="146" textAnchor="middle" fontFamily="'Playfair Display', Georgia, serif" fontStyle="italic" fontSize="8.5" fill={INK_SOFT}>competent user</text>
-              <rect x="362" y="86" width="60" height="8" fill="rgba(178,58,46,0.08)" rx="4" />
-              <text x="362" y="52" textAnchor="middle" fontFamily="Inter, sans-serif" fontSize="7" fill={MUTED} letterSpacing="0.06em">YOUR CURRENT</text>
-              <g opacity="0.4">
-                <line x1="362" y1="58" x2="362" y2="100" stroke={MUTED} strokeWidth="1" strokeDasharray="3 3" />
-                <circle cx="362" cy="58" r="3" fill="none" stroke={MUTED} strokeWidth="1" />
-                <text x="362" y="70" textAnchor="middle" fontFamily="Inter, sans-serif" fontSize="7.5" fill={MUTED}>6.5</text>
-              </g>
-              <text x="422" y="50" textAnchor="middle" fontFamily="Inter, sans-serif" fontSize="7" fill={RED} letterSpacing="0.06em" fontWeight="600">YOUR TARGET</text>
-              <g style={{ animation: "slide-right 1.2s cubic-bezier(0.22,1,0.36,1) 0.4s both", transformOrigin: "422px 68px" }}>
-                <line x1="422" y1="58" x2="422" y2="100" stroke={RED} strokeWidth="2.25" />
-                <polygon points="422,49 415,60 429,60" fill={RED} />
-                <circle cx="422" cy="58" r="3.5" fill={RED} />
-                <text x="422" y="70" textAnchor="middle" fontFamily="'Playfair Display', Georgia, serif" fontSize="12" fontWeight="600" fill={RED} letterSpacing="-0.02em">7.5</text>
-              </g>
-            </svg>
-            <div style={{ marginTop: 18, paddingTop: 16, borderTop: `1px solid ${LINE}`, display: "flex", justifyContent: "space-between", alignItems: "flex-end", fontSize: "0.8125rem", color: MUTED }}>
-              <span>IELTS band scale · 1 to 9</span>
-              <span style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "1.0625rem", fontWeight: 600, color: INK, letterSpacing: "-0.02em", textAlign: "right", display: "inline-block", lineHeight: 1.2 }}>
-                <span style={{ color: INK_SOFT, fontWeight: 400 }}>6.5</span>
-                <span style={{ color: RED, fontWeight: 300, margin: "0 3px", fontFamily: "Inter, sans-serif" }}>→</span>
-                <span style={{ color: RED }}>7.5</span>
-                <span style={{ display: "block", marginTop: 2, fontFamily: "Inter, sans-serif", fontSize: "0.6875rem", color: MUTED, fontWeight: 400 }}>one band. six weeks.</span>
-              </span>
-            </div>
+          <div style={{ background: PAPER_2, border: `1px solid ${LINE}`, borderRadius: 14, padding: 32, maxWidth: 720, margin: "40px auto 0", width: "100%" }}>
+            <BandScoreTool />
           </div>
         </section>
 
@@ -183,7 +143,60 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── How it works ── */}
+        {/* ── How we vet tutors — specific, not vague ── */}
+        <section style={{ padding: "56px 0", background: PAPER_2, borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
+          <div className="wrap" style={{ width: "100%", maxWidth: 1180, margin: "0 auto", padding: "0 24px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 32, textAlign: "center" }}>
+              {VETTING_STEPS.map((step, i) => (
+                <div key={i}>
+                  <div style={{ width: 36, height: 36, borderRadius: "50%", background: PAPER, border: `1.5px solid ${LINE}`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 12px", fontFamily: "'Inter', sans-serif", fontSize: "0.8125rem", fontWeight: 600, color: RED }}>
+                    {i + 1}
+                  </div>
+                  <div style={{ fontSize: "0.8125rem", fontWeight: 600, color: INK, marginBottom: 4, lineHeight: 1.3 }}>
+                    {step.split(" — ")[0]}
+                  </div>
+                  <div style={{ fontSize: "0.8125rem", color: INK_SOFT, lineHeight: 1.5 }}>
+                    {step.split(" — ")[1]}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <p style={{ fontSize: "0.8125rem", color: MUTED, textAlign: "center", marginTop: 24, borderTop: `1px solid ${LINE}`, paddingTop: 16, width: "100%", maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}>
+              Every tutor on bookateacher.in has passed all four. No profiles without the full vetting — if we haven't checked all four boxes, they're not on the platform.
+            </p>
+          </div>
+        </section>
+
+        {/* ── FAQ ── */}
+        <section id="faq" style={{ padding: "72px 0" }}>
+          <div className="wrap" style={{ width: "100%", maxWidth: 720, margin: "0 auto", padding: "0 24px" }}>
+            <div style={{ marginBottom: 48, textAlign: "center" }}>
+              <h2 style={{ fontSize: "clamp(1.875rem, 2.8vw, 2.5rem)", fontWeight: 600, letterSpacing: "-0.035em", marginBottom: 12, fontFamily: "'Playfair Display', Georgia, serif" }}>Questions people actually ask.</h2>
+              <p style={{ fontSize: "1.0625rem", color: INK_SOFT, maxWidth: 540, lineHeight: 1.65, margin: "0 auto" }}>If you're at a deadline, these are probably the things worrying you right now.</p>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+              {[
+                { q: "What if I don't get matched with someone good?", a: "You can reject your first match for free — no questions, no wait. We'll send another within 24 hours. If your first session doesn't feel right, message us and we'll re-match you. You're not locked into anyone." },
+                { q: "What's your refund policy if I don't like the first session?", a: "If you don't feel the session was worth it, we refund the session fee in full — including any trial session fee, if applicable. Email us within 48 hours. Most students stay after the first session, but the option is there." },
+                { q: "How fast can you match me if my test is in 10 days?", a: "We match within 24 hours even on short timelines — we keep a pool of available tutors for exactly this. But be realistic: 10 days is enough for targeted strategy and final polish, not a full overhaul. Tell us your test date upfront and we'll suggest a realistic plan." },
+                { q: "How much does it cost?", a: "Tutor rates vary by experience and subject — typically ₹800–₹2,500 per hour for test prep. You see the rate before you book. No hidden fees, no platform commission on the tutor side (at launch). Trial sessions are often free or discounted — check the tutor's profile." },
+                { q: "Can I chat with a tutor before booking?", a: "Yes — every tutor profile has a message button. Send a short intro, ask about their approach, and see if it's a fit before you pay. Most tutors reply within a few hours." },
+                { q: "What if my English is very basic — is this still for me?", a: "If you're below Band 4, we'll be honest: 1:1 test-prep coaching works best from Band 5+ where there's a foundation to build on. For absolute beginners, we can suggest general English tutors first. Tell us your current level in the form and we'll guide you." },
+              ].map(({ q, a }, i) => (
+                <div key={q} style={{ borderBottom: `1px solid ${LINE}` }}>
+                  <div style={{ padding: "20px 0", borderBottom: i < 5 ? `1px solid ${LINE}` : "none" }}>
+                    <div style={{ fontSize: "0.9375rem", fontWeight: 600, color: INK, marginBottom: 8, fontFamily: "'Playfair Display', Georgia, serif", lineHeight: 1.3 }}>
+                      {q}
+                    </div>
+                    <div style={{ fontSize: "0.9375rem", color: INK_SOFT, lineHeight: 1.6, paddingLeft: 16, borderLeft: `2px solid ${LINE}` }}>
+                      {a}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
         <section id="how" style={{ padding: "72px 0", background: PAPER_2, borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
           <div className="wrap" style={{ width: "100%", maxWidth: 1180, margin: "0 auto", padding: "0 24px" }}>
             <div style={{ marginBottom: 48, textAlign: "center" }}>
