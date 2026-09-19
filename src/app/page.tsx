@@ -339,6 +339,49 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(COURSE_SCHEMA) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Service",
+          serviceType: "IELTS, TOEFL & Spoken English Tutoring",
+          description: "Certified 1-on-1 IELTS, TOEFL, and Spoken English tutoring across India. Live coaching sessions, mock tests under real test conditions, and targeted feedback on writing and speaking.",
+          provider: { "@type": "Organization", name: "bookateacher.in", url: "https://bookateacher.in" },
+          areaServed: { "@type": "Country", name: "India" },
+          offeredBy: { "@type": "Organization", name: "bookateacher.in", url: "https://bookateacher.in" },
+          hasOfferCatalog: {
+            "@type": "OfferCatalog",
+            name: "Test Prep Tutoring Services",
+            itemListElement: [
+              { "@type": "OfferCatalog", name: "IELTS Test Preparation", itemListElement: [{ "@type": "Offer", itemOffered: { "@type": "Service", name: "IELTS Academic coaching", description: "1-on-1 coaching for IELTS Academic — writing, speaking, reading, listening. Mock tests under timed conditions." } }] },
+              { "@type": "OfferCatalog", name: "TOEFL Test Preparation", itemListElement: [{ "@type": "Offer", itemOffered: { "@type": "Service", name: "TOEFL iBT coaching", description: "Section-by-section TOEFL iBT coaching with strategy for every question type and full-length mock tests." } }] },
+              { "@type": "OfferCatalog", name: "Spoken English Coaching", itemListElement: [{ "@type": "Offer", itemOffered: { "@type": "Service", name: "Spoken English coaching", description: "Live conversation practice, pronunciation work, fluency building." } }] },
+            ],
+          },
+        }) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "LocalBusiness",
+          name: "bookateacher.in",
+          description: "Online platform connecting students with certified IELTS, TOEFL, and Spoken English tutors across India.",
+          url: "https://bookateacher.in",
+          image: "https://bookateacher.in/favicon.svg",
+          geo: { "@type": "GeoCoordinates", latitude: 28.6139, longitude: 77.2090 },
+          address: { "@type": "PostalAddress", addressLocality: "Delhi", addressRegion: "Delhi", addressCountry: "IN" },
+          telephone: "+91-9876543210",
+          priceRange: "₹800-₹2500",
+          openingHoursSpecification: [
+            { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], opens: "09:00", closes: "21:00", validFrom: "2026-01-01", validThrough: "2026-12-31" },
+          ],
+          sameAs: [
+            "https://www.instagram.com/bookateacher_in",
+            "https://www.linkedin.com/company/bookateacher-in",
+          ],
+        }) }}
+      />
 
       {/* ── Motion ── */}
       <style>{`

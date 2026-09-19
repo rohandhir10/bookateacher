@@ -7,9 +7,29 @@ import { MatchingStatusContent } from "./MatchingStatusContent";
 export const metadata: Metadata = {
   title: "Your match request | bookateacher.in",
   description: "Track the status of your tutor match request.",
+  openGraph: {
+    title: "Your match request | bookateacher.in",
+    description: "Track the status of your tutor match request.",
+    type: "website",
+    locale: "en_IN",
+    siteName: "bookateacher.in",
+  },
+  alternates: {
+    canonical: "https://bookateacher.in/matching-status",
+  },
 };
 
 export const dynamic = "force-dynamic";
+
+const SERVICE_SCHEMA = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Service",
+  serviceType: "IELTS, TOEFL & Spoken English Tutoring",
+  description: "Certified 1-on-1 IELTS, TOEFL, and Spoken English tutoring across India. Live coaching sessions, mock tests under real test conditions, and targeted feedback on writing and speaking.",
+  provider: { "@type": "Organization", name: "bookateacher.in", url: "https://bookateacher.in" },
+  areaServed: { "@type": "Country", name: "India" },
+  offeredBy: { "@type": "Organization", name: "bookateacher.in", url: "https://bookateacher.in" },
+});
 
 export default async function MatchingStatusPage({
   searchParams,
@@ -42,36 +62,97 @@ export default async function MatchingStatusPage({
 
 function MatchingStatusHeader() {
   return (
-    <header className="sticky top-0 z-50 bg-bg-primary/90 backdrop-blur-sm border-b border-border">
-      <div className="container flex items-center justify-between h-16">
+    <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          height: 64,
+          gap: 24,
+          width: "100%",
+          maxWidth: 1180,
+          margin: "0 auto",
+          padding: "0 24px",
+        }}
+      >
         <a
           href="/"
-          className="flex items-center gap-2 font-semibold text-lg tracking-tight"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            color: "#14213D",
+            textDecoration: "none",
+            fontFamily: "'Playfair Display', Georgia, serif",
+            fontWeight: 600,
+            fontSize: "1.25rem",
+            letterSpacing: "-0.02em",
+          }}
         >
-          <svg className="w-6 h-6" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="32" height="32" rx="8" fill="#14213D" />
-            <path d="M8 11h16M8 16h12M8 21h8"
-              stroke="white" strokeWidth="2.5" strokeLinecap="round" />
-          </svg>
+          <span
+            style={{
+              width: 28,
+              height: 28,
+              background: "#14213D",
+              borderRadius: 5,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
+            }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <path d="M3 8h18M3 12h13M3 16h9" stroke="#FAF7F0" strokeWidth="2.5" strokeLinecap="round" />
+            </svg>
+          </span>
           <span>
             bookateacher
-            <span className="text-sm text-foreground-subtle font-normal">.in</span>
+            <span
+              style={{
+                color: "#6B6557",
+                fontFamily: "Inter, sans-serif",
+                fontSize: "0.75rem",
+                fontWeight: 400,
+              }}
+            >
+              .in
+            </span>
           </span>
-        </a >
-        <div className="flex items-center gap-3">
-          <a href="/dashboard" className="btn btn-ghost btn-sm">
+        </a>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <a
+            href="/dashboard"
+            style={{
+              fontSize: "0.875rem",
+              color: "#3D4A63",
+              textDecoration: "none",
+              padding: "6px 14px",
+              borderRadius: 6,
+              border: "1px solid #D9D2C5",
+              transition: "all 0.15s",
+            }}
+          >
             Dashboard
           </a>
-          <form action="/api/auth/signout" method="POST" className="inline">
+          <form action="/api/auth/signout" method="POST" style={{ display: "inline" }}>
             <button
               type="submit"
-              className="btn btn-ghost btn-sm text-foreground-muted hover:text-foreground"
+              style={{
+                fontSize: "0.875rem",
+                color: "#3D4A63",
+                textDecoration: "none",
+                padding: "6px 14px",
+                borderRadius: 6,
+                border: "1px solid #D9D2C5",
+                background: "transparent",
+                cursor: "pointer",
+                transition: "all 0.15s",
+              }}
             >
               Sign out
             </button>
           </form>
         </div>
       </div>
-    </header>
   );
 }

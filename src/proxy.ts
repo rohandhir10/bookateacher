@@ -52,6 +52,10 @@ export async function proxy(request: Request) {
 
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    // Run proxy on all routes EXCEPT:
+    // - API routes
+    // - Static assets
+    // - Public pages that should be accessible without auth
+    "/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$|tutors(?:/.*)?$|subjects(?:/.*)?$|sitemap\\.xml$|robots\\.txt$).*)",
   ],
 };

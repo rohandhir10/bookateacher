@@ -1,27 +1,137 @@
 import Link from "next/link";
 
-export default function LoginLayout({ children }: { children: React.ReactNode }) {
+const INK = "#14213D";
+const INK_SOFT = "#3D4A63";
+const PAPER = "#FAF7F0";
+const PAPER_2 = "#F2ECE0";
+const LINE = "#D9D2C5";
+const MUTED = "#6B6557";
+
+export default function LoginLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <div className="flex flex-col">
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        background: PAPER,
+        color: INK,
+        fontFamily: "'Inter', system-ui, sans-serif",
+      }}
+    >
       {children}
-      <footer className="border-t border-border bg-bg-secondary/30 py-6 mt-auto">
-        <div className="container flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2 font-semibold text-sm">
-            <span className="w-8 h-8 rounded bg-[#14213D] flex items-center justify-center flex-shrink-0">
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
-                <path d="M3 8h18M3 12h13M3 16h9" stroke="white" strokeWidth="2.5" strokeLinecap="round" />
+      <footer
+        style={{
+          borderTop: `1px solid ${LINE}`,
+          padding: "24px 0",
+          background: PAPER_2,
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 24,
+            flexWrap: "wrap",
+            width: "100%",
+            maxWidth: 1180,
+            margin: "0 auto",
+            padding: "0 24px",
+          }}
+        >
+          <div
+            style={{
+              fontFamily: "'Playfair Display', Georgia, serif",
+              fontWeight: 600,
+              fontSize: "1.125rem",
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              color: INK,
+            }}
+          >
+            <span
+              style={{
+                width: 28,
+                height: 28,
+                background: INK,
+                borderRadius: 5,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
+              }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M3 8h18M3 12h13M3 16h9"
+                  stroke={PAPER}
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                />
               </svg>
             </span>
-            <span style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-              bookateacher<span className="text-foreground-subtle font-normal">.in</span>
+            <span style={{ color: INK }}>
+              bookateacher
+              <span
+                style={{
+                  color: MUTED,
+                  fontFamily: "Inter, sans-serif",
+                  fontSize: "0.75rem",
+                  fontWeight: 400,
+                }}
+              >
+                .in
+              </span>
             </span>
           </div>
-          <div className="flex items-center gap-5 text-xs text-foreground-muted">
-            <Link href="/privacy" className="hover:text-foreground transition-colors">Privacy</Link>
-            <Link href="/terms" className="hover:text-foreground transition-colors">Terms</Link>
-            <Link href="/contact" className="hover:text-foreground transition-colors">Contact</Link>
+          <div style={{ display: "flex", gap: 28 }}>
+            <Link
+              href="/privacy"
+              style={{
+                fontSize: "0.875rem",
+                color: INK_SOFT,
+                textDecoration: "none",
+              }}
+            >
+              Privacy
+            </Link>
+            <Link
+              href="/terms"
+              style={{
+                fontSize: "0.875rem",
+                color: INK_SOFT,
+                textDecoration: "none",
+              }}
+            >
+              Terms
+            </Link>
+            <Link
+              href="/contact"
+              style={{
+                fontSize: "0.875rem",
+                color: INK_SOFT,
+                textDecoration: "none",
+              }}
+            >
+              Contact
+            </Link>
           </div>
-          <p className="text-xs text-foreground-subtle">© {new Date().getFullYear()} bookateacher.in</p>
+          <p
+            style={{
+              fontSize: "0.8125rem",
+              color: MUTED,
+              textAlign: "right",
+              flex: 1,
+            }}
+          >
+            © {new Date().getFullYear()} bookateacher.in — Made in India
+          </p>
         </div>
       </footer>
     </div>
