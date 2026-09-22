@@ -268,26 +268,26 @@ export default async function LeadDetailPage({
                 <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                     <span style={{ fontSize: "0.875rem", color: MUTED }}>Name</span>
-                    <span style={{ fontSize: "0.875rem", fontWeight: 500, color: INK, textAlign: "right" }}>{lead.name}</span>
+                    <span style={{ fontSize: "0.875rem", fontWeight: 500, color: INK, textAlign: "right" }}>{lead.student_name}</span>
                   </div>
-                  {lead.email && (
+                  {lead.student_email && (
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                       <span style={{ fontSize: "0.875rem", color: MUTED }}>Email</span>
                       <a
-                        href={`mailto:${lead.email}`}
+                        href={`mailto:${lead.student_email}`}
                         style={{ fontSize: "0.875rem", fontWeight: 500, color: RED, textDecoration: "underline" }}
                       >
-                        {lead.email}
+                        {lead.student_email}
                       </a>
                     </div>
                   )}
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                     <span style={{ fontSize: "0.875rem", color: MUTED }}>Phone</span>
                     <a
-                      href={`tel:${lead.phone}`}
+                      href={`tel:${lead.student_phone}`}
                       style={{ fontSize: "0.875rem", fontWeight: 500, color: RED, textDecoration: "underline" }}
                     >
-                      {lead.phone}
+                      {lead.student_phone}
                     </a>
                   </div>
                 </div>
@@ -390,9 +390,11 @@ export default async function LeadDetailPage({
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                           <span style={{ fontSize: "0.875rem", color: MUTED }}>Days</span>
                           <span style={{ fontSize: "0.875rem", color: INK, textAlign: "right", textTransform: "capitalize" }}>
-                            {lead.preferred_days
-                              .map((d: string) => d.charAt(0).toUpperCase() + d.slice(1, 3))
-                              .join(", ")}
+                            {typeof preferredDays === "string"
+                              ? preferredDays
+                              : preferredDays
+                                ? preferredDays.map((d: string) => d.charAt(0).toUpperCase() + d.slice(1, 3)).join(", ")
+                                : ""}
                           </span>
                         </div>
                       )}
@@ -400,7 +402,11 @@ export default async function LeadDetailPage({
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                           <span style={{ fontSize: "0.875rem", color: MUTED }}>Times</span>
                           <span style={{ fontSize: "0.875rem", color: INK, textAlign: "right", textTransform: "capitalize" }}>
-                            {lead.preferred_times.join(", ")}
+                            {typeof preferredTimes === "string"
+                            ? preferredTimes
+                            : preferredTimes
+                              ? preferredTimes.join(", ")
+                              : ""}
                           </span>
                         </div>
                       )}

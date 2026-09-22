@@ -20,7 +20,8 @@ const GREEN = "#2F5233";
 const BLUE = "#2563EB";
 const BLUE_SOFT = "#93C5FD";
 
-export { ToeflIllustration as default, ToeflIllustration };
+export { ToeflIllustration as default };
+export function ToeflIllustration() {
   return (
     <div
       style={{
@@ -63,7 +64,7 @@ export { ToeflIllustration as default, ToeflIllustration };
           {/* Header */}
           <rect x="10" y="10" width="240" height="32" rx="2" fill={`rgba(${rgb(INK)}, 0.45)`} />
           <text x="18" y="30" fill={PAPER} fontSize="10.5" fontFamily="Inter, sans-serif" fontWeight="600" letterSpacing="0.5">TOEFL iBT · READING</text>
-          <text x="232" y="30" textAnchor="end" fill={`rgba(${rgb(PAPER)}, 0.5)}` fontSize="9" fontFamily="Inter, sans-serif">Q 12 / 36</text>
+          <text x="232" y="30" textAnchor="end" fill={`rgba(${rgb(PAPER)}, 0.5)`} fontSize="9" fontFamily="Inter, sans-serif">Q 12 / 36</text>
 
           {/* Progress bar */}
           <rect x="10" y="46" width="240" height="4" rx="1" fill={`rgba(${rgb(PAPER)}, 0.08)`} />
@@ -183,7 +184,7 @@ export { ToeflIllustration as default, ToeflIllustration };
           ))}
           {/* Circle highlights */}
           <circle cx="28" cy="18" r="2.5" fill={`rgba(${rgb(BLUE)}, 0.25)`} />
-          <circle cx="34] cy="34} r="2.5" fill={`rgba(${rgb(RED)}, 0.2)`} />
+          <circle cx="34" cy="34" r="2.5" fill={`rgba(${rgb(RED)}, 0.2)`} />
         </g>
 
         {/* ── Timer/stopwatch (right) ── */}
@@ -204,7 +205,7 @@ export { ToeflIllustration as default, ToeflIllustration };
             const x = 25 + 16 * Math.cos(rad);
             const y = 35 + 16 * Math.sin(rad);
             return (
-              <line key={a} x1={x} y1={y} x2={x + 2.5 * Math.cos(rad)} y2={y + 2.5 * Math.sin(rad)} stroke={`rgba(${rgb(PAPER)}, 0.3)}` strokeWidth="1" />
+              <line key={a} x1={x} y1={y} x2={x + 2.5 * Math.cos(rad)} y2={y + 2.5 * Math.sin(rad)} stroke={`rgba(${rgb(PAPER)}, 0.3)`} strokeWidth="1" />
             );
           })}
           {/* Label */}

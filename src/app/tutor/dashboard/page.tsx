@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { getServerSession, requireAuth } from "@/lib/session";
 import {
@@ -31,7 +32,7 @@ export default async function TutorDashboardPage() {
   const session = await getServerSession();
   if (!session?.user) redirect("/login");
 
-  const user = session.user as { id: string; role: string; verified?: number };
+  const user = session.user as unknown as { id: string; role: string; verified?: number };
   if (user.role !== "tutor") redirect("/dashboard");
 
   const tutorId = user.id;

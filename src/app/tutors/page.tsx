@@ -412,7 +412,7 @@ export default async function TutorsPage() {
                           color: INK,
                         }}
                       >
-                        {tutor.reviews?.length || 0}+
+                        {tutor.reviews || 0}+
                       </span>
                       <span style={{ fontSize: "0.8125rem", color: MUTED }}> reviews</span>
                     </div>

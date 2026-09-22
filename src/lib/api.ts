@@ -137,11 +137,21 @@ export async function apiSignOut(): Promise<{ ok: boolean }> {
 export interface Lead {
   id: string;
   student_id: string;
+  student_name: string | null;
+  student_email: string | null;
+  student_phone: string | null;
   subject: string;
+  goal: string | null;
+  current_level: string | null;
+  challenge: string | null;
   budget_per_hour: number | null;
   requirements: string | null;
   experience_level: string | null;
   preferred_language: string | null;
+  online_or_local: string | null;
+  location: string | null;
+  preferred_days: string | null;
+  preferred_times: string | null;
   status: string;
   assigned_tutor_id: string | null;
   contacted_at: string | null;
@@ -149,6 +159,12 @@ export interface Lead {
   rejected_at: string | null;
   created_at: string;
 }
+
+// Convenience accessors — keep lead.name/lead.email/lead.phone working
+// in pages that destructure from the old schema
+export function leadName(lead: Lead): string | null { return lead.student_name; }
+export function leadEmail(lead: Lead): string | null { return lead.student_email; }
+export function leadPhone(lead: Lead): string | null { return lead.student_phone; }
 
 export async function apiCreateLead(data: {
   student_id: string;

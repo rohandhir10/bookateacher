@@ -101,7 +101,7 @@ export function HeroIllustration() {
             [598, 108, 14, 14, INK_SOFT],
             [618, 108, 12, 14, PAPER_2],
           ].map(([x, y, w, h, color]) => (
-            <rect key={`${x}-${y}`} x={x} y={y} width={w} height={h} rx="1.5" fill={color} stroke={LINE} strokeWidth="0.5" />
+            <rect key={`${x}-${y}`} x={x} y={y} width={w} height={h} rx="1.5" fill={String(color)} stroke={LINE} strokeWidth="0.5" />
           ))}
           {/* Small frame on wall */}
           <rect x="560" y="20" width="50" height="38" rx="2" fill={`rgba(${rgb(INK)}, 0.05)`} stroke={LINE} strokeWidth="1" />
