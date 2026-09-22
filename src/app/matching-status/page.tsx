@@ -53,7 +53,34 @@ export default async function MatchingStatusPage({
     <div className="min-h-screen flex flex-col bg-bg-primary">
       <MatchingStatusHeader />
       <main className="flex-1">
-        <MatchingStatusContent lead={lead} userEmail={session.user.email} />
+        <MatchingStatusContent
+          lead={{
+            id: lead.id,
+            name: lead.student_name ?? "",
+            email: lead.student_email,
+            phone: lead.student_phone ?? "",
+            subject: lead.subject,
+            goal: lead.goal,
+            budget_per_hour: lead.budget_per_hour,
+            preferred_days: typeof lead.preferred_days === "string"
+              ? [lead.preferred_days]
+              : (lead.preferred_days as string[] | null | undefined),
+            preferred_times: typeof lead.preferred_times === "string"
+              ? [lead.preferred_times]
+              : (lead.preferred_times as string[] | null | undefined),
+            online_or_local: lead.online_or_local,
+            location: lead.location,
+            current_level: lead.current_level,
+            challenge: lead.challenge,
+            status: lead.status,
+            assigned_tutor_id: lead.assigned_tutor_id,
+            contacted_at: lead.contacted_at,
+            matched_at: lead.matched_at,
+            converted_at: lead.matched_at,
+            created_at: lead.created_at,
+          }}
+          userEmail={session.user.email}
+        />
       </main>
     </div>
   );

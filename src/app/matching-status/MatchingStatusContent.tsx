@@ -3,7 +3,7 @@
 import { SUBJECT_LABELS } from "@/lib/utils";
 import { formatDate } from "@/lib/utils";
 
-type Lead = {
+export type Lead = {
   id: string;
   name: string;
   email?: string | null;
@@ -26,6 +26,10 @@ type Lead = {
   created_at?: string;
   updated_at?: string;
 };
+
+export function leadName(l: Lead): string { return l.name; }
+export function leadEmail(l: Lead): string | null { return l.email ?? null; }
+export function leadPhone(l: Lead): string { return l.phone; }
 
 type Props = {
   lead: Lead;

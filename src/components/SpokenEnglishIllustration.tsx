@@ -18,6 +18,7 @@ const MUTED = "#6B6557";
 const RED = "#B23A2E";
 const GREEN = "#2F5233";
 const AMBER = "#8A5A00";
+const BLUE = "#2563EB";
 
 export { SpokenEnglishIllustration as default };
 export function SpokenEnglishIllustration() {

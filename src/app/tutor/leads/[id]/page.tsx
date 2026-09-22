@@ -27,10 +27,26 @@ export default async function LeadDetailPage({
 
   if (!lead) notFound();
 
-  const user = session.user as { role: string };
+  const user = session.user as unknown as { role: string };
   if (user.role !== "tutor") redirect("/dashboard");
 
   await apiUpdateLead(id, { status: "contacted" });
+
+  type PreferredDays = string | string[] | null;
+  type PreferredTimes = string | string[] | null;
+  const preferredDays: PreferredDays = lead.preferred_days;
+  const preferredTimes: PreferredTimes = lead.preferred_times;
+
+  function formatDays(d: PreferredDays): string {
+    if (typeof d === "string") return d;
+    if (Array.isArray(d)) return d.map((x) => x.charAt(0).toUpperCase() + x.slice(1, 3)).join(", ");
+    return "";
+  }
+  function formatTimes(t: PreferredTimes): string {
+    if (typeof t === "string") return t;
+    if (Array.isArray(t)) return t.join(", ");
+    return "";
+  }
 
   const subjectLabels: Record<string, string> = {
     ielts: "IELTS",
@@ -390,11 +406,7 @@ export default async function LeadDetailPage({
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                           <span style={{ fontSize: "0.875rem", color: MUTED }}>Days</span>
                           <span style={{ fontSize: "0.875rem", color: INK, textAlign: "right", textTransform: "capitalize" }}>
-                            {typeof preferredDays === "string"
-                              ? preferredDays
-                              : preferredDays
-                                ? preferredDays.map((d: string) => d.charAt(0).toUpperCase() + d.slice(1, 3)).join(", ")
-                                : ""}
+                            {formatDays(preferredDays)}
                           </span>
                         </div>
                       )}
@@ -402,11 +414,7 @@ export default async function LeadDetailPage({
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                           <span style={{ fontSize: "0.875rem", color: MUTED }}>Times</span>
                           <span style={{ fontSize: "0.875rem", color: INK, textAlign: "right", textTransform: "capitalize" }}>
-                            {typeof preferredTimes === "string"
-                            ? preferredTimes
-                            : preferredTimes
-                              ? preferredTimes.join(", ")
-                              : ""}
+                            {formatTimes(preferredTimes)}
                           </span>
                         </div>
                       )}
@@ -426,7 +434,7 @@ export default async function LeadDetailPage({
                 }}
               >
                 <a
-                  href={`tel:${lead.phone}`}
+                  href={`tel:${lead.student_phone}`}
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
@@ -446,9 +454,9 @@ export default async function LeadDetailPage({
                   </svg>
                   Call now
                 </a>
-                {lead.email && (
+                {lead.student_email && (
                   <a
-                    href={`mailto:${lead.email}`}
+                    href={`mailto:${lead.student_email}`}
                     style={{
                       display: "inline-flex",
                       alignItems: "center",

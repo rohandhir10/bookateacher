@@ -15,7 +15,7 @@ export interface TutorData {
   subjects: string[];
   verified: boolean;
   rating: number;
-  reviews: { id: string; student: string; rating: number; text: string; date: string }[];
+  reviews: number;
   specializations: string[];
   languages: string[];
   credentials: {
@@ -42,11 +42,7 @@ export const TUTOR_DATA: TutorData[] = [
     subjects: ["ielts"],
     verified: true,
     rating: 4.8,
-    reviews: [
-      { id: "r1", student: "Priya M.", rating: 5, text: "Rahul identified my weakest section (Writing Task 2) in the first session itself. Over 8 weeks, my writing band went from 6.0 to 7.5. His feedback is specific, not generic. Recommended without hesitation.", date: "2026-08-15" },
-      { id: "r2", student: "Arjun K.", rating: 5, text: "Best IELTS tutor I've worked with. He actually scored Band 8.5 himself, so he knows exactly what the examiners look for. My overall band went from 6.5 to 7.5 in 6 weeks.", date: "2026-07-22" },
-      { id: "r3", student: "Sneha R.", rating: 4, text: "Very structured approach. He gave me a clear study plan and stuck to it. Only reason for 4 stars instead of 5 is that weekends are limited.", date: "2026-06-10" },
-    ],
+    reviews: 127,
     specializations: ["IELTS Writing Task 2", "IELTS Speaking", "IELTS Reading", "Study abroad strategy"],
     languages: ["English", "Hindi"],
     credentials: {
@@ -76,10 +72,7 @@ export const TUTOR_DATA: TutorData[] = [
     subjects: ["toefl"],
     verified: true,
     rating: 4.9,
-    reviews: [
-      { id: "a1", student: "Rohan D.", rating: 5, text: "Scored 108 after working with Ananya for 6 weeks — up from 94. Her focus on the integrated writing task made the biggest difference. She scored 112 herself so she knows the test inside out.", date: "2026-08-01" },
-      { id: "a2", student: "Meera S.", rating: 5, text: "Ananya's TOEFL coaching is unlike generic English classes. She teaches the test format specifically — the computer-based pressure, the timing, the integrated tasks. My speaking went from 22 to 28.", date: "2026-07-08" },
-    ],
+    reviews: 98,
     specializations: ["TOEFL iBT", "TOEFL Speaking", "TOEFL Writing (Integrated)", "US university admissions"],
     languages: ["English", "Hindi"],
     credentials: {
@@ -109,11 +102,7 @@ export const TUTOR_DATA: TutorData[] = [
     subjects: ["spoken-english"],
     verified: true,
     rating: 4.7,
-    reviews: [
-      { id: "v1", student: "Karthik P.", rating: 5, text: "I could understand English but couldn't speak it without freezing. After 6 weeks with Vikram, I could handle job interviews and team meetings. His conversation-based approach worked for me — not textbook English.", date: "2026-08-20" },
-      { id: "v2", student: "Anita R.", rating: 5, text: "Vikram's sessions feel like real conversations, not classes. He corrected my pronunciation issues (the th sound, v/w confusion) without making me feel awkward. My confidence is completely different now.", date: "2026-07-15" },
-      { id: "v3", student: "Nikhil M.", rating: 4, text: "Good coach for spoken English. He helped me a lot with presentations and meetings. Only issue is he's sometimes double-booked — availability could be better.", date: "2026-06-05" },
-    ],
+    reviews: 203,
     specializations: ["Spoken English", "Business English", "Pronunciation", "Job interview preparation"],
     languages: ["English", "Hindi", "Gujarati"],
     credentials: {
@@ -139,7 +128,15 @@ export async function getTutors(): Promise<TutorData[]> {
   try {
     const { query } = await import("@/lib/db");
     const rows = await query(
-      'SELECT * FROM users WHERE role = "tutor" AND status = "active" ORDER BY created_at ASC',
+      "SELECT id, name, email, role, bio, hourly_rate, " +
+      "COALESCE(subjects, '[]') as subjects, " +
+      "COALESCE(verified, 0) as verified, COALESCE(credentials, '') as credentials, " +
+      "COALESCE(rating, 0) as rating, COALESCE(reviews, 0) as reviews, " +
+      "COALESCE(specializations, '[]') as specializations, " +
+      "COALESCE(languages, '[]') as languages, " +
+      "COALESCE(availability, NULL) as availability, " +
+      "COALESCE(avatar_url, NULL) as avatar_url " +
+      "FROM users WHERE role = 'tutor' AND status = 'active' ORDER BY created_at ASC"
     );
     if (rows && rows.length > 0) {
       return rows.map((row: any) => ({
@@ -148,15 +145,14 @@ export async function getTutors(): Promise<TutorData[]> {
         email: row.email,
         role: row.role,
         bio: row.bio || "",
-        hourly_rate: row.hourly_rate,
+        hourly_rate: Number(row.hourly_rate) || 0,
         subjects: row.subjects ? JSON.parse(row.subjects) : [],
         verified: !!row.verified,
-        credentials: row.credentials ? JSON.parse(row.credentials) : {
-          experience_years: 5,
-          certification: "",
-          teaching_style: "",
-          background: "",
-        },
+        credentials: row.credentials ? JSON.parse(row.credentials) : { experience_years: 5, certification: "", teaching_style: "", background: "" },
+        rating: Number(row.rating) || 0,
+        reviews: Number(row.reviews) || 0,
+        specializations: row.specializations ? JSON.parse(row.specializations) : [],
+        languages: row.languages ? JSON.parse(row.languages) : [],
         availability: row.availability ? JSON.parse(row.availability) : undefined,
         avatar_url: row.avatar_url || undefined,
       }));
