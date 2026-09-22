@@ -1,364 +1,1354 @@
 import { auth } from "@/lib/auth";
-import { getLeads, getSessionsForTutor, getTestimonialsForTutor, getUserById } from "@/lib/db";
-import { redirect } from "next/navigation";
+import { getServerSession, requireAuth } from "@/lib/session";
+import {
+  apiGetSessionsForTutor,
+  apiGetTestimonialsForTutor,
+  apiGetTestimonialRequests,
+  apiGetTutorProfile,
+  apiGetLeads,
+  apiGetLead,
+  apiAcceptLead,
+  apiDeclineLead,
+  apiUpdateSession as apiUpdateSessionApi,
+  apiCreateSession as apiCreateSessionApi,
+  apiRequestTestimonial,
+  apiSubmitTestimonial,
+} from "@/lib/api";
+
+const INK = "#14213D";
+const INK_SOFT = "#3D4A63";
+const PAPER = "#FAF7F0";
+const PAPER_2 = "#F2ECE0";
+const LINE = "#D9D2C5";
+const MUTED = "#6B6557";
+const GREEN = "#2F5233";
+const RED = "#B23A2E";
+const AMBER = "#8A5A00";
+
+import { getSessionCookie, apiSignOut } from "@/lib/api";
 
 export default async function TutorDashboardPage() {
-  const session = await auth();
+  const session = await getServerSession();
   if (!session?.user) redirect("/login");
 
   const user = session.user as { id: string; role: string; verified?: number };
   if (user.role !== "tutor") redirect("/dashboard");
 
-  const leads = getLeads({ status: "new", limit: 10 });
-  const sessions = getSessionsForTutor(user.id, { limit: 10 });
-  const testimonials = getTestimonialsForTutor(user.id);
-  const profile = getUserById(user.id);
+  const tutorId = user.id;
+  const [leadsRes, sessionsRes, testimonialsRes, requestsRes, profileRes] =
+    await Promise.all([
+      apiGetLeads(undefined, tutorId),
+      apiGetSessionsForTutor(tutorId),
+      apiGetTestimonialsForTutor(tutorId),
+      apiGetTestimonialRequests(tutorId),
+      apiGetTutorProfile(tutorId),
+    ]);
 
-  const newLeadsCount = getLeads({ status: "new" }).length;
-  const activeSessionsCount = sessions.filter((s) => s.status === "scheduled").length;
-  const completedSessionsCount = sessions.filter((s) => s.status === "completed").length;
-  const avgRating =
-    testimonials.length > 0
-      ? testimonials.reduce((sum, t) => sum + t.rating, 0) / testimonials.length
-      : null;
+  const leads = leadsRes.leads ?? [];
+  const sessions = sessionsRes.sessions ?? [];
+  const testimonials = testimonialsRes.testimonials ?? [];
+  const pendingRequests = requestsRes.requests ?? [];
+  const profile = profileRes.profile ?? null;
 
   return (
-    <div className="min-h-screen bg-bg-primary">
-      <TutorDashboardLayout>
-        <div className="container py-8">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h1 className="text-2xl font-bold text-foreground">
-                Tutor dashboard
-              </h1>
-              <p className="text-foreground-muted mt-1">
-                Manage your leads, sessions, and profile.
-              </p>
-            </div>
-            <div className="flex items-center gap-2">
-              {user.verified ? (
-                <span className="badge bg-success-soft text-success">
-                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  Verified tutor
-                </span>
-              ) : (
-                <span className="badge bg-warning-soft text-warning">
-                  Pending verification
-                </span>
-              )}
-              <a href="/tutor/profile" className="btn btn-secondary btn-sm">
-                Edit profile
-              </a>
-            </div>
+    <div style={{ minHeight: "100vh", background: PAPER, color: INK }}>
+      {/* Header */}
+      <header
+        style={{
+          background: INK,
+          color: PAPER,
+          padding: "0 32px",
+          height: "64px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          borderBottom: `1px solid ${LINE}`,
+          position: "sticky",
+          top: 0,
+          zIndex: 50,
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <a
+            href="/"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              color: PAPER,
+              textDecoration: "none",
+              fontSize: "18px",
+              fontWeight: 600,
+              fontFamily: "Playfair Display, Georgia, serif",
+            }}
+          >
+            <svg width="32" height="32" viewBox="0 0 36 36" fill="none">
+              <rect width="36" height="36" rx="8" fill={PAPER} />
+              <rect x="4" y="13" width="28" height="3" rx="1.5" fill={INK} />
+              <rect x="4" y="18" width="22" height="3" rx="1.5" fill={INK_SOFT} opacity="0.7" />
+              <rect x="4" y="23" width="26" height="3" rx="1.5" fill={INK_SOFT} opacity="0.5" />
+            </svg>
+            bookateacher
+            <span
+              style={{
+                color: "rgba(250,247,240,0.6)",
+                fontFamily: "Inter, sans-serif",
+                fontSize: "14px",
+                fontWeight: 400,
+              }}
+            >
+              .in
+            </span>
+          </a>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <span
+            style={{
+              fontSize: "13px",
+              color: "rgba(250,247,240,0.7)",
+              fontFamily: "Inter, sans-serif",
+            }}
+          >
+            Tutor dashboard
+          </span>
+          <form action="/api/auth/signout" method="POST" style={{ display: "inline" }}>
+            <button
+              type="submit"
+              style={{
+                background: "transparent",
+                border: "1px solid rgba(250,247,240,0.25)",
+                color: PAPER,
+                padding: "6px 14px",
+                borderRadius: 6,
+                fontSize: "13px",
+                fontFamily: "Inter, sans-serif",
+                fontWeight: 450,
+                cursor: "pointer",
+                transition: "all 0.15s",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "rgba(250,247,240,0.1)";
+                e.currentTarget.style.borderColor = "rgba(250,247,240,0.5)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "transparent";
+                e.currentTarget.style.borderColor = "rgba(250,247,240,0.25)";
+              }}
+            >
+              Sign out
+            </button>
+          </form>
+        </div>
+      </header>
+
+      <main style={{ maxWidth: 1200, margin: "0 auto", padding: "32px 24px 80px" }}>
+        {/* Page title */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-start",
+            justifyContent: "space-between",
+            marginBottom: 28,
+            gap: 16,
+            flexWrap: "wrap",
+          }}
+        >
+          <div>
+            <h1
+              style={{
+                fontFamily: "Playfair Display, Georgia, serif",
+                fontSize: "28px",
+                fontWeight: 600,
+                color: INK,
+                margin: 0,
+                letterSpacing: "-0.02em",
+              }}
+            >
+              Your dashboard
+            </h1>
+            <p
+              style={{
+                fontSize: "14px",
+                color: INK_SOFT,
+                marginTop: 6,
+                fontFamily: "Inter, sans-serif",
+              }}
+            >
+              {profile?.name || "Tutor"}{" "}
+              <span style={{ color: MUTED }}>·</span> Manage your leads, sessions, and
+              reviews in one place.
+            </p>
           </div>
-
-          {/* Stats */}
-          <div className="grid sm:grid-cols-4 gap-4 mb-8">
-            <div className="card p-4">
-              <div className="text-sm text-foreground-muted mb-1">New leads</div>
-              <div className="text-2xl font-bold text-accent">{newLeadsCount}</div>
-            </div>
-            <div className="card p-4">
-              <div className="text-sm text-foreground-muted mb-1">Active sessions</div>
-              <div className="text-2xl font-bold text-foreground">{activeSessionsCount}</div>
-            </div>
-            <div className="card p-4">
-              <div className="text-sm text-foreground-muted mb-1">Completed</div>
-              <div className="text-2xl font-bold text-success">{completedSessionsCount}</div>
-            </div>
-            <div className="card p-4">
-              <div className="text-sm text-foreground-muted mb-1">Avg rating</div>
-              <div className="text-2xl font-bold text-foreground">
-                {avgRating !== null ? `${avgRating.toFixed(1)}★` : "—"}
-              </div>
-            </div>
+          <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+            {user.verified ? (
+              <span
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 6,
+                  padding: "6px 12px",
+                  background: "rgba(47,82,51,0.1)",
+                  border: `1px solid rgba(47,82,51,0.25)`,
+                  borderRadius: 20,
+                  fontSize: "12px",
+                  color: GREEN,
+                  fontWeight: 500,
+                  fontFamily: "Inter, sans-serif",
+                }}
+              >
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={GREEN} strokeWidth="2.5">
+                  <path d="M5 12l5 5L20 7" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                Verified tutor
+              </span>
+            ) : (
+              <span
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 6,
+                  padding: "6px 12px",
+                  background: `rgba(138,90,0,0.08)`,
+                  border: `1px solid rgba(138,90,0,0.2)`,
+                  borderRadius: 20,
+                  fontSize: "12px",
+                  color: AMBER,
+                  fontWeight: 500,
+                  fontFamily: "Inter, sans-serif",
+                }}
+              >
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={AMBER} strokeWidth="2">
+                  <path d="M12 9v4M12 17h.01" strokeLinecap="round" />
+                  <path d="M10.7 10.7l2.8-2.8M17.3 7.3l-2.8 2.8" strokeLinecap="round" />
+                </svg>
+                Pending verification
+              </span>
+            )}
+            <a
+              href="/tutor/profile"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+                padding: "8px 16px",
+                background: INK,
+                color: PAPER,
+                borderRadius: 6,
+                fontSize: "13px",
+                fontWeight: 500,
+                textDecoration: "none",
+                fontFamily: "Inter, sans-serif",
+                boxShadow: "0 1px 2px rgba(20,33,61,0.15)",
+                transition: "all 0.15s",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = INK_SOFT;
+                e.currentTarget.style.boxShadow = "0 2px 6px rgba(20,33,61,0.2)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = INK;
+                e.currentTarget.style.boxShadow = "0 1px 2px rgba(20,33,61,0.15)";
+              }}
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={PAPER} strokeWidth="2">
+                <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              Edit profile
+            </a>
           </div>
+        </div>
 
-          <div className="grid lg:grid-cols-3 gap-6">
-            {/* Leads */}
-            <div className="lg:col-span-2 card p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-foreground">
-                  New leads
-                </h2>
-                <span className="text-sm text-foreground-muted">
-                  {newLeadsCount} waiting
-                </span>
-              </div>
+        {/* Stats row */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: 16,
+            marginBottom: 32,
+          }}
+        >
+          <StatCard
+            label="New leads"
+            value={leads.filter((l) => l.status === "new").length}
+            sub="Awaiting your response"
+            color={INK}
+          />
+          <StatCard
+            label="Active sessions"
+            value={sessions.filter((s) => s.status === "scheduled").length}
+            sub="Upcoming this week"
+            color={INK_SOFT}
+          />
+          <StatCard
+            label="Completed"
+            value={sessions.filter((s) => s.status === "completed").length}
+            sub="This month"
+            color={GREEN}
+          />
+          <StatCard
+            label="Avg rating"
+            value={testimonials.length > 0 ? (testimonials.reduce((s, t) => s + t.rating, 0) / testimonials.length).toFixed(1) : "—"}
+            sub={`${testimonials.length} review${testimonials.length !== 1 ? "s" : ""}`}
+            color={INK}
+          />
+        </div>
 
-              {leads.length === 0 ? (
-                <div className="text-center py-8">
-                  <div className="w-12 h-12 rounded-full bg-bg-tertiary flex items-center justify-center mx-auto mb-3">
-                    <svg className="w-6 h-6 text-foreground-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-                        d="M15 7v2m0 0v2m0-2h2m-2 0H7" />
-                    </svg>
-                  </div>
-                  <h3 className="font-medium text-foreground mb-1">No new leads</h3>
-                  <p className="text-sm text-foreground-muted">
-                    New student inquiries will appear here.
-                  </p>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {leads.slice(0, 5).map((lead) => (
-                    <div
-                      key={lead.id}
-                      className="p-4 rounded-lg bg-bg-secondary border border-border"
+        {/* Two-column layout: leads + sidebar */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 24, alignItems: "start" }}>
+          {/* Leads section */}
+          <div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginBottom: 16,
+              }}
+            >
+              <h2
+                style={{
+                  fontFamily: "Playfair Display, Georgia, serif",
+                  fontSize: "20px",
+                  fontWeight: 600,
+                  color: INK,
+                  margin: 0,
+                }}
+              >
+                Leads
+              </h2>
+              <span
+                style={{
+                  fontSize: "13px",
+                  color: MUTED,
+                  fontFamily: "Inter, sans-serif",
+                }}
+              >
+                {leads.length} total
+              </span>
+            </div>
+
+            {/* Filter tabs */}
+            <div
+              style={{
+                display: "flex",
+                gap: 4,
+                marginBottom: 16,
+                borderBottom: `1px solid ${LINE}`,
+                paddingBottom: 0,
+                overflowX: "auto",
+              }}
+            >
+              {(["new", "contacted", "matched", "archived"] as const).map((status) => {
+                const count = leads.filter((l) => l.status === status).length;
+                if (count === 0 && status !== "new") return null;
+                return (
+                  <button
+                    key={status}
+                    style={{
+                      padding: "6px 14px",
+                      border: "none",
+                      borderBottom: "2px solid transparent",
+                      background: "transparent",
+                      color: status === "new" ? INK : MUTED,
+                      fontSize: "13px",
+                      fontWeight: status === "new" ? 600 : 450,
+                      cursor: "pointer",
+                      fontFamily: "Inter, sans-serif",
+                      textTransform: "capitalize",
+                      transition: "all 0.15s",
+                      whiteSpace: "nowrap",
+                    }}
+                    onClick={(e) => {
+                      const btn = e.currentTarget as HTMLButtonElement;
+                      document.querySelectorAll(".lead-filter-btn").forEach((b) => {
+                        const el = b as HTMLElement;
+                        el.style.color = MUTED;
+                        el.style.fontWeight = "450";
+                        el.style.borderBottomColor = "transparent";
+                      });
+                      btn.style.color = INK;
+                      btn.style.fontWeight = "600";
+                      btn.style.borderBottomColor = INK;
+                    }}
+                    className="lead-filter-btn"
+                  >
+                    {status === "archived" ? "Archived" : status}
+                    <span
+                      style={{
+                        marginLeft: 6,
+                        padding: "1px 6px",
+                        background: LINE,
+                        borderRadius: 10,
+                        fontSize: "11px",
+                        color: INK_SOFT,
+                      }}
                     >
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <div className="font-medium text-foreground">
-                            {lead.name}
-                          </div>
-                          <div className="text-sm text-foreground-muted mt-0.5">
-                            {lead.subject} · {lead.online_or_local}
-                            {lead.location ? ` · ${lead.location}` : ""}
-                          </div>
-                          <div className="text-xs text-foreground-subtle mt-1">
-                            {lead.challenge || "No specific challenge mentioned"}
-                          </div>
-                          {lead.budget_per_hour && (
-                            <div className="text-xs text-foreground-subtle mt-1">
-                              Budget: ₹{lead.budget_per_hour}/hr
-                            </div>
-                          )}
-                        </div>
-                        <div className="text-right flex-shrink-0">
-                          <span className="text-xs text-foreground-subtle">
-                            {new Date(lead.created_at).toLocaleDateString("en-IN", {
-                              day: "numeric",
-                              month: "short",
-                            })}
-                          </span>
-                        </div>
+                      {count}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Lead cards */}
+            {leads.length === 0 ? (
+              <div
+                style={{
+                  textAlign: "center",
+                  padding: "48px 24px",
+                  border: `1px dashed ${LINE}`,
+                  borderRadius: 8,
+                  background: PAPER_2,
+                }}
+              >
+                <div
+                  style={{
+                    width: 48,
+                    height: 48,
+                    margin: "0 auto 16px",
+                    borderRadius: "50%",
+                    background: LINE,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={INK_SOFT} strokeWidth="1.5">
+                    <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </div>
+                <p
+                  style={{
+                    fontSize: "15px",
+                    color: INK_SOFT,
+                    fontWeight: 500,
+                    margin: "0 0 6px",
+                    fontFamily: "Inter, sans-serif",
+                  }}
+                >
+                  No leads yet
+                </p>
+                <p
+                  style={{
+                    fontSize: "13px",
+                    color: MUTED,
+                    fontFamily: "Inter, sans-serif",
+                  }}
+                >
+                  New student inquiries will appear here. When a lead matches your
+                  subjects, you can accept or decline it.
+                </p>
+              </div>
+            ) : (
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                {leads.map((lead) => (
+                  <LeadCard
+                    key={lead.id}
+                    lead={lead}
+                    tutorId={tutorId}
+                    pendingRequests={pendingRequests}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Sidebar */}
+          <aside style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+            {/* Profile card */}
+            <div
+              style={{
+                background: PAPER_2,
+                border: `1px solid ${LINE}`,
+                borderRadius: 8,
+                padding: 20,
+              }}
+            >
+              <h3
+                style={{
+                  fontSize: "13px",
+                  fontWeight: 600,
+                  color: MUTED,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em",
+                  margin: "0 0 14px",
+                  fontFamily: "Inter, sans-serif",
+                }}
+              >
+                Your profile
+              </h3>
+              {profile && (
+                <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                    <div
+                      style={{
+                        width: 36,
+                        height: 36,
+                        borderRadius: "50%",
+                        background: INK,
+                        color: PAPER,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "16px",
+                        fontWeight: 600,
+                        fontFamily: "Playfair Display, Georgia, serif",
+                        flexShrink: 0,
+                      }}
+                    >
+                      {(profile.name || "?").charAt(0).toUpperCase()}
+                    </div>
+                    <div>
+                      <div
+                        style={{
+                          fontSize: "14px",
+                          fontWeight: 600,
+                          color: INK,
+                          fontFamily: "Inter, sans-serif",
+                        }}
+                      >
+                        {profile.name}
                       </div>
-                      <div className="flex items-center gap-2 mt-3 pt-3 border-t border-border">
-                        <a
-                          href={`/tutor/leads/${lead.id}`}
-                          className="btn btn-primary btn-sm flex-1"
+                      <div
+                        style={{
+                          fontSize: "12px",
+                          color: MUTED,
+                          fontFamily: "Inter, sans-serif",
+                        }}
+                      >
+                        {profile.email}
+                      </div>
+                      {profile.hourly_rate && (
+                        <div
+                          style={{
+                            fontSize: "12px",
+                            color: INK_SOFT,
+                            fontFamily: "Inter, sans-serif",
+                            marginTop: 2,
+                          }}
                         >
-                          View lead
-                        </a>
+                          ₹{profile.hourly_rate}/hr
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  {profile.subjects && (() => {
+                    let subjects: string[] = [];
+                    try { subjects = JSON.parse(profile.subjects); } catch {}
+                    if (subjects.length === 0) return null;
+                    return (
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+                        {subjects.slice(0, 6).map((s: string) => (
+                          <span
+                            key={s}
+                            style={{
+                              padding: "3px 8px",
+                              background: PAPER,
+                              border: `1px solid ${LINE}`,
+                              borderRadius: 12,
+                              fontSize: "11px",
+                              color: INK_SOFT,
+                              textTransform: "capitalize",
+                              fontFamily: "Inter, sans-serif",
+                            }}
+                          >
+                            {s.replace(/-/g, " ")}
+                          </span>
+                        ))}
+                      </div>
+                    );
+                  })()}
+                  {user.verified && (
+                    <div
+                      style={{
+                        fontSize: "12px",
+                        color: GREEN,
+                        fontWeight: 500,
+                        fontFamily: "Inter, sans-serif",
+                      }}
+                    >
+                      ✓ Verified tutor
+                    </div>
+                  )}
+                  <a
+                    href="/tutor/profile"
+                    style={{
+                      display: "block",
+                      padding: "8px 0",
+                      fontSize: "13px",
+                      color: INK,
+                      textDecoration: "none",
+                      fontWeight: 500,
+                      borderTop: `1px solid ${LINE}`,
+                      marginTop: 4,
+                      fontFamily: "Inter, sans-serif",
+                    }}
+                  >
+                    Edit profile
+                  </a>
+                </div>
+              )}
+            </div>
+
+            {/* Pending testimonial requests */}
+            {pendingRequests.length > 0 && (
+              <div
+                style={{
+                  background: PAPER_2,
+                  border: `1px solid ${LINE}`,
+                  borderRadius: 8,
+                  padding: 20,
+                }}
+              >
+                <h3
+                  style={{
+                    fontSize: "13px",
+                    fontWeight: 600,
+                    color: MUTED,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.05em",
+                    margin: "0 0 12px",
+                    fontFamily: "Inter, sans-serif",
+                  }}
+                >
+                  Pending testimonials
+                </h3>
+                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                  {pendingRequests.slice(0, 4).map((req: any) => (
+                    <TestimonialRequestCard key={req.id} request={req} tutorId={tutorId} />
+                  ))}
+                </div>
+                {pendingRequests.length > 4 && (
+                  <p
+                    style={{
+                      fontSize: "12px",
+                      color: MUTED,
+                      margin: "12px 0 0",
+                      fontFamily: "Inter, sans-serif",
+                    }}
+                  >
+                    +{pendingRequests.length - 4} more
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* Recent reviews */}
+            {testimonials.length > 0 && (
+              <div
+                style={{
+                  background: PAPER,
+                  border: `1px solid ${LINE}`,
+                  borderRadius: 8,
+                  padding: 20,
+                }}
+              >
+                <h3
+                  style={{
+                    fontSize: "13px",
+                    fontWeight: 600,
+                    color: MUTED,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.05em",
+                    margin: "0 0 12px",
+                    fontFamily: "Inter, sans-serif",
+                  }}
+                >
+                  Recent reviews
+                </h3>
+                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                  {testimonials.slice(0, 3).map((t) => (
+                    <div
+                      key={t.id}
+                      style={{
+                        padding: "10px 12px",
+                        borderRadius: 6,
+                        background: PAPER_2,
+                        border: `1px solid ${LINE}`,
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 4,
+                          marginBottom: 4,
+                        }}
+                      >
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <svg
+                            key={star}
+                            width="12"
+                            height="12"
+                            viewBox="0 0 24 24"
+                            fill={star <= t.rating ? INK : "none"}
+                            stroke={star <= t.rating ? INK : MUTED}
+                            strokeWidth="2"
+                          >
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        ))}
+                      </div>
+                      <p
+                        style={{
+                          fontSize: "13px",
+                          color: INK_SOFT,
+                          margin: "0 0 6px",
+                          lineHeight: 1.5,
+                          fontFamily: "Inter, sans-serif",
+                        }}
+                      >
+                        {t.text}
+                      </p>
+                      <div
+                        style={{
+                          fontSize: "12px",
+                          color: MUTED,
+                          fontFamily: "Inter, sans-serif",
+                        }}
+                      >
+                        — {t.student_name}
                       </div>
                     </div>
                   ))}
                 </div>
-              )}
-            </div>
-
-            {/* Sidebar */}
-            <div className="space-y-6">
-              {/* Profile summary */}
-              <div className="card p-4">
-                <h3 className="text-sm font-semibold text-foreground mb-3">
-                  Your profile
-                </h3>
-                {profile && (
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-accent-soft flex items-center justify-center text-sm font-semibold text-accent">
-                        {profile.name.charAt(0).toUpperCase()}
-                      </div>
-                      <div>
-                        <div className="font-medium text-foreground text-sm">
-                          {profile.name}
-                        </div>
-                        <div className="text-xs text-foreground-muted">
-                          {profile.email}
-                        </div>
-                      </div>
-                    </div>
-                    {profile.hourly_rate && (
-                      <div className="text-sm text-foreground-muted">
-                        ₹{profile.hourly_rate}/hr
-                      </div>
-                    )}
-                    {profile.subjects && (
-                      <div className="flex flex-wrap gap-1 mt-2">
-                        {(() => {
-                          try {
-                            const subjects: string[] = JSON.parse(profile.subjects || "[]");
-                            return subjects.slice(0, 4).map((s) => (
-                              <span
-                                key={s}
-                                className="badge bg-bg-tertiary text-foreground-muted text-xs"
-                              >
-                                {s}
-                              </span>
-                            ));
-                          } catch {
-                            return null;
-                          }
-                        })()}
-                      </div>
-                    )}
-                    {user.verified && (
-                      <div className="mt-2 text-xs text-success font-medium">
-                        ✓ Verified
-                      </div>
-                    )}
-                  </div>
-                )}
-                <a
-                  href="/tutor/profile"
-                  className="btn btn-ghost btn-sm w-full mt-3"
-                >
-                  Edit profile
-                </a>
               </div>
+            )}
 
-              {/* Recent testimonials */}
-              {testimonials.length > 0 && (
-                <div className="card p-4">
-                  <h3 className="text-sm font-semibold text-foreground mb-3">
-                    Recent reviews
+            {/* Upcoming sessions */}
+            {(() => {
+              const upcoming = sessions
+                .filter((s) => s.status === "scheduled" && new Date(s.scheduled_at) > new Date())
+                .slice(0, 4);
+              if (upcoming.length === 0) return null;
+              return (
+                <div
+                  style={{
+                    background: PAPER,
+                    border: `1px solid ${LINE}`,
+                    borderRadius: 8,
+                    padding: 20,
+                  }}
+                >
+                  <h3
+                    style={{
+                      fontSize: "13px",
+                      fontWeight: 600,
+                      color: MUTED,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.05em",
+                      margin: "0 0 12px",
+                      fontFamily: "Inter, sans-serif",
+                    }}
+                  >
+                    Upcoming sessions
                   </h3>
-                  <div className="space-y-3">
-                    {testimonials.slice(0, 3).map((t) => (
-                      <div key={t.id} className="p-3 rounded-lg bg-bg-secondary">
-                        <div className="flex items-center gap-1 text-accent mb-1">
-                          {"★".repeat(t.rating)}
-                          {"★".repeat(5 - t.rating)}
+                  <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                    {upcoming.map((s) => (
+                      <div
+                        key={s.id}
+                        style={{
+                          padding: "10px 12px",
+                          borderRadius: 6,
+                          background: PAPER_2,
+                          border: `1px solid ${LINE}`,
+                        }}
+                      >
+                        <div
+                          style={{
+                            fontSize: "11px",
+                            color: MUTED,
+                            fontFamily: "Inter, sans-serif",
+                            marginBottom: 2,
+                          }}
+                        >
+                          {new Date(s.scheduled_at).toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short" })}
                         </div>
-                        <p className="text-sm text-foreground-muted leading-relaxed">
-                          {t.text}
-                        </p>
-                        <div className="text-xs text-foreground-subtle mt-1">
-                          — {t.student_name}
+                        <div
+                          style={{
+                            fontSize: "13px",
+                            fontWeight: 600,
+                            color: INK,
+                            fontFamily: "Inter, sans-serif",
+                          }}
+                        >
+                          {formatDateTime(s.scheduled_at)}
+                        </div>
+                        <div
+                          style={{
+                            fontSize: "12px",
+                            color: INK_SOFT,
+                            marginTop: 2,
+                            fontFamily: "Inter, sans-serif",
+                          }}
+                        >
+                          {formatDuration(s.duration_minutes)}
+                          {s.meeting_link && (
+                            <span style={{ marginLeft: 8, color: MUTED }}>· Online</span>
+                          )}
                         </div>
                       </div>
                     ))}
                   </div>
                 </div>
-              )}
+              );
+            })()}
+          </aside>
+        </div>
+      </main>
 
-              {/* Upcoming sessions */}
-              {(() => {
-                const upcoming = sessions
-                  .filter(
-                    (s) =>
-                      s.status === "scheduled" &&
-                      new Date(s.scheduled_at) > new Date(),
-                  )
-                  .slice(0, 3);
-                return upcoming.length > 0 ? (
-                  <div className="card p-4">
-                    <h3 className="text-sm font-semibold text-foreground mb-3">
-                      Upcoming sessions
-                    </h3>
-                    <div className="space-y-2">
-                      {upcoming.map((s) => (
-                        <div
-                          key={s.id}
-                          className="p-2 rounded bg-bg-secondary"
-                        >
-                          <div className="text-xs text-foreground-subtle">
-                            {new Date(s.scheduled_at).toLocaleDateString("en-IN", {
-                              weekday: "short",
-                              day: "numeric",
-                              month: "short",
-                            })}
-                          </div>
-                          <div className="text-sm font-medium text-foreground">
-                            {formatDateTime(s.scheduled_at)}
-                          </div>
-                          <div className="text-xs text-foreground-muted">
-                            {formatDuration(s.duration_minutes)}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ) : null;
-              })()}
+      {/* Footer */}
+      <footer
+        style={{
+          borderTop: `1px solid ${LINE}`,
+          background: PAPER_2,
+          padding: "20px 32px",
+          fontSize: "12px",
+          color: MUTED,
+          fontFamily: "Inter, sans-serif",
+          display: "flex",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          gap: 8,
+        }}
+      >
+        <span>© {new Date().getFullYear()} bookateacher.in — Made in India</span>
+        <div style={{ display: "flex", gap: 16 }}>
+          <a href="/privacy" style={{ color: INK_SOFT, textDecoration: "none" }}>Privacy</a>
+          <a href="/terms" style={{ color: INK_SOFT, textDecoration: "none" }}>Terms</a>
+        </div>
+      </footer>
 
-              {/* View all sessions */}
-              <a
-                href="/tutor/sessions"
-                className="card p-4 block hover:shadow-md transition-shadow"
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `.lead-card-accepted { opacity: 0.6; }
+.lead-card-accepted .lead-actions { pointer-events: none; }
+.lead-filter-btn { border-bottom: 2px solid transparent; }`,
+        }}
+      />
+    </div>
+  );
+}
+
+/* ---------- Sub-components ---------- */
+
+function StatCard({
+  label,
+  value,
+  sub,
+  color,
+}: {
+  label: string;
+  value: string | number;
+  sub: string;
+  color: string;
+}) {
+  return (
+    <div
+      style={{
+        background: PAPER_2,
+        border: `1px solid ${LINE}`,
+        borderRadius: 8,
+        padding: "16px 18px",
+      }}
+    >
+      <div style={{ fontSize: "12px", color: MUTED, fontFamily: "Inter, sans-serif", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.04em", fontWeight: 500 }}>
+        {label}
+      </div>
+      <div style={{ fontSize: "26px", fontWeight: 700, color, fontFamily: "Inter, sans-serif", lineHeight: 1.1, marginBottom: 4 }}>
+        {value}
+      </div>
+      <div style={{ fontSize: "12px", color: MUTED, fontFamily: "Inter, sans-serif" }}>
+        {sub}
+      </div>
+    </div>
+  );
+}
+
+function LeadCard({
+  lead,
+  tutorId,
+  pendingRequests,
+}: {
+  lead: any;
+  tutorId: string;
+  pendingRequests: any[];
+}) {
+  const wasAccepted = lead.assigned_tutor_id === tutorId && (lead.status === "contacted" || lead.status === "matched");
+  const wasDeclined = lead.status === "archived" && lead.closed_reason && lead.closed_reason.includes("Declined by tutor");
+  const isMine = lead.assigned_tutor_id === tutorId;
+
+  return (
+    <div
+      className={wasAccepted ? "lead-card-accepted" : ""}
+      style={{
+        background: PAPER_2,
+        border: `1px solid ${LINE}`,
+        borderRadius: 8,
+        padding: "16px 18px",
+        opacity: wasAccepted ? 0.7 : 1,
+      }}
+    >
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+            <div
+              style={{
+                width: 28,
+                height: 28,
+                borderRadius: "50%",
+                background: INK,
+                color: PAPER,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "13px",
+                fontWeight: 600,
+                fontFamily: "Playfair Display, Georgia, serif",
+                flexShrink: 0,
+              }}
+            >
+              {(lead.name || "?").charAt(0).toUpperCase()}
+            </div>
+            <div>
+              <div
+                style={{
+                  fontSize: "15px",
+                  fontWeight: 600,
+                  color: INK,
+                  fontFamily: "Inter, sans-serif",
+                }}
               >
-                <div className="text-sm font-semibold text-foreground mb-1">
-                  All sessions
-                </div>
-                <div className="text-xs text-foreground-muted">
-                  {sessions.length} total ·{" "}
-                  {completedSessionsCount} completed
-                </div>
-                <svg className="w-4 h-4 text-foreground-subtle mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                    d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </a>
+                {lead.name}
+              </div>
+              <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 2 }}>
+                {lead.status !== "new" && (
+                  <span
+                    style={{
+                      padding: "2px 8px",
+                      borderRadius: 12,
+                      fontSize: "11px",
+                      fontWeight: 500,
+                      fontFamily: "Inter, sans-serif",
+                      background:
+                        lead.status === "contacted"
+                          ? "rgba(20,33,61,0.08)"
+                          : lead.status === "matched"
+                          ? "rgba(47,82,51,0.1)"
+                          : "rgba(138,90,0,0.08)",
+                      color:
+                        lead.status === "contacted"
+                          ? INK
+                          : lead.status === "matched"
+                          ? GREEN
+                          : AMBER,
+                      border: "1px solid " +
+                        (lead.status === "contacted"
+                          ? "rgba(20,33,61,0.15)"
+                          : lead.status === "matched"
+                          ? "rgba(47,82,51,0.2)"
+                          : "rgba(138,90,0,0.15)"),
+                    }}
+                  >
+                    {lead.status}
+                  </span>
+                )}
+                {lead.subject && (
+                  <span
+                    style={{
+                      padding: "2px 8px",
+                      borderRadius: 12,
+                      fontSize: "11px",
+                      fontWeight: 500,
+                      fontFamily: "Inter, sans-serif",
+                      background: PAPER,
+                      border: `1px solid ${LINE}`,
+                      color: INK_SOFT,
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    {lead.subject.replace(/-/g, " ")}
+                  </span>
+                )}
+                {lead.online_or_local && (
+                  <span
+                    style={{
+                      padding: "2px 8px",
+                      borderRadius: 12,
+                      fontSize: "11px",
+                      fontFamily: "Inter, sans-serif",
+                      color: MUTED,
+                      background: PAPER,
+                      border: `1px solid ${LINE}`,
+                    }}
+                  >
+                    {lead.online_or_local === "online" ? "Online" : lead.online_or_local === "local" ? "In-person" : "Either"}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
+
+          <div
+            style={{
+              fontSize: "13px",
+              color: INK_SOFT,
+              fontFamily: "Inter, sans-serif",
+              marginBottom: 2,
+              lineHeight: 1.5,
+            }}
+          >
+            {lead.goal || "No goal specified"}
+          </div>
+
+          {lead.challenge && (
+            <div
+              style={{
+                fontSize: "12px",
+                color: MUTED,
+                fontFamily: "Inter, sans-serif",
+                marginBottom: 6,
+                lineHeight: 1.5,
+                fontStyle: "italic",
+              }}
+            >
+              "{lead.challenge}"
+            </div>
+          )}
+
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", fontSize: "12px", color: MUTED, fontFamily: "Inter, sans-serif" }}>
+            {lead.budget_per_hour && (
+              <span>Budget: <strong>₹{lead.budget_per_hour}/hr</strong></span>
+            )}
+            {lead.location && (
+              <span>📍 {lead.location}</span>
+            )}
+            <span>
+              {new Date(lead.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+            </span>
+            {isMine && (
+              <span style={{ color: GREEN, fontWeight: 500 }}>· Your lead</span>
+            )}
+          </div>
+
+          {lead.email && (
+            <div style={{ marginTop: 6, paddingTop: 6, borderTop: `1px solid ${LINE}`, fontSize: "12px", color: MUTED, fontFamily: "Inter, sans-serif" }}>
+              <a
+                href={`mailto:${lead.email}`}
+                style={{ color: INK_SOFT, textDecoration: "none" }}
+              >
+                {lead.email}
+              </a>
+              {" · "}
+              <a
+                href={`tel:${lead.phone}`}
+                style={{ color: INK_SOFT, textDecoration: "none" }}
+              >
+                {lead.phone}
+              </a>
+            </div>
+          )}
         </div>
-      </TutorDashboardLayout>
+
+        <div style={{ flexShrink: 0 }}>
+          <LeadActions
+            lead={lead}
+            tutorId={tutorId}
+            pendingRequests={pendingRequests}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function LeadActions({
+  lead,
+  tutorId,
+  pendingRequests,
+}: {
+  lead: any;
+  tutorId: string;
+  pendingRequests: any[];
+}) {
+  const isMine =
+    (lead.status === "new") ||
+    (lead.assigned_tutor_id === tutorId && ["contacted", "matched"].includes(lead.status));
+  const isArchived = lead.status === "archived";
+  const hasResponse = pendingRequests.some((r) => r.session_id === lead.id || r.lead_id === lead.id);
+
+  if (isArchived) {
+    return (
+      <div style={{ textAlign: "right", fontSize: "11px", color: MUTED, fontFamily: "Inter, sans-serif" }}>
+        Declined
+      </div>
+    );
+  }
+
+  if (!isMine && lead.status !== "new") {
+    return (
+      <div style={{ textAlign: "right", fontSize: "11px", color: MUTED, fontFamily: "Inter, sans-serif" }}>
+        Assigned to another tutor
+      </div>
+    );
+  }
+
+  if (lead.status === "new" && isMine) {
+    return (
+      <div style={{ display: "flex", gap: 6, justifyContent: "flex-end" }}>
+        <form method="POST" action="/api/leads" style={{ display: "inline" }}>
+          <input type="hidden" name="action" value="decline-lead" />
+          <input type="hidden" name="data" value={JSON.stringify({ id: lead.id })} />
+          <button
+            type="submit"
+            style={{
+              padding: "7px 12px",
+              border: `1px solid ${RED}`,
+              background: "transparent",
+              color: RED,
+              borderRadius: 6,
+              fontSize: "12px",
+              fontWeight: 500,
+              cursor: "pointer",
+              fontFamily: "Inter, sans-serif",
+              transition: "all 0.15s",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = `${RED}15`;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "transparent";
+            }}
+          >
+            Decline
+          </button>
+        </form>
+        <form method="POST" action="/api/leads" style={{ display: "inline" }}>
+          <input type="hidden" name="action" value="accept-lead" />
+          <input type="hidden" name="data" value={JSON.stringify({ id: lead.id })} />
+          <button
+            type="submit"
+            style={{
+              padding: "7px 14px",
+              background: GREEN,
+              color: PAPER,
+              border: "none",
+              borderRadius: 6,
+              fontSize: "12px",
+              fontWeight: 600,
+              cursor: "pointer",
+              fontFamily: "Inter, sans-serif",
+              boxShadow: "0 1px 2px rgba(47,82,51,0.2)",
+              transition: "all 0.15s",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "#25432a";
+              e.currentTarget.style.boxShadow = "0 2px 6px rgba(47,82,51,0.3)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = GREEN;
+              e.currentTarget.style.boxShadow = "0 1px 2px rgba(47,82,51,0.2)";
+            }}
+          >
+            Accept
+          </button>
+        </form>
+      </div>
+    );
+  }
+
+  if (lead.status === "contacted" && isMine) {
+    return (
+      <div style={{ display: "flex", gap: 6, justifyContent: "flex-end" }}>
+        <a
+          href={`/tutor/leads/${lead.id}`}
+          style={{
+            padding: "7px 14px",
+            background: INK,
+            color: PAPER,
+            border: "none",
+            borderRadius: 6,
+            fontSize: "12px",
+            fontWeight: 500,
+            textDecoration: "none",
+            cursor: "pointer",
+            fontFamily: "Inter, sans-serif",
+            boxShadow: "0 1px 2px rgba(20,33,61,0.15)",
+            transition: "all 0.15s",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = INK_SOFT;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = INK;
+          }}
+        >
+          View lead
+        </a>
+        {!hasResponse && (
+          <span
+            style={{
+              fontSize: "11px",
+              color: MUTED,
+              fontFamily: "Inter, sans-serif",
+              alignSelf: "center",
+            }}
+          >
+            No testimonial requested yet
+          </span>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ display: "flex", gap: 6, justifyContent: "flex-end" }}>
+      <a
+        href={`/tutor/leads/${lead.id}`}
+        style={{
+          padding: "7px 14px",
+          background: INK,
+          color: PAPER,
+          border: "none",
+          borderRadius: 6,
+          fontSize: "12px",
+          fontWeight: 500,
+          textDecoration: "none",
+          cursor: "pointer",
+          fontFamily: "Inter, sans-serif",
+          boxShadow: "0 1px 2px rgba(20,33,61,0.15)",
+          transition: "all 0.15s",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.background = INK_SOFT;
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.background = INK;
+        }}
+      >
+        View lead
+      </a>
+    </div>
+  );
+}
+
+function TestimonialRequestCard({
+  request,
+  tutorId,
+}: {
+  request: any;
+  tutorId: string;
+}) {
+  return (
+    <div
+      style={{
+        padding: "10px 12px",
+        borderRadius: 6,
+        background: PAPER,
+        border: `1px solid ${LINE}`,
+      }}
+    >
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
+        <div>
+          <div
+            style={{
+              fontSize: "13px",
+              fontWeight: 600,
+              color: INK,
+              fontFamily: "Inter, sans-serif",
+            }}
+          >
+            {request.student_name}
+          </div>
+          <div
+            style={{
+              fontSize: "11px",
+              color: MUTED,
+              fontFamily: "Inter, sans-serif",
+              marginTop: 1,
+            }}
+          >
+            {request.session_status} · {new Date(request.scheduled_at).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}
+          </div>
+          {request.student_email && (
+            <div
+              style={{
+                fontSize: "11px",
+                color: MUTED,
+                fontFamily: "Inter, sans-serif",
+                marginTop: 2,
+              }}
+            >
+              <a href={`mailto:${request.student_email}`} style={{ color: INK_SOFT, textDecoration: "none" }}>
+                {request.student_email}
+              </a>
+            </div>
+          )}
+        </div>
+        <div style={{ flexShrink: 0 }}>
+          <span
+            style={{
+              padding: "3px 8px",
+              borderRadius: 10,
+              fontSize: "10px",
+              fontWeight: 600,
+              fontFamily: "Inter, sans-serif",
+              textTransform: "uppercase",
+              background: "rgba(138,90,0,0.08)",
+              color: AMBER,
+              border: `1px solid rgba(138,90,0,0.15)`,
+            }}
+          >
+            Pending
+          </span>
+        </div>
+      </div>
+      {request.message && (
+        <p
+          style={{
+            fontSize: "12px",
+            color: INK_SOFT,
+            margin: "8px 0 0",
+            fontFamily: "Inter, sans-serif",
+            fontStyle: "italic",
+            lineHeight: 1.5,
+          }}
+        >
+          "{request.message}"
+        </p>
+      )}
+      <a
+        href={`/tutor/leads/${request.session_id}`}
+        style={{
+          display: "block",
+          marginTop: 8,
+          fontSize: "12px",
+          color: INK,
+          textDecoration: "none",
+          fontWeight: 500,
+          fontFamily: "Inter, sans-serif",
+        }}
+      >
+        View session →
+      </a>
     </div>
   );
 }
 
 function formatDateTime(iso: string): string {
-  return new Intl.DateTimeFormat("en-IN", {
+  const d = new Date(iso);
+  return d.toLocaleDateString("en-IN", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
     hour: "2-digit",
     minute: "2-digit",
-  }).format(new Date(iso));
+    hour12: true,
+  });
 }
 
 function formatDuration(minutes: number): string {
-  if (minutes < 60) return `${minutes} min`;
   const h = Math.floor(minutes / 60);
   const m = minutes % 60;
   return m > 0 ? `${h}h ${m}m` : `${h} hr`;
-}
-
-function TutorDashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="flex flex-col">
-      <header className="sticky top-0 z-50 bg-bg-primary/90 backdrop-blur-sm border-b border-border">
-        <div className="container flex items-center justify-between h-16">
-          <a
-            href="/"
-            className="flex items-center gap-2 font-semibold text-lg"
-          >
-            <svg className="w-6 h-6" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="32" height="32" rx="8" fill="#14213D" />
-              <path d="M8 11h16M8 16h12M8 21h8"
-                stroke="white" strokeWidth="2.5" strokeLinecap="round" />
-            </svg>
-            <span className="hidden sm:inline">
-              bookateacher
-              <span className="text-sm text-foreground-subtle font-normal">.in</span>
-            </span>
-          </a>
-          <div className="flex items-center gap-3">
-            <a href="/" className="btn btn-ghost btn-sm">
-              Home
-            </a>
-            <form action="/api/auth/signout" method="POST" className="inline">
-              <button
-                type="submit"
-                className="btn btn-ghost btn-sm text-foreground-muted hover:text-foreground"
-              >
-                Sign out
-              </button>
-            </form>
-          </div>
-        </div>
-      </header>
-      <main className="flex-1">{children}</main>
-    </div>
-  );
 }

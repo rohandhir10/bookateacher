@@ -47,6 +47,7 @@ function hexToRgb(hex: string): string {
 }
 
 import BandScoreTool from "@/components/BandScoreTool";
+import HeroIllustration from "@/components/HeroIllustration";
 
 const VETTING_STEPS = [
   "Credential check — degree, certification, ID verified",
@@ -108,6 +109,9 @@ export default function HomePage() {
             </div>
             <p style={{ fontSize: "0.875rem", color: MUTED, marginTop: 4 }}>Browse verified tutors — no sign-up required.</p>
           </div>
+
+          {/* ── Hero illustration ── */}
+          <HeroIllustration />
 
           {/* ── Band score diagram — centered ── */}
           <div style={{ background: PAPER_2, border: `1px solid ${LINE}`, borderRadius: 14, padding: 32, maxWidth: 720, margin: "40px auto 0", width: "100%" }}>

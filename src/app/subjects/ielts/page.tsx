@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { breadcrumbSchema, webpageSchema } from "@/lib/page-seo";
 import { FAQ_SCHEMA as HOME_FAQ_SCHEMA } from "@/lib/seo";
+import IeltsIllustration from "@/components/IeltsIllustration";
 
 export const metadata: Metadata = {
   title: "IELTS Tutor — Find Certified IELTS Coaches | bookateacher.in",
@@ -469,6 +470,11 @@ export default function IeltsSubjectPage() {
 
             {/* Right column — CTA + tutor list */}
             <div style={{ display: "flex", flexDirection: "column", gap: 24, position: "sticky", top: 88 }}>
+              {/* Subject illustration */}
+              <div style={{ width: "100%", aspectRatio: "3 / 4", borderRadius: 12, overflow: "hidden", flexShrink: 0 }}>
+                <IeltsIllustration />
+              </div>
+
               {/* CTA card */}
               <div
                 style={{
