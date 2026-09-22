@@ -255,10 +255,27 @@ export async function apiGetLead(id: string): Promise<{ lead: Lead }> {
   return apiFetch(`/leads/${id}`, { method: "GET" });
 }
 
+// Update lead status (contacted, accepted, rejected, etc.)
+export async function apiUpdateLead(
+  id: string,
+  data: { status?: string; tutor_id?: string },
+): Promise<{ ok: boolean; lead: Lead }> {
+  return apiFetch(`/leads/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(data),
+  });
+}
+
 export async function apiGetSessionsForTutor(
   tutorId: string,
 ): Promise<{ sessions: any[] }> {
   return apiFetch(`/leads/sessions/${tutorId}`, { method: "GET" });
+}
+
+export async function apiGetSessionsForStudent(
+  studentId: string,
+): Promise<{ sessions: any[] }> {
+  return apiFetch(`/leads/sessions/student/${studentId}`, { method: "GET" });
 }
 
 export async function apiGetTestimonialsForTutor(

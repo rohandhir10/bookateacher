@@ -19,6 +19,7 @@ const MUTED = "#6B6557";
 const RED = "#B23A2E";
 const GREEN = "#2F5233";
 
+export { IeltsIllustration as default };
 export function IeltsIllustration() {
   return (
     <div

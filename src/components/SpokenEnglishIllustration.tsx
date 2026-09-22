@@ -171,7 +171,7 @@ export { SpokenEnglishIllustration as default, SpokenEnglishIllustration };
           ))}
           {/* Highlighted sections */}
           <rect x="10" y="21" width="46" height="8" rx="1" fill={`rgba(${rgb(GREEN)}, 0.1)`} />
-          <rect x="10" y="37} width="38} height="7} rx="1" fill={`rgba(${rgb(BLUE)}, 0.1)`} />
+          <rect x="10" y="37" width="38" height="7" rx="1" fill={`rgba(${rgb(BLUE)}, 0.1)`} />
         </g>
 
         {/* ── Coffee/tea cup (bottom right) ── */}

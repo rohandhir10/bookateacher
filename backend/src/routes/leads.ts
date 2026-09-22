@@ -338,6 +338,69 @@ app.get("/", async (c) => {
   return c.json({ error: "Missing student_id or tutor_id" }, 400);
 });
 
+// ─── PATCH /api/leads/:id ────────────────────────────────────────────────────────
+// Update lead status (contacted, accepted, rejected, archived) + assign tutor
+
+app.patch("/:id", async (c) => {
+  const id = c.req.param("id");
+  let body: any;
+  try {
+    body = await c.req.json();
+  } catch {
+    body = {};
+  }
+  const { status, tutor_id } = body;
+
+  if (!status && !tutor_id) {
+    return c.json({ error: "Missing status or tutor_id" }, 400);
+  }
+
+  if (status) {
+    const allowed = ["contacted", "accepted", "rejected", "archived"];
+    if (!allowed.includes(status)) {
+      return c.json({ error: "Invalid status. Allowed: contacted, accepted, rejected, archived" }, 400);
+    }
+  }
+
+  const lead = await queryOne<any>(`SELECT * FROM leads WHERE id = $1`, [id]);
+  if (!lead) return c.json({ error: "Lead not found" }, 404);
+
+  const fields: string[] = [];
+  const values: any[] = [];
+  let idx = 1;
+
+  if (status) {
+    fields.push(`status = $${idx++}`);
+    values.push(status);
+    if (status === "contacted") fields.push(`contacted_at = NOW()`);
+    else if (status === "rejected") fields.push(`rejected_at = NOW()`);
+  }
+  if (tutor_id) {
+    fields.push(`assigned_tutor_id = $${idx++}`);
+    values.push(tutor_id);
+    fields.push(`contacted_at = NOW()`);
+  }
+
+  values.push(id);
+  await execute(`UPDATE leads SET ${fields.join(", ")} WHERE id = $${idx}`, values);
+
+  const updated = await queryOne<any>(`SELECT * FROM leads WHERE id = $1`, [id]);
+  return c.json({ ok: true, lead: updated });
+});
+
+// ─── GET /api/leads/sessions/student/:student_id ───────────────────────────────
+
+app.get("/sessions/student/:student_id", async (c) => {
+  const student_id = c.req.param("student_id");
+  const sessions = await query(
+    `SELECT id, student_id, tutor_id, status, scheduled_at, started_at, completed_at,
+            subject, topic, notes, rating, feedback, feedback_by, meeting_link, created_at
+     FROM sessions WHERE student_id = $1 ORDER BY scheduled_at DESC`,
+    [student_id],
+  );
+  return c.json({ sessions });
+});
+
 // ─── GET /api/leads/:id ────────────────────────────────────────────────────────
 
 app.get("/:id", async (c) => {
