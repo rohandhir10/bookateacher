@@ -98,8 +98,8 @@ function buildJsonLd(tutors: TutorData[]): string {
   }`;
 }
 
-export default function TutorsPage() {
-  const tutors = getTutors();
+export default async function TutorsPage() {
+  const tutors = await getTutors();
   const jsonLd = buildJsonLd(tutors);
 
   return (

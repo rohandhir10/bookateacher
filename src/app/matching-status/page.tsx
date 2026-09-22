@@ -1,6 +1,6 @@
 import { Metadata } from "next";
-import { getLeadById } from "@/lib/db";
-import { auth } from "@/lib/auth";
+import { getServerSession } from "@/lib/session";
+import { apiGetLead } from "@/lib/api";
 import { redirect } from "next/navigation";
 import { MatchingStatusContent } from "./MatchingStatusContent";
 
@@ -36,17 +36,16 @@ export default async function MatchingStatusPage({
 }: {
   searchParams: Promise<{ leadId?: string }>;
 }) {
-  const session = await auth();
+  const session = await getServerSession();
   if (!session?.user) redirect("/login");
 
   const { leadId } = await searchParams;
   if (!leadId) redirect("/dashboard?error=no-lead-id");
 
-  const lead = getLeadById(leadId);
+  const { lead } = await apiGetLead(leadId);
   if (!lead) redirect("/dashboard?error=lead-not-found");
 
-  // Verify the lead belongs to this user (by email match)
-  if (lead.email && lead.email !== session.user.email) {
+  if (lead.student_id !== session.user.id) {
     redirect("/dashboard?error=lead-not-mine");
   }
 

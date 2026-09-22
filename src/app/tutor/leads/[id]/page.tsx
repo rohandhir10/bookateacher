@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
-import { getLeadById, updateLead, getUserById, recordAdminAction } from "@/lib/db";
+import { getServerSession } from "@/lib/session";
+import { apiGetLead, apiUpdateLead } from "@/lib/api";
 import { redirect, notFound } from "next/navigation";
 
 const INK = "#14213D";
@@ -19,19 +19,18 @@ export default async function LeadDetailPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const session = await auth();
+  const session = await getServerSession();
   if (!session?.user) redirect("/login");
 
   const { id } = await params;
-  const lead = getLeadById(id);
+  const { lead } = await apiGetLead(id);
 
   if (!lead) notFound();
 
   const user = session.user as { role: string };
   if (user.role !== "tutor") redirect("/dashboard");
 
-  updateLead(id, { status: "contacted", contacted_at: new Date().toISOString() });
-  recordAdminAction(session.user.id, "viewed_lead", "lead", id, { leadId: id });
+  await apiUpdateLead(id, { status: "contacted" });
 
   const subjectLabels: Record<string, string> = {
     ielts: "IELTS",

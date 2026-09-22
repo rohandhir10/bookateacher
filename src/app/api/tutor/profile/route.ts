@@ -35,13 +35,13 @@ export async function POST(request: NextRequest) {
     if (parsed.teaching_style) credentialsData.teaching_style = parsed.teaching_style;
     if (parsed.background) credentialsData.background = parsed.background;
 
-    updateUser(user.id, {
+    await updateUser(user.id, {
       ...parsed,
       subjects: parsed.subjects,
       credentials: credentialsData,
     });
 
-    recordAdminAction(user.id, "updated_profile", "user", user.id);
+    await recordAdminAction(user.id, "updated_profile", "user", user.id);
 
     return NextResponse.json({ success: true });
   } catch (error) {

@@ -19,7 +19,7 @@ const RED = "#B23A2E";
 const GREEN = "#2F5233";
 const AMBER = "#8A5A00";
 
-export function SpokenEnglishIllustration() {
+export { SpokenEnglishIllustration as default, SpokenEnglishIllustration };
   return (
     <div
       style={{

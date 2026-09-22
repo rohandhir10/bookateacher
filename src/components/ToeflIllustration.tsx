@@ -20,7 +20,7 @@ const GREEN = "#2F5233";
 const BLUE = "#2563EB";
 const BLUE_SOFT = "#93C5FD";
 
-export function ToeflIllustration() {
+export { ToeflIllustration as default, ToeflIllustration };
   return (
     <div
       style={{

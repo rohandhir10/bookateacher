@@ -2,13 +2,22 @@
 // A layered desk scene: desk surface, lamp, books, notes, score card,
 // light from a window, subtle background detail. Navy/parchment palette.
 import React from "react";
-import { INK, INK_SOFT, PAPER, PAPER_2, LINE, MUTED, GREEN } from "@/lib/theme";
+
+const INK = "#14213D";
+const INK_SOFT = "#3D4A63";
+const PAPER = "#FAF7F0";
+const PAPER_2 = "#F2ECE0";
+const LINE = "#D9D2C5";
+const MUTED = "#6B6557";
+const GREEN = "#2F5233";
+const RED = "#B23A2E";
 
 const rgb = (hex: string) => {
   const h = hex.replace("#", "");
   return `${parseInt(h.slice(0, 2), 16)}, ${parseInt(h.slice(2, 4), 16)}, ${parseInt(h.slice(4, 6), 16)}`;
 };
 
+export { HeroIllustration as default };
 export function HeroIllustration() {
   return (
     <div

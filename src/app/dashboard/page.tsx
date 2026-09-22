@@ -1,14 +1,20 @@
-import { auth } from "@/lib/auth";
-import { getSessionsForStudent, getLeadsForStudent } from "@/lib/db";
+import { getServerSession } from "@/lib/session";
+import { apiGetSessionsForStudent, apiGetLeads, apiSignOut, getSessionCookie } from "@/lib/api";
 import { redirect } from "next/navigation";
 import { SUBJECT_LABELS } from "@/lib/utils";
 
 export default async function StudentDashboardPage() {
-  const session = await auth();
+  const session = await getServerSession();
   if (!session?.user) redirect("/login");
 
-  const sessions = getSessionsForStudent(session.user.id);
-  const leads = getLeadsForStudent(session.user.email);
+  const userId = session.user.id;
+  const [sessionsRes, leadsRes] = await Promise.all([
+    apiGetSessionsForStudent(userId),
+    apiGetLeads(userId),
+  ]);
+
+  const sessions = sessionsRes.sessions ?? [];
+  const leads = leadsRes.leads ?? [];
   const activeLead = leads[0];
 
   return (

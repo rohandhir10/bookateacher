@@ -6,7 +6,7 @@ import { tutorProfileMetadata } from "@/lib/page-seo";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const tutor: any = getTutorById(id);
+  const tutor: any = await getTutorById(id);
   if (!tutor || tutor.role !== "tutor") {
     return { title: "Tutor not found | bookateacher.in" };
   }
@@ -98,7 +98,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 export default async function TutorProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const tutor: any = getTutorById(id);
+  const tutor: any = await getTutorById(id);
 
   if (!tutor || tutor.role !== "tutor") {
     return (

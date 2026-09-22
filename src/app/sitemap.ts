@@ -8,8 +8,23 @@ export interface SitemapEntry {
 }
 
 function getTutorProfileUrls(baseUrl: string, now: Date): SitemapEntry[] {
-  // Use static tutor data — works in Vercel serverless and CI build
-  // (DB is only available in local dev; Vercel has no persistent SQLite)
+  // Prefer DB (works locally and on Vercel when Turso is connected)
+  try {
+    const { query } = require("@/lib/db") as { query: (sql: string, params?: any[]) => any[] };
+    const rows = query(
+      'SELECT id, name FROM users WHERE role = "tutor" AND status = "active" ORDER BY created_at ASC',
+    ) as any[];
+    if (rows && rows.length > 0) {
+      return rows.map((row) => ({
+        url: `${baseUrl}/tutors/${row.id}`,
+        lastModified: now,
+        changeFrequency: "monthly" as const,
+        priority: 0.85 as const,
+      }));
+    }
+  } catch {
+    // Fallback: try static tutor data
+  }
   try {
     const { TUTOR_DATA } = require("@/lib/tutor-data") as { TUTOR_DATA: any[] };
     if (TUTOR_DATA && TUTOR_DATA.length > 0) {
@@ -21,23 +36,7 @@ function getTutorProfileUrls(baseUrl: string, now: Date): SitemapEntry[] {
       }));
     }
   } catch {
-    // Fallback: try DB (local dev only)
-  }
-  try {
-    const db = (() => {
-      return (require("@/lib/db") as any).getDb();
-    })();
-    const rows = db.prepare('SELECT id, name FROM users WHERE role = "tutor" AND status = "active" ORDER BY created_at ASC').all() as any[];
-    if (rows && rows.length > 0) {
-      return rows.map((row) => ({
-        url: `${baseUrl}/tutors/${row.id}`,
-        lastModified: now,
-        changeFrequency: "monthly" as const,
-        priority: 0.85 as const,
-      }));
-    }
-  } catch {
-    // DB unavailable — no tutor pages in sitemap
+    // No tutor data available
   }
   return [];
 }

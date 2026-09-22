@@ -134,12 +134,13 @@ export const TUTOR_DATA: TutorData[] = [
   },
 ];
 
-export function getTutors(): TutorData[] {
-  // Try DB first (local dev), fall back to static data (Vercel / CI)
+export async function getTutors(): Promise<TutorData[]> {
+  // Try DB first (when Turso is connected), fall back to static data
   try {
-    const dbModule = require("@/lib/db");
-    const db = dbModule.getDb();
-    const rows = db.prepare('SELECT * FROM users WHERE role = "tutor" AND status = "active" ORDER BY created_at ASC').all();
+    const { query } = await import("@/lib/db");
+    const rows = await query(
+      'SELECT * FROM users WHERE role = "tutor" AND status = "active" ORDER BY created_at ASC',
+    );
     if (rows && rows.length > 0) {
       return rows.map((row: any) => ({
         id: row.id,
@@ -161,13 +162,13 @@ export function getTutors(): TutorData[] {
       }));
     }
   } catch {
-    // DB unavailable (Vercel serverless) — fall through to static data
+    // DB unavailable — fall through to static data
   }
   return TUTOR_DATA;
 }
 
-export function getTutorById(id: string): TutorData | undefined {
-  const tutors = getTutors();
+export async function getTutorById(id: string): Promise<TutorData | undefined> {
+  const tutors = await getTutors();
   // Exact match first
   const exact = tutors.find((t) => t.id === id);
   if (exact) return exact;
@@ -178,6 +179,6 @@ export function getTutorById(id: string): TutorData | undefined {
     (t) =>
       id.startsWith(t.id + "-") ||
       id.startsWith(t.id + "_") ||
-      id.includes(t.id)
+      id.includes(t.id),
   );
 }

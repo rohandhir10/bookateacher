@@ -17,7 +17,7 @@ export async function handleRegister(data: {
 }) {
   const parsed = registerSchema.parse(data);
 
-  const existing = getUserByEmail(parsed.email);
+  const existing = await getUserByEmail(parsed.email);
   if (existing) {
     throw new Error("An account with this email already exists");
   }
@@ -25,7 +25,7 @@ export async function handleRegister(data: {
   const passwordHash = await hashPassword(parsed.password);
   const id = generateId();
 
-  createUser({
+  await createUser({
     id,
     email: parsed.email.toLowerCase(),
     name: parsed.name.trim(),
@@ -34,7 +34,7 @@ export async function handleRegister(data: {
     phone: parsed.phone?.trim() || undefined,
   });
 
-  const user = getUserById(id);
+  const user = await getUserById(id);
   if (!user) throw new Error("Failed to create user");
 
   return {
@@ -50,45 +50,34 @@ export async function handleLogin(data: {
   password: string;
 }) {
   const parsed = loginSchema.parse(data);
-  const user = getUserByEmail(parsed.email.toLowerCase());
-  if (!user || !user.password_hash) {
-    throw new Error("Invalid email or password");
-  }
+  const user = await getUserByEmail(parsed.email.toLowerCase());
+  if (!user) return null;
+  if (!user.password_hash) return null;
   const valid = await verifyPassword(parsed.password, user.password_hash);
-  if (!valid) {
-    throw new Error("Invalid email or password");
-  }
+  if (!valid) return null;
   return {
     id: user.id,
     email: user.email,
     name: user.name,
     role: user.role,
+    verified: user.verified,
   };
 }
 
-export function ensureUserExists(
-  email: string,
-  name: string,
-  image?: string | null
-) {
-  const existing = getUserByEmail(email);
-  if (existing) {
-    if (name && existing.name !== name) {
-      updateUser(existing.id, { name });
-    }
-    return existing;
-  }
+export async function createUserFromGoogle(googleUser: any, db: any) {
+  const id = googleUser.sub || generateId();
+  const existing = await getUserByEmail(googleUser.email);
+  if (existing) return existing;
 
-  const id = generateId();
-  createUser({
+  await createUser({
     id,
-    email: email.toLowerCase(),
-    name: name.trim(),
+    email: googleUser.email,
+    name: googleUser.name,
+    avatar_url: googleUser.picture || undefined,
     role: "student",
-    avatar_url: image ?? undefined,
   });
 
-  const user = getUserById(id);
+  const user = await getUserById(id);
   if (!user) throw new Error("Failed to create user from Google");
   return user;
 }
