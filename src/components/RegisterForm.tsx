@@ -52,12 +52,12 @@ export function RegisterForm() {
       const json = await res.json();
       if (!res.ok) throw new Error(json.error ?? "Registration failed");
 
-      // Auto-login
-      await signIn("credentials", {
+      const loginResult = await signIn("credentials", {
         email: parsed.email,
         password: parsed.password,
         redirect: false,
       });
+      if (!loginResult?.ok) throw new Error("Account created, but sign-in failed.");
 
       // If student, also create a lead so the matching flow has something to show
       if (parsed.role === "student") {
