@@ -82,8 +82,8 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
           (tutor.rating ?? 4.5).toFixed(1) as any,
         bestRating: 5,
         worstRating: 1,
-        ratingCount: 12 + Math.floor(Math.random() * 30),
-        reviewCount: 8 + Math.floor(Math.random() * 20),
+        ratingCount: Number(tutor.reviews ?? 0),
+        reviewCount: Number(tutor.reviews ?? 0),
       },
     ],
   });
@@ -122,7 +122,8 @@ export default async function TutorProfilePage({ params }: { params: Promise<{ i
   const subjectLabel = subjects.join(" / ") || "Tutor";
   const initials = tutor.name.split(" ").map((n: string) => n[0]).join("").slice(0, 2).toUpperCase();
   const price = tutor.hourly_rate ? `₹${tutor.hourly_rate.toLocaleString("en-IN")}/hr` : "From ₹800/hr";
-  const rating = (4.5 + ((parseInt(tutor.id.slice(-2), 16) % 50) / 100)).toFixed(1) as string;
+  const rating = Number(tutor.rating ?? 0).toFixed(1);
+  const reviewCount = Number(tutor.reviews ?? 0);
 
   const INK = "#14213D";
   const INK_SOFT = "#3D4A63";
@@ -202,8 +203,8 @@ export default async function TutorProfilePage({ params }: { params: Promise<{ i
         ratingValue: rating,
         bestRating: 5,
         worstRating: 1,
-        ratingCount: 12 + Math.floor(Math.random() * 30),
-        reviewCount: 8 + Math.floor(Math.random() * 20),
+        ratingCount: reviewCount,
+        reviewCount,
       },
     ],
   });
@@ -289,14 +290,16 @@ export default async function TutorProfilePage({ params }: { params: Promise<{ i
                 </div>
                 <div style={{ fontSize: "0.75rem", color: MUTED, marginTop: 4 }}>out of 5</div>
                 <div style={{ display: "flex", gap: 2, justifyContent: "center", marginTop: 6 }}>
-                  {Array(parseInt(rating)).fill(null).map((_: null, i: number) => (
+                  {Array(Math.round(Number(rating))).fill(null).map((_: null, i: number) => (
                     <span key={i} style={{ color: RED, fontSize: "1rem" }}>★</span>
                   ))}
-                  {Array(5 - parseInt(rating)).fill(null).map((_: null, i: number) => (
+                  {Array(Math.max(0, 5 - Math.round(Number(rating)))).fill(null).map((_: null, i: number) => (
                     <span key={i} style={{ color: LINE, fontSize: "1rem" }}>★</span>
                   ))}
                 </div>
-                <div style={{ fontSize: "0.75rem", color: MUTED, marginTop: 2 }}>({12 + Math.floor(Math.random() * 30)} reviews)</div>
+                <div style={{ fontSize: "0.75rem", color: MUTED, marginTop: 2 }}>
+                  {reviewCount === 0 ? "No reviews yet" : "(" + reviewCount + " reviews)"}
+                </div>
               </div>
             </div>
 
