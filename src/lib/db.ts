@@ -220,6 +220,13 @@ async function initSchemaTurso() {
       }
     }
   }
+  try {
+    await client.execute({ sql: "ALTER TABLE sessions ADD COLUMN amount_inr INTEGER" });
+  } catch {}
+  await client.execute({ sql: PAYMENT_SCHEMA_SQL });
+  await client.execute({ sql: "CREATE INDEX IF NOT EXISTS idx_payments_user ON payments(user_id)" });
+  await client.execute({ sql: "CREATE INDEX IF NOT EXISTS idx_payments_session ON payments(session_id)" });
+  await client.execute({ sql: "CREATE INDEX IF NOT EXISTS idx_payments_order ON payments(order_id)" });
 }
 
 // Ensure Turso schema is initialized lazily
