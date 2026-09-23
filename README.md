@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# bookateacher.in
 
-## Getting Started
+bookateacher.in is a curated tutoring marketplace focused on IELTS, TOEFL, Spoken English, and related high-intent learning goals.
 
-First, run the development server:
+## Canonical architecture
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+The production application is intentionally one stack: Next.js App Router, NextAuth, Turso/libSQL, better-sqlite3 for local development, and Razorpay for payments.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The retired Hono/Railway backend is no longer part of the application path.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Security rules
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Authentication is authoritative on the server.
+- API routes derive the current user from the NextAuth session.
+- Client-supplied ownership IDs are not trusted for authorization.
+- Database update fields are explicitly allowlisted.
+- Payment verification fails closed and records server-created orders.
+- Session cookies are never written through browser JavaScript.
+- Registration and credential authentication are rate-limited.
 
-## Learn More
+The current rate limiter is process-local. A distributed limiter or platform WAF/rate limit should be added before high-volume production traffic.
 
-To learn more about Next.js, take a look at the following resources:
+## Environment
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Production normally requires AUTH_SECRET, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, TURSO_DATABASE_URL, TURSO_AUTH_TOKEN, RAZORPAY_KEY_ID, and RAZORPAY_KEY_SECRET.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Development seed data requires a SEED_PASSWORD of at least 12 characters. Demo seeding is explicitly guarded in production.
 
-## Deploy on Vercel
+## Development
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    npm install
+    npm run dev
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Validation:
+
+    npm run lint
+    npx tsc --noEmit
+
+GitHub Actions runs lint and typecheck for pushes to main/refactor-security-architecture-business and pull requests targeting main.
+
+## Marketplace integrity
+
+Tutor ratings and review counts come from stored testimonial records. The application does not generate reputation values randomly.
+
+When the production database is unavailable, the public tutor directory fails closed instead of silently presenting static demo tutors as marketplace truth. Static demo tutors are development-only.
+
+## Product flow
+
+Student intent -> matching intake -> human/tutor match -> booking -> payment -> completed session -> review/repeat booking.
+
+Registration is intentionally lightweight. Detailed matching requirements are collected after account creation.
+
+## Refactor branch
+
+The production-hardening work from the codebase audit lives on refactor/security-architecture-business and is intentionally kept separate from main until reviewed and validated.
