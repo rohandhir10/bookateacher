@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { updateUser, recordAdminAction } from "@/lib/db";
+import { getUserById, updateUser, recordAdminAction } from "@/lib/db";
 import { tutorProfileSchema } from "@/lib/validations";
 
 export async function POST(request: NextRequest) {
@@ -48,4 +48,29 @@ export async function POST(request: NextRequest) {
     const message = error instanceof Error ? error.message : "An error occurred";
     return NextResponse.json({ error: message }, { status: 400 });
   }
+}
+
+
+export async function GET() {
+  const session = await auth();
+  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (session.user.role !== "tutor") return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+
+  const user = await getUserById(session.user.id);
+  if (!user) return NextResponse.json({ error: "Profile not found" }, { status: 404 });
+
+  return NextResponse.json({
+    profile: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      bio: user.bio,
+      hourly_rate: user.hourly_rate,
+      subjects: user.subjects ? JSON.parse(user.subjects) : [],
+      credentials: user.credentials ? JSON.parse(user.credentials) : {},
+      availability: user.availability ? JSON.parse(user.availability) : null,
+      avatar_url: user.avatar_url,
+      verified: !!user.verified,
+    },
+  });
 }
