@@ -1,6 +1,7 @@
 import { RegisterForm } from "@/components/RegisterForm";
 import Link from "next/link";
 import { Metadata } from "next";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Sign up | bookateacher.in",
@@ -113,10 +114,13 @@ export default function RegisterPage() {
               href="/login"
               style={{
                 fontSize: "0.875rem",
-                color: INK_SOFT,
-                transition: "color 0.15s",
+                color: PAPER,
+                opacity: 0.85,
+                transition: "opacity 0.15s",
                 textDecoration: "none",
               }}
+              onMouseEnter={(e) => (e.currentTarget.style.opacity = "1")}
+              onMouseLeave={(e) => (e.currentTarget.style.opacity = "0.85")}
             >
               Sign in
             </Link>
@@ -187,7 +191,9 @@ export default function RegisterPage() {
               boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
             }}
           >
-            <RegisterForm />
+            <Suspense fallback={<div className="h-96" aria-hidden="true" />}>
+              <RegisterForm />
+            </Suspense>
           </div>
 
           {/* Trust badges */}
