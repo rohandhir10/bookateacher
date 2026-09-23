@@ -18,7 +18,13 @@ import { leadSchema, sessionUpdateSchema } from "@/lib/validations";
 import { generateId } from "@/lib/utils";
 
 function roleOf(session: Awaited<ReturnType<typeof auth>>) {
-  return session?.user ? (session.user as { id: string; role: "student" | "tutor" | "admin" }) : null;
+  return session?.user
+    ? (session.user as {
+        id: string;
+        email: string;
+        role: "student" | "tutor" | "admin";
+      })
+    : null;
 }
 
 export async function POST(request: Request) {
@@ -111,7 +117,7 @@ export async function POST(request: Request) {
       const isAdmin = actor.role === "admin";
       const isStudentOwner =
         actor.role === "student" &&
-        String(lead.email || "").toLowerCase() === actor.email?.toLowerCase();
+        String(lead.email || "").toLowerCase() === actor.email.toLowerCase();
 
       if (!isAdmin && !isStudentOwner) {
         return NextResponse.json({ error: "You cannot create this session." }, { status: 403 });
@@ -120,10 +126,16 @@ export async function POST(request: Request) {
       const parsed = sessionUpdateSchema.parse(data);
       const id = generateId();
 
+      const studentId = isAdmin ? String(data.student_id || "") : actor.id;
+      const student = await getUserById(studentId);
+      if (!student || student.role !== "student") {
+        return NextResponse.json({ error: "A valid student account is required." }, { status: 400 });
+      }
+
       await createSession({
         id,
         tutor_id: tutorId,
-        student_id: isAdmin ? String(data.student_id || "") : actor.id,
+        student_id: studentId,
         scheduled_at: parsed.scheduled_at || new Date().toISOString(),
         duration_minutes: parsed.duration_minutes ?? 60,
         meeting_link: parsed.meeting_link || undefined,
