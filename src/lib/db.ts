@@ -429,10 +429,11 @@ export async function createSession(data: {
   scheduled_at: string;
   duration_minutes?: number;
   meeting_link?: string | null;
+  amount_inr?: number | null;
 }) {
   await executeStmt(
-    `INSERT INTO sessions (id, tutor_id, student_id, scheduled_at, duration_minutes, meeting_link)
-     VALUES (?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO sessions (id, tutor_id, student_id, scheduled_at, duration_minutes, meeting_link, amount_inr)
+     VALUES (?, ?, ?, ?, ?, ?, ?)`,
     [
       data.id,
       data.tutor_id,
@@ -440,6 +441,7 @@ export async function createSession(data: {
       data.scheduled_at,
       data.duration_minutes ?? 60,
       data.meeting_link ?? null,
+      data.amount_inr ?? null,
     ],
   );
 }
@@ -460,6 +462,10 @@ export async function getSessionsForTutor(
     params.push(opts.limit);
   }
   return query(sql, params);
+}
+
+export async function getSessionById(id: string): Promise<any | undefined> {
+  return queryOne("SELECT * FROM sessions WHERE id = ?", [id]);
 }
 
 export async function getSessionsForStudent(
@@ -734,6 +740,45 @@ export async function publishTestimonial(
   } catch {
     return "insert_failed";
   }
+}
+
+// ----------------------------------------------------------------------
+// Payments
+// ----------------------------------------------------------------------
+export async function createPayment(data: {
+  id: string;
+  user_id: string;
+  session_id?: string | null;
+  order_id: string;
+  amount_inr: number;
+  currency?: string;
+}) {
+  await executeStmt(
+    "INSERT INTO payments (id, user_id, session_id, order_id, amount_inr, currency, status) VALUES (?, ?, ?, ?, ?, ?, 'created')",
+    [
+      data.id,
+      data.user_id,
+      data.session_id ?? null,
+      data.order_id,
+      data.amount_inr,
+      data.currency ?? "INR",
+    ],
+  );
+}
+
+export async function getPaymentByOrderId(orderId: string): Promise<any | undefined> {
+  return queryOne("SELECT * FROM payments WHERE order_id = ?", [orderId]);
+}
+
+export async function verifyPayment(
+  orderId: string,
+  paymentId: string,
+  signature: string,
+) {
+  await executeStmt(
+    "UPDATE payments SET payment_id = ?, signature = ?, status = 'verified', verified_at = datetime('now') WHERE order_id = ?",
+    [paymentId, signature, orderId],
+  );
 }
 
 // ----------------------------------------------------------------------
