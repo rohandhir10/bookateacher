@@ -124,43 +124,51 @@ export const TUTOR_DATA: TutorData[] = [
 ];
 
 export async function getTutors(): Promise<TutorData[]> {
-  // Try DB first (when Turso is connected), fall back to static data
   try {
     const { query } = await import("@/lib/db");
     const rows = await query(
-      "SELECT id, name, email, role, bio, hourly_rate, " +
-      "COALESCE(subjects, '[]') as subjects, " +
-      "COALESCE(verified, 0) as verified, COALESCE(credentials, '') as credentials, " +
-      "COALESCE(rating, 0) as rating, COALESCE(reviews, 0) as reviews, " +
-      "COALESCE(specializations, '[]') as specializations, " +
-      "COALESCE(languages, '[]') as languages, " +
-      "COALESCE(availability, NULL) as availability, " +
-      "COALESCE(avatar_url, NULL) as avatar_url " +
-      "FROM users WHERE role = 'tutor' AND status = 'active' ORDER BY created_at ASC"
+      "SELECT u.id, u.name, u.email, u.role, COALESCE(u.bio, '') AS bio, " +
+      "COALESCE(u.hourly_rate, 0) AS hourly_rate, COALESCE(u.subjects, '[]') AS subjects, " +
+      "COALESCE(u.verified, 0) AS verified, COALESCE(u.credentials, '{}') AS credentials, " +
+      "COALESCE(AVG(t.rating), 0) AS rating, COUNT(t.id) AS reviews, " +
+      "COALESCE(u.availability, NULL) AS availability, COALESCE(u.avatar_url, NULL) AS avatar_url " +
+      "FROM users u LEFT JOIN testimonials t ON t.tutor_id = u.id AND t.visible = 1 " +
+      "WHERE u.role = 'tutor' AND u.status = 'active' " +
+      "GROUP BY u.id ORDER BY u.verified DESC, u.created_at ASC",
     );
-    if (rows && rows.length > 0) {
-      return rows.map((row: any) => ({
+
+    return rows.map((row: any) => {
+      const credentials = row.credentials ? JSON.parse(row.credentials) : {};
+      const subjects = row.subjects ? JSON.parse(row.subjects) : [];
+      return {
         id: row.id,
         name: row.name,
         email: row.email,
         role: row.role,
         bio: row.bio || "",
         hourly_rate: Number(row.hourly_rate) || 0,
-        subjects: row.subjects ? JSON.parse(row.subjects) : [],
+        subjects,
         verified: !!row.verified,
-        credentials: row.credentials ? JSON.parse(row.credentials) : { experience_years: 5, certification: "", teaching_style: "", background: "" },
         rating: Number(row.rating) || 0,
         reviews: Number(row.reviews) || 0,
-        specializations: row.specializations ? JSON.parse(row.specializations) : [],
-        languages: row.languages ? JSON.parse(row.languages) : [],
+        specializations: subjects,
+        languages: Array.isArray(credentials.languages) ? credentials.languages : [],
+        credentials: {
+          experience_years: Number(credentials.experience_years) || 0,
+          certification: credentials.certification || "",
+          teaching_style: credentials.teaching_style || "",
+          background: credentials.background || "",
+          ielts_score: credentials.ielts_score,
+          toefl_score: credentials.toefl_score,
+        },
         availability: row.availability ? JSON.parse(row.availability) : undefined,
         avatar_url: row.avatar_url || undefined,
-      }));
-    }
-  } catch {
-    // DB unavailable — fall through to static data
+      };
+    });
+  } catch (error) {
+    console.error("Tutor directory unavailable:", error);
+    return [];
   }
-  return TUTOR_DATA;
 }
 
 export async function getTutorById(id: string): Promise<TutorData | undefined> {
