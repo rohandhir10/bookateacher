@@ -3,8 +3,6 @@
 // Locally, the DB is the source of truth; on Vercel, this fallback is used.
 // Keep in sync with seed.ts — update when tutors are added/changed.
 
-import { SUBJECT_LABELS } from "./utils";
-
 export interface TutorData {
   id: string;
   name: string;
