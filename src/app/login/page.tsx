@@ -110,10 +110,13 @@ export default function LoginPage() {
             href="/"
             style={{
               fontSize: "0.875rem",
-              color: INK_SOFT,
-              transition: "color 0.15s",
+              color: PAPER,
+              opacity: 0.85,
+              transition: "opacity 0.15s",
               textDecoration: "none",
             }}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = "1")}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = "0.85")}
           >
             Back to home
           </Link>
