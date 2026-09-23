@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "bookateacher.in — From 6.5 to 7.5. In six weeks.",
+    default: "bookateacher.in — 1-on-1 IELTS, TOEFL and Spoken English coaching.",
     template: "%s | bookateacher.in",
   },
   description:
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   creator: "bookateacher.in",
   publisher: "bookateacher.in",
   openGraph: {
-    title: "bookateacher.in — From 6.5 to 7.5. In six weeks.",
+    title: "bookateacher.in — 1-on-1 language and test-prep coaching.",
     description:
       "Certified IELTS, TOEFL, and Spoken English tutors across India. Live 1-on-1 coaching, mock tests, and personal feedback.",
     type: "website",
@@ -115,7 +115,7 @@ export default function RootLayout({
         "@type": "WebPage",
         "@id": "https://bookateacher.in/#webpage",
         url: "https://bookateacher.in",
-        name: "bookateacher.in — From 6.5 to 7.5. In six weeks.",
+        name: "bookateacher.in — 1-on-1 language and test-prep coaching.",
         description:
           "Certified IELTS, TOEFL, and Spoken English tutors across India. Live 1-on-1 coaching, mock tests, and personal feedback.",
         isPartOf: { "@id": "https://bookateacher.in/#website" },
