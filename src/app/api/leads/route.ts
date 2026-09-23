@@ -15,7 +15,6 @@ import {
   getTestimonialsForTutor,
   getTutorTestimonialRequests,
   query,
-  getSessionById,
   getTutorById,
   getUserById,
   recordAdminAction,
