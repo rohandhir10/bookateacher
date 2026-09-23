@@ -113,6 +113,7 @@ CREATE TABLE IF NOT EXISTS sessions (
 
 CREATE TABLE IF NOT EXISTS leads (
   id TEXT PRIMARY KEY,
+  student_id TEXT REFERENCES users(id) ON DELETE SET NULL,
   name TEXT NOT NULL,
   email TEXT,
   phone TEXT NOT NULL,
@@ -201,10 +202,12 @@ const PAYMENT_SCHEMA_SQL =
 
 function ensureLocalSchemaExtras(db: any) {
   try { db.exec("ALTER TABLE sessions ADD COLUMN amount_inr INTEGER"); } catch {}
+  try { db.exec("ALTER TABLE leads ADD COLUMN student_id TEXT REFERENCES users(id) ON DELETE SET NULL"); } catch {}
   db.exec(PAYMENT_SCHEMA_SQL);
   db.exec("CREATE INDEX IF NOT EXISTS idx_payments_user ON payments(user_id)");
   db.exec("CREATE INDEX IF NOT EXISTS idx_payments_session ON payments(session_id)");
   db.exec("CREATE INDEX IF NOT EXISTS idx_payments_order ON payments(order_id)");
+  db.exec("CREATE INDEX IF NOT EXISTS idx_leads_student ON leads(student_id)");
 }
 
 
@@ -224,10 +227,14 @@ async function initSchemaTurso() {
   try {
     await client.execute({ sql: "ALTER TABLE sessions ADD COLUMN amount_inr INTEGER" });
   } catch {}
+  try {
+    await client.execute({ sql: "ALTER TABLE leads ADD COLUMN student_id TEXT REFERENCES users(id) ON DELETE SET NULL" });
+  } catch {}
   await client.execute({ sql: PAYMENT_SCHEMA_SQL });
   await client.execute({ sql: "CREATE INDEX IF NOT EXISTS idx_payments_user ON payments(user_id)" });
   await client.execute({ sql: "CREATE INDEX IF NOT EXISTS idx_payments_session ON payments(session_id)" });
   await client.execute({ sql: "CREATE INDEX IF NOT EXISTS idx_payments_order ON payments(order_id)" });
+  await client.execute({ sql: "CREATE INDEX IF NOT EXISTS idx_leads_student ON leads(student_id)" });
 }
 
 // Ensure Turso schema is initialized lazily
