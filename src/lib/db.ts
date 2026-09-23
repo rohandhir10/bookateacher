@@ -54,6 +54,7 @@ function getLocalDb() {
     _localDb.pragma("foreign_keys = ON");
     _localDb.pragma("secure_delete = ON");
     initSchemaLocal(_localDb);
+    ensureLocalSchemaExtras(_localDb);
   }
   return _localDb;
 }
@@ -182,6 +183,29 @@ CREATE INDEX IF NOT EXISTS idx_testimonial_requests_tutor ON testimonial_request
 function initSchemaLocal(db: any) {
   db.exec(SCHEMA_SQL);
 }
+
+const PAYMENT_SCHEMA_SQL =
+  "CREATE TABLE IF NOT EXISTS payments (" +
+  "id TEXT PRIMARY KEY, " +
+  "user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE, " +
+  "session_id TEXT REFERENCES sessions(id) ON DELETE SET NULL, " +
+  "provider TEXT NOT NULL DEFAULT 'razorpay', " +
+  "order_id TEXT NOT NULL UNIQUE, " +
+  "payment_id TEXT, signature TEXT, " +
+  "amount_inr INTEGER NOT NULL, " +
+  "currency TEXT NOT NULL DEFAULT 'INR', " +
+  "status TEXT NOT NULL DEFAULT 'created' CHECK (status IN ('created','verified','failed','refunded')), " +
+  "created_at TEXT NOT NULL DEFAULT (datetime('now')), " +
+  "verified_at TEXT)"; 
+
+function ensureLocalSchemaExtras(db: any) {
+  try { db.exec("ALTER TABLE sessions ADD COLUMN amount_inr INTEGER"); } catch {}
+  db.exec(PAYMENT_SCHEMA_SQL);
+  db.exec("CREATE INDEX IF NOT EXISTS idx_payments_user ON payments(user_id)");
+  db.exec("CREATE INDEX IF NOT EXISTS idx_payments_session ON payments(session_id)");
+  db.exec("CREATE INDEX IF NOT EXISTS idx_payments_order ON payments(order_id)");
+}
+
 
 // Async schema init for Turso (called lazily on first use)
 async function initSchemaTurso() {
