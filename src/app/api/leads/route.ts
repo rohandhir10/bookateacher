@@ -7,6 +7,14 @@ import {
   declineLead,
   executeStmt,
   getLeadById,
+  getLeads,
+  getLeadsForStudent,
+  getSessionsForStudent,
+  getSessionsForTutor,
+  getSessionById,
+  getTestimonialsForTutor,
+  getTutorTestimonialRequests,
+  query,
   getSessionById,
   getTutorById,
   getUserById,
@@ -25,6 +33,68 @@ function roleOf(session: Awaited<ReturnType<typeof auth>>) {
         role: "student" | "tutor" | "admin";
       })
     : null;
+}
+
+export async function GET(request: Request) {
+  const session = await auth();
+  const actor = roleOf(session);
+  if (!actor) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const url = new URL(request.url);
+  const id = url.searchParams.get("id");
+  const resource = url.searchParams.get("resource");
+
+  if (id) {
+    const lead = await getLeadById(id);
+    if (!lead) return NextResponse.json({ error: "Lead not found." }, { status: 404 });
+
+    const canRead =
+      actor.role === "admin" ||
+      (actor.role === "student" && String(lead.email || "").toLowerCase() === actor.email.toLowerCase()) ||
+      (actor.role === "tutor" && (!lead.assigned_tutor_id || lead.assigned_tutor_id === actor.id));
+
+    if (!canRead) return NextResponse.json({ error: "Forbidden." }, { status: 403 });
+    return NextResponse.json({ lead });
+  }
+
+  if (resource === "sessions") {
+    if (actor.role === "tutor") return NextResponse.json({ sessions: await getSessionsForTutor(actor.id) });
+    if (actor.role === "student") return NextResponse.json({ sessions: await getSessionsForStudent(actor.id) });
+    return NextResponse.json({ sessions: [] });
+  }
+
+  if (resource === "testimonials") {
+    if (actor.role !== "tutor") return NextResponse.json({ testimonials: [] });
+    return NextResponse.json({ testimonials: await getTestimonialsForTutor(actor.id) });
+  }
+
+  if (resource === "testimonial-requests") {
+    if (actor.role !== "tutor") return NextResponse.json({ requests: [] });
+    return NextResponse.json({ requests: await getTutorTestimonialRequests(actor.id) });
+  }
+
+  let leadsForUser: any[];
+  if (actor.role === "admin") {
+    leadsForUser = await getLeads();
+  } else if (actor.role === "student") {
+    leadsForUser = await getLeadsForStudent(actor.email);
+  } else {
+    leadsForUser = await query(
+      "SELECT * FROM leads WHERE status = 'new' OR assigned_tutor_id = ? ORDER BY created_at DESC",
+      [actor.id],
+    );
+  }
+
+  const normalized = leadsForUser.map((lead: any) => ({
+    ...lead,
+    student_name: lead.name,
+    student_email: lead.email,
+    student_phone: lead.phone,
+  }));
+
+  return NextResponse.json({ leads: normalized });
 }
 
 export async function POST(request: Request) {
