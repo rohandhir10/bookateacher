@@ -40,7 +40,9 @@ jobs:
           src/app/api/tutor/profile/route.ts
           src/components/LoginForm.tsx
           src/components/RegisterForm.tsx
+          src/components/MatchingIntakeForm.tsx
           src/app/register/page.tsx
+          src/app/onboarding/matching/page.tsx
           --rule "@typescript-eslint/no-explicit-any: off"
 
       - name: Typecheck
