@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { registerSchema } from "@/lib/validations";
 import { SUBJECT_LABELS, SUBJECT_DESCRIPTIONS } from "@/lib/utils";
+import Link from "next/link";
 
 const SUBJECTS = Object.entries(SUBJECT_LABELS).map(([slug, label]) => ({
   slug,
@@ -16,7 +17,6 @@ export function RegisterForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
-  const [isRegistering, setIsRegistering] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [formData, setFormData] = useState({
@@ -83,15 +83,15 @@ export function RegisterForm() {
             : "You&apos;re signed up. Let&apos;s find you the perfect tutor."}
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-          <a
+          <Link
             href={formData.role === "tutor" ? "/tutor/profile" : "/dashboard"}
             className="btn btn-primary flex-1"
           >
             {formData.role === "tutor" ? "Complete profile" : "Go to dashboard"}
-          </a>
-          <a href="/" className="btn btn-ghost flex-1">
+          </Link>
+          <Link href="/" className="btn btn-ghost flex-1">
             Browse tutors
-          </a>
+          </Link>
         </div>
       </div>
     );
