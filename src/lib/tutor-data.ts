@@ -167,7 +167,8 @@ export async function getTutors(): Promise<TutorData[]> {
     });
   } catch (error) {
     console.error("Tutor directory unavailable:", error);
-    return [];
+    if (process.env.NODE_ENV !== "production") return TUTOR_DATA;
+    throw new Error("Tutor database unavailable");
   }
 }
 
