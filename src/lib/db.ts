@@ -389,8 +389,8 @@ export async function updateUser(id: string, data: Record<string, any>) {
   const values: any[] = [];
 
   for (const [key, value] of Object.entries(data)) {
-    if (key === "id" || key === "email" || key === "created_at") continue;
-    fields.push(`${key} = ?`);
+    if (!USER_MUTABLE_FIELDS.has(key)) continue;
+    fields.push(key + " = ?");
     values.push(
       key === "credentials" || key === "subjects" || key === "availability"
         ? JSON.stringify(value)
@@ -403,7 +403,7 @@ export async function updateUser(id: string, data: Record<string, any>) {
   values.push(id);
 
   await executeStmt(
-    `UPDATE users SET ${fields.join(", ")} WHERE id = ?`,
+    "UPDATE users SET " + fields.join(", ") + " WHERE id = ?",
     values,
   );
 }
@@ -483,8 +483,8 @@ export async function updateSession(
   const values: any[] = [];
 
   for (const [key, value] of Object.entries(data)) {
-    if (key === "id" || key === "created_at") continue;
-    fields.push(`${key} = ?`);
+    if (!SESSION_MUTABLE_FIELDS.has(key)) continue;
+    fields.push(key + " = ?");
     values.push(value);
   }
 
@@ -493,7 +493,7 @@ export async function updateSession(
   values.push(id);
 
   await executeStmt(
-    `UPDATE sessions SET ${fields.join(", ")} WHERE id = ?`,
+    "UPDATE sessions SET " + fields.join(", ") + " WHERE id = ?",
     values,
   );
 }
@@ -572,9 +572,8 @@ export async function updateLead(id: string, data: Record<string, any>) {
   const values: any[] = [];
 
   for (const [key, value] of Object.entries(data)) {
-    if (key === "id" || key === "created_at" || key === "name" || key === "phone" || key === "subject")
-      continue;
-    fields.push(`${key} = ?`);
+    if (!LEAD_MUTABLE_FIELDS.has(key)) continue;
+    fields.push(key + " = ?");
     values.push(
       key === "preferred_days" || key === "preferred_times"
         ? JSON.stringify(value)
@@ -587,7 +586,7 @@ export async function updateLead(id: string, data: Record<string, any>) {
   values.push(id);
 
   await executeStmt(
-    `UPDATE leads SET ${fields.join(", ")} WHERE id = ?`,
+    "UPDATE leads SET " + fields.join(", ") + " WHERE id = ?",
     values,
   );
 }
