@@ -28,19 +28,12 @@ export function LoginForm() {
     try {
       if (mode === "login") {
         const parsed = loginSchema.parse(formData);
-        const res = await fetch("/api/auth/general", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ action: "login", data: parsed }),
-        });
-        const json = await res.json();
-        if (!res.ok) throw new Error(json.error ?? "Login failed");
-
-        await signIn("credentials", {
+        const result = await signIn("credentials", {
           email: parsed.email,
           password: parsed.password,
           redirect: false,
         });
+        if (!result?.ok) throw new Error("Invalid email or password");
         router.push(callbackUrl);
         router.refresh();
       } else {
