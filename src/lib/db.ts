@@ -307,6 +307,26 @@ export async function executeStmt(
 }
 
 // ----------------------------------------------------------------------
+// Mutation allowlists
+// ----------------------------------------------------------------------
+const USER_MUTABLE_FIELDS = new Set([
+  "name", "phone", "credentials", "bio", "hourly_rate",
+  "subjects", "availability", "avatar_url",
+]);
+
+const SESSION_MUTABLE_FIELDS = new Set([
+  "scheduled_at", "duration_minutes", "status", "notes",
+  "meeting_link", "payment_status", "paid_at", "rating", "feedback",
+]);
+
+const LEAD_MUTABLE_FIELDS = new Set([
+  "goal", "budget_per_hour", "preferred_days", "preferred_times",
+  "online_or_local", "location", "current_level", "challenge",
+  "status", "assigned_tutor_id", "contacted_at", "matched_at",
+  "converted_at", "closed_reason",
+]);
+
+// ----------------------------------------------------------------------
 // Users
 // ----------------------------------------------------------------------
 export async function getUserByEmail(email: string): Promise<any | undefined> {
