@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { FAQ_SCHEMA as HOME_FAQ_SCHEMA } from "@/lib/seo";
-import SpokenEnglishIllustration from "@/components/SpokenEnglishIllustration";
 
 export const metadata: Metadata = {
   title: "Spoken English Tutor — Find Conversation Coaches | bookateacher.in",
@@ -400,11 +399,6 @@ export default function SpokenEnglishSubjectPage() {
 
             {/* Right column */}
             <div style={{ display: "flex", flexDirection: "column", gap: 24, position: "sticky", top: 88 }}>
-              {/* Spoken English illustration */}
-              <div style={{ width: "100%", aspectRatio: "3 / 4", borderRadius: 12, overflow: "hidden", flexShrink: 0 }}>
-                <SpokenEnglishIllustration />
-              </div>
-
               {/* CTA card */}
               <div
                 style={{
