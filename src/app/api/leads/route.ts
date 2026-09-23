@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import type { Session } from "next-auth";
 import { auth } from "@/lib/auth";
 import {
   acceptLead,
@@ -24,7 +25,7 @@ import {
 import { leadSchema, sessionUpdateSchema } from "@/lib/validations";
 import { generateId } from "@/lib/utils";
 
-function roleOf(session: Awaited<ReturnType<typeof auth>>) {
+function roleOf(session: Session | null) {
   return session?.user
     ? (session.user as {
         id: string;
@@ -137,7 +138,6 @@ export async function POST(request: Request) {
         student_id: studentId,
         name: user?.name || parsed.name,
         email: user?.email || parsed.email,
-        email: email || undefined,
         phone: parsed.phone,
         subject: parsed.subject,
         goal: parsed.goal || undefined,
@@ -161,7 +161,10 @@ export async function POST(request: Request) {
       if (!lead) return NextResponse.json({ error: "Lead not found." }, { status: 404 });
 
       const isAdmin = actor.role === "admin";
-      const isOwner = actor.role === "student" && String(lead.email || "").toLowerCase() === actor.email?.toLowerCase();
+      const isOwner =
+        actor.role === "student" &&
+        (lead.student_id === actor.id ||
+          (!lead.student_id && String(lead.email || "").toLowerCase() === actor.email.toLowerCase()));
       if (!isAdmin && !isOwner) {
         return NextResponse.json({ error: "You cannot update this lead." }, { status: 403 });
       }
