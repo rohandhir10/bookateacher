@@ -182,6 +182,7 @@ CREATE INDEX IF NOT EXISTS idx_testimonial_requests_tutor ON testimonial_request
 
 function initSchemaLocal(db: any) {
   db.exec(SCHEMA_SQL);
+  ensureLocalSchemaExtras(db);
 }
 
 const PAYMENT_SCHEMA_SQL =
