@@ -115,14 +115,26 @@ export async function POST(request: Request) {
       }
 
       const parsed = leadSchema.parse(data);
-      const user = actor.role === "student" ? await getUserById(actor.id) : null;
-      const name = actor.role === "student" ? user?.name || parsed.name : parsed.name;
-      const email = actor.role === "student" ? user?.email || parsed.email : parsed.email;
+      const studentId =
+        actor.role === "student"
+          ? actor.id
+          : typeof data.student_id === "string"
+            ? data.student_id
+            : null;
+      const user = studentId ? await getUserById(studentId) : null;
+      if (actor.role === "student" && !user) {
+        return NextResponse.json({ error: "Student account not found." }, { status: 400 });
+      }
+      if (actor.role === "admin" && studentId && (!user || user.role !== "student")) {
+        return NextResponse.json({ error: "student_id must belong to a student account." }, { status: 400 });
+      }
 
       const id = generateId();
       await createLead({
         id,
-        name,
+        student_id: studentId,
+        name: user?.name || parsed.name,
+        email: user?.email || parsed.email,
         email: email || undefined,
         phone: parsed.phone,
         subject: parsed.subject,
@@ -186,7 +198,8 @@ export async function POST(request: Request) {
       const isAdmin = actor.role === "admin";
       const isStudentOwner =
         actor.role === "student" &&
-        String(lead.email || "").toLowerCase() === actor.email.toLowerCase();
+        (lead.student_id === actor.id ||
+          (!lead.student_id && String(lead.email || "").toLowerCase() === actor.email.toLowerCase()));
 
       if (!isAdmin && !isStudentOwner) {
         return NextResponse.json({ error: "You cannot create this session." }, { status: 403 });
