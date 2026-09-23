@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { registerSchema } from "@/lib/validations";
 import { SUBJECT_LABELS, SUBJECT_DESCRIPTIONS } from "@/lib/utils";
@@ -14,6 +14,7 @@ const SUBJECTS = Object.entries(SUBJECT_LABELS).map(([slug, label]) => ({
 
 export function RegisterForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [isRegistering, setIsRegistering] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -22,18 +23,9 @@ export function RegisterForm() {
     name: "",
     email: "",
     password: "",
-    role: "student" as "student" | "tutor",
+    role: (searchParams.get("role") === "tutor" ? "tutor" : "student") as "student" | "tutor",
     phone: "",
-    // Student lead fields
     subject: "ielts" as string,
-    goal: "",
-    budget_per_hour: "",
-    preferred_days: [] as string[],
-    preferred_times: [] as string[],
-    online_or_local: "online" as "online" | "local" | "either",
-    location: "",
-    current_level: "",
-    challenge: "",
   });
 
   const handleSubmit = async (e: FormEvent) => {
@@ -52,52 +44,12 @@ export function RegisterForm() {
       const json = await res.json();
       if (!res.ok) throw new Error(json.error ?? "Registration failed");
 
-      const loginResult = await signIn("credentials", {
+      // Auto-login
+      await signIn("credentials", {
         email: parsed.email,
         password: parsed.password,
         redirect: false,
       });
-      if (!loginResult?.ok) throw new Error("Account created, but sign-in failed.");
-
-      // If student, also create a lead so the matching flow has something to show
-      if (parsed.role === "student") {
-        try {
-          const leadRes = await fetch("/api/leads", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              action: "create-lead",
-              data: {
-                name: parsed.name,
-                email: parsed.email,
-                phone: "",
-                subject: formData.subject || "ielts",
-                goal: formData.goal || undefined,
-                budget_per_hour: formData.budget_per_hour
-                  ? Number(formData.budget_per_hour)
-                  : undefined,
-                preferred_days: formData.preferred_days.length > 0
-                  ? formData.preferred_days
-                  : undefined,
-                preferred_times: formData.preferred_times.length > 0
-                  ? formData.preferred_times
-                  : undefined,
-                online_or_local: formData.online_or_local,
-                location: formData.location || undefined,
-                current_level: formData.current_level || undefined,
-                challenge: formData.challenge || undefined,
-              },
-            }),
-          });
-          const leadJson = await leadRes.json();
-          if (leadRes.ok && leadJson.leadId) {
-            router.push(`/matching-status?leadId=${leadJson.leadId}`);
-            return;
-          }
-        } catch {
-          // Lead creation failed — fall through to dashboard
-        }
-      }
 
       setSuccess(true);
       router.refresh();
@@ -243,7 +195,7 @@ export function RegisterForm() {
           </p>
         </div>
 
-        {/* Student-specific fields */}
+        {/* Student-specific fields — simplified: only subject selector */}
         {formData.role === "student" && (
           <div className="border-t border-border pt-4 space-y-4">
             <p className="text-sm font-medium text-foreground mb-2">
@@ -271,179 +223,10 @@ export function RegisterForm() {
               </select>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="form-group">
-                <label className="label" htmlFor="budget">
-                  Budget per hour (INR)
-                </label>
-                <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground-muted">₹</span>
-                  <input
-                    id="budget"
-                    type="number"
-                    className="input pl-8"
-                    placeholder="500"
-                    min="0"
-                    step="100"
-                    value={formData.budget_per_hour}
-                    onChange={(e) =>
-                      setFormData((f) => ({
-                        ...f,
-                        budget_per_hour: e.target.value,
-                      }))
-                    }
-                  />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label className="label" htmlFor="level">
-                  Current level
-                </label>
-                <input
-                  id="level"
-                  type="text"
-                  className="input"
-                  placeholder="e.g. Beginner, Band 6.0"
-                  value={formData.current_level}
-                  onChange={(e) =>
-                    setFormData((f) => ({
-                      ...f,
-                      current_level: e.target.value,
-                    }))
-                  }
-                />
-              </div>
-            </div>
-
-            <div className="form-group">
-              <label className="label" htmlFor="goal">
-                Goal
-              </label>
-              <input
-                id="goal"
-                type="text"
-                className="input"
-                placeholder="e.g. Get Band 7.5 in IELTS in 2 months"
-                value={formData.goal}
-                onChange={(e) =>
-                  setFormData((f) => ({ ...f, goal: e.target.value }))
-                }
-              />
-            </div>
-
-            <div className="form-group">
-              <label className="label" htmlFor="challenge">
-                What are you struggling with?
-              </label>
-              <textarea
-                id="challenge"
-                className="input min-h-[80px]"
-                placeholder="e.g. Writing and speaking are my weak areas. I need help with time management in reading."
-                value={formData.challenge}
-                onChange={(e) =>
-                  setFormData((f) => ({ ...f, challenge: e.target.value }))
-                }
-                rows={3}
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="form-group">
-                <label className="label" htmlFor="online-local">
-                  Online or local?
-                </label>
-                <select
-                  id="online-local"
-                  className="input"
-                  value={formData.online_or_local}
-                  onChange={(e) =>
-                    setFormData((f) => ({
-                      ...f,
-                      online_or_local: e.target.value as "online" | "local" | "either",
-                    }))
-                  }
-                >
-                  <option value="online">Online</option>
-                  <option value="local">Local (in-person)</option>
-                  <option value="either">Either</option>
-                </select>
-              </div>
-
-              <div className="form-group">
-                <label className="label" htmlFor="location">
-                  Location
-                </label>
-                <input
-                  id="location"
-                  type="text"
-                  className="input"
-                  placeholder="e.g. Delhi, Mumbai, Bangalore"
-                  value={formData.location}
-                  onChange={(e) =>
-                    setFormData((f) => ({ ...f, location: e.target.value }))
-                  }
-                />
-                <p className="text-xs text-foreground-subtle mt-1">
-                  Used for local tutor matching
-                </p>
-              </div>
-            </div>
-
-            <div className="border-t border-border pt-4">
-              <label className="label mb-2">
-                Preferred days{" "}
-                <span className="text-foreground-subtle font-normal">(optional)</span>
-              </label>
-              <div className="flex flex-wrap gap-2">
-                {["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"].map(
-                  (day) => (
-                    <button
-                      key={day}
-                      type="button"
-                      className={`px-3 py-1.5 rounded-lg text-sm border transition-all ${
-                        formData.preferred_days.includes(day)
-                          ? "border-accent bg-accent-soft text-accent"
-                          : "border-border bg-surface text-foreground-muted hover:border-border-strong"
-                      }`}
-                      onClick={() =>
-                        setFormData((f) => ({
-                          ...f,
-                          preferred_days: f.preferred_days.includes(day)
-                            ? f.preferred_days.filter((d) => d !== day)
-                            : [...f.preferred_days, day],
-                        }))
-                      }
-                    >
-                      {day.charAt(0).toUpperCase() + day.slice(1, 3)}
-                    </button>
-                  ),
-                )}
-              </div>
-              <div className="flex flex-wrap gap-2 mt-3">
-                {["morning", "afternoon", "evening", "night"].map((time) => (
-                  <button
-                    key={time}
-                    type="button"
-                    className={`px-3 py-1.5 rounded-lg text-sm border transition-all capitalize ${
-                      formData.preferred_times.includes(time)
-                        ? "border-accent bg-accent-soft text-accent"
-                        : "border-border bg-surface text-foreground-muted hover:border-border-strong"
-                    }`}
-                    onClick={() =>
-                      setFormData((f) => ({
-                        ...f,
-                        preferred_times: f.preferred_times.includes(time)
-                          ? f.preferred_times.filter((t) => t !== time)
-                          : [...f.preferred_times, time],
-                      }))
-                    }
-                  >
-                    {time}
-                  </button>
-                ))}
-              </div>
-            </div>
+            <p className="text-xs text-foreground-subtle">
+              After you sign up, we&apos;ll ask a few more questions to find the right
+              tutor — your current level, goals, budget, and preferred times.
+            </p>
           </div>
         )}
 
