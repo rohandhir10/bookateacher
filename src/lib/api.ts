@@ -7,13 +7,29 @@ export interface ApiUser {
 }
 
 async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
-  const res = await fetch("/api" + path, {
+  const requestHeaders = new Headers(options?.headers);
+  requestHeaders.set("Content-Type", "application/json");
+
+  let url = "/api" + path;
+
+  if (typeof window === "undefined") {
+    const { headers } = await import("next/headers");
+    const incoming = await headers();
+    const host = incoming.get("x-forwarded-host") ?? incoming.get("host");
+    const protocol = incoming.get("x-forwarded-proto") ?? "https";
+
+    if (!host) throw new Error("Unable to resolve request origin on the server.");
+    url = protocol + "://" + host + "/api" + path;
+
+    const cookie = incoming.get("cookie");
+    if (cookie) requestHeaders.set("cookie", cookie);
+  }
+
+  const res = await fetch(url, {
     ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...(options?.headers ?? {}),
-    },
+    headers: requestHeaders,
     credentials: "same-origin",
+    cache: "no-store",
   });
 
   const body = await res.json().catch(() => ({}));
