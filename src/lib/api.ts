@@ -89,7 +89,7 @@ export async function apiCreateLead(data: Record<string, unknown>): Promise<{ ok
   return { ok: result.success, leadId: result.leadId };
 }
 
-export async function apiAcceptLead(id: string): Promise<{ ok: boolean; message: string }> {
+export async function apiAcceptLead(id: string, _tutorId?: string): Promise<{ ok: boolean; message: string }> {
   const result = await apiFetch<{ success: boolean }>("/leads", {
     method: "POST",
     body: JSON.stringify({ action: "accept-lead", data: { id } }),
@@ -97,7 +97,7 @@ export async function apiAcceptLead(id: string): Promise<{ ok: boolean; message:
   return { ok: result.success, message: result.success ? "Lead accepted" : "Unable to accept lead" };
 }
 
-export async function apiDeclineLead(id: string, reason?: string): Promise<{ ok: boolean; message: string }> {
+export async function apiDeclineLead(id: string, _tutorId?: string, reason?: string): Promise<{ ok: boolean; message: string }> {
   const result = await apiFetch<{ success: boolean }>("/leads", {
     method: "POST",
     body: JSON.stringify({ action: "decline-lead", data: { id, reason } }),
@@ -121,7 +121,7 @@ export async function apiUpdateSession(id: string, data: Record<string, unknown>
   return { ok: result.success };
 }
 
-export async function apiGetLeads(): Promise<{ leads: Lead[] }> {
+export async function apiGetLeads(_studentId?: string, _tutorId?: string): Promise<{ leads: Lead[] }> {
   return apiFetch("/leads", { method: "GET" });
 }
 
@@ -138,19 +138,19 @@ export async function apiUpdateLead(id: string, data: Record<string, unknown>): 
   return { ok: result.success, lead: current.lead };
 }
 
-export async function apiGetSessionsForTutor(): Promise<{ sessions: any[] }> {
+export async function apiGetSessionsForTutor(_tutorId?: string): Promise<{ sessions: any[] }> {
   return apiFetch("/leads?resource=sessions", { method: "GET" });
 }
 
-export async function apiGetSessionsForStudent(): Promise<{ sessions: any[] }> {
+export async function apiGetSessionsForStudent(_studentId?: string): Promise<{ sessions: any[] }> {
   return apiFetch("/leads?resource=sessions", { method: "GET" });
 }
 
-export async function apiGetTestimonialsForTutor(): Promise<{ testimonials: any[] }> {
+export async function apiGetTestimonialsForTutor(_recipientId?: string): Promise<{ testimonials: any[] }> {
   return apiFetch("/leads?resource=testimonials", { method: "GET" });
 }
 
-export async function apiGetTestimonialRequests(): Promise<{ requests: any[] }> {
+export async function apiGetTestimonialRequests(_recipientId?: string): Promise<{ requests: any[] }> {
   return apiFetch("/leads?resource=testimonial-requests", { method: "GET" });
 }
 
