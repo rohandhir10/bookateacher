@@ -517,6 +517,7 @@ export async function updateSession(
 // ----------------------------------------------------------------------
 export async function createLead(data: {
   id: string;
+  student_id?: string | null;
   name: string;
   email?: string | null;
   phone: string;
@@ -531,10 +532,11 @@ export async function createLead(data: {
   challenge?: string | null;
 }) {
   await executeStmt(
-    `INSERT INTO leads (id, name, email, phone, subject, goal, budget_per_hour, preferred_days, preferred_times, online_or_local, location, current_level, challenge)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO leads (id, student_id, name, email, phone, subject, goal, budget_per_hour, preferred_days, preferred_times, online_or_local, location, current_level, challenge)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       data.id,
+      data.student_id ?? null,
       data.name,
       data.email ?? null,
       data.phone,
@@ -569,11 +571,11 @@ export async function getLeads(
 }
 
 export async function getLeadsForStudent(
-  studentEmail: string,
+  studentId: string,
 ): Promise<any[]> {
   return query(
-    `SELECT * FROM leads WHERE email = ? ORDER BY created_at DESC LIMIT 1`,
-    [studentEmail],
+    "SELECT * FROM leads WHERE student_id = ? OR (student_id IS NULL AND email = (SELECT email FROM users WHERE id = ?)) ORDER BY created_at DESC LIMIT 1",
+    [studentId, studentId],
   );
 }
 
