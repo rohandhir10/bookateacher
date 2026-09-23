@@ -26,7 +26,7 @@ const GREEN = "#2F5233";
 const RED = "#B23A2E";
 const AMBER = "#8A5A00";
 
-import { getSessionCookie, apiSignOut } from "@/lib/api";
+import { apiSignOut } from "@/lib/api";
 
 export default async function TutorDashboardPage() {
   const session = await getServerSession();

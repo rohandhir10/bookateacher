@@ -82,8 +82,8 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
           (tutor.rating ?? 4.5).toFixed(1) as any,
         bestRating: 5,
         worstRating: 1,
-        ratingCount: 12 + Math.floor(Math.random() * 30),
-        reviewCount: 8 + Math.floor(Math.random() * 20),
+        ratingCount: tutor.reviews ?? 0,
+        reviewCount: tutor.reviews ?? 0,
       },
     ],
   });
@@ -202,8 +202,8 @@ export default async function TutorProfilePage({ params }: { params: Promise<{ i
         ratingValue: rating,
         bestRating: 5,
         worstRating: 1,
-        ratingCount: 12 + Math.floor(Math.random() * 30),
-        reviewCount: 8 + Math.floor(Math.random() * 20),
+        ratingCount: tutor.reviews ?? 0,
+        reviewCount: tutor.reviews ?? 0,
       },
     ],
   });
@@ -296,7 +296,7 @@ export default async function TutorProfilePage({ params }: { params: Promise<{ i
                     <span key={i} style={{ color: LINE, fontSize: "1rem" }}>★</span>
                   ))}
                 </div>
-                <div style={{ fontSize: "0.75rem", color: MUTED, marginTop: 2 }}>({12 + Math.floor(Math.random() * 30)} reviews)</div>
+                <div style={{ fontSize: "0.75rem", color: MUTED, marginTop: 2 }}>{(tutor.reviews ?? 0)} reviews</div>
               </div>
             </div>
 

@@ -1,5 +1,5 @@
 import { getServerSession } from "@/lib/session";
-import { apiGetSessionsForStudent, apiGetLeads, apiSignOut, getSessionCookie } from "@/lib/api";
+import { apiGetSessionsForStudent, apiGetLeads, apiSignOut } from "@/lib/api";
 import { redirect } from "next/navigation";
 import { SUBJECT_LABELS } from "@/lib/utils";
 

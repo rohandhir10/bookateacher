@@ -23,30 +23,16 @@ export interface ApiUser {
 }
 
 // ─── Cookie helpers ────────────────────────────────────────────────────────────
+// The session cookie is now set by the server (Next.js API route) as an
+// HTTP-only cookie. Browser JavaScript must NOT set or read it directly.
+// These helpers are kept only for reading the cookie name/format for logging;
+// they do NOT write cookies from the client.
 
-export function getSessionCookie(): string | undefined {
-  if (typeof document === "undefined") return undefined;
-  const cookies = document.cookie.split(";").map((c) => c.trim());
-  for (const c of cookies) {
-    if (c.startsWith("bookateacher_session=")) {
-      return c;
-    }
-  }
-  return undefined;
-}
-
-export function setSessionCookie(token: string): void {
-  if (typeof document === "undefined") return;
-  document.cookie = `bookateacher_session=${token}; path=/; max-age=${30 * 24 * 60 * 60}; SameSite=Lax`;
-}
-
-export function clearSessionCookie(): void {
-  if (typeof document === "undefined") return;
-  document.cookie = "bookateacher_session=; path=/; max-age=0; SameSite=Lax";
+export function getSessionCookieName(): string {
+  return "bookateacher_session";
 }
 
 // ─── Fetch wrapper ─────────────────────────────────────────────────────────────
-
 async function apiFetch<T>(
   path: string,
   options?: RequestInit,
@@ -57,13 +43,12 @@ async function apiFetch<T>(
     ...(options?.headers as Record<string, string> ?? {}),
   };
 
-  // Attach session cookie on client side
-  if (typeof document !== "undefined") {
-    const sessionCookie = getSessionCookie();
-    if (sessionCookie) {
-      headers["Cookie"] = sessionCookie;
-    }
-  }
+  // Do NOT attach the session cookie manually.
+  // Same-origin requests automatically send cookies; cross-origin requests
+  // use credentials: "include" when configured. The server sets the session
+  // cookie as HttpOnly, so JavaScript never sees it.
+  // If credentials are needed for cross-origin calls, set credentials in the
+  // caller instead of here.
 
   const res = await fetch(url, {
     ...options,
@@ -79,7 +64,6 @@ async function apiFetch<T>(
 }
 
 // ─── Auth ──────────────────────────────────────────────────────────────────────
-
 export async function apiRegister(
   data: { name: string; email: string; password: string; role: "student" | "tutor" },
 ): Promise<{ ok: boolean; user: ApiUser; session_token: string }> {
@@ -90,9 +74,8 @@ export async function apiRegister(
       body: JSON.stringify({ action: "register", data }),
     },
   );
-  if (result.ok && result.session_token) {
-    setSessionCookie(result.session_token);
-  }
+  // The server should set the session cookie as HttpOnly in the response.
+  // The client must not set document.cookie for the session.
   return result;
 }
 
@@ -106,9 +89,7 @@ export async function apiLogin(
       body: JSON.stringify({ action: "login", data }),
     },
   );
-  if (result.ok && result.session_token) {
-    setSessionCookie(result.session_token);
-  }
+  // The server should set the session cookie as HttpOnly in the response.
   return result;
 }
 
@@ -128,7 +109,8 @@ export async function apiGetSession(): Promise<{ user: ApiUser | null }> {
 
 export async function apiSignOut(): Promise<{ ok: boolean }> {
   await apiFetch("/auth/signout", { method: "POST" });
-  clearSessionCookie();
+  // The server should clear the HttpOnly session cookie on signout.
+  // The client must not clear document.cookie for the session.
   return { ok: true };
 }
 

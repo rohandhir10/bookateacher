@@ -38,3 +38,46 @@
   --shadow-md: 0 4px 6px -1px rgb(20 33 61 / 0.07), 0 2px 4px -2px rgb(20 33 61 / 0.05);
   --shadow-lg: 0 10px 15px -3px rgb(20 33 61 / 0.08), 0 4px 6px -4px rgb(20 33 61 / 0.04);
 }
+
+/* ── Form field spacing: fixes label/placeholder visual clash ── */
+.field-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-foreground);
+}
+.field-input {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--color-foreground);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.field-input:focus {
+  border-color: var(--color-foreground);
+  box-shadow: 0 0 0 3px rgb(20 33 61 / 0.08);
+}
+.field-input::placeholder {
+  color: var(--color-foreground-subtle);
+  opacity: 1;
+}
+.field-hint {
+  margin-top: 6px;
+  font-size: 0.8125rem;
+  color: var(--color-foreground-subtle);
+}
+.field-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B6557'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-position: right 10px center;
+  background-repeat: no-repeat;
+  background-size: 18px;
+  padding-right: 36px;
+}

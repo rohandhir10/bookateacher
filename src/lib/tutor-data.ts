@@ -1,7 +1,12 @@
 // Tutor data for public-facing pages (tutors list + profile pages)
-// Works on Vercel serverless where the local SQLite DB isn't available.
-// Locally, the DB is the source of truth; on Vercel, this fallback is used.
-// Keep in sync with seed.ts — update when tutors are added/changed.
+//
+// IMPORTANT: This module must not silently fabricate marketplace truth when the
+// database is unavailable. A marketplace depends on authoritative tutor data.
+// When the DB is unreachable, we render a degraded/error state rather than
+// presenting static demo data as if it were real.
+//
+// The static demo data below is ONLY used in local development when DB is
+// deliberately offline. In production, DB unavailability must surface an error.
 
 import { SUBJECT_LABELS } from "./utils";
 
@@ -31,13 +36,25 @@ export interface TutorData {
   qualifications?: string[];
 }
 
-export const TUTOR_DATA: TutorData[] = [
+// ─── Demo-only static data ─────────────────────────────────────────────────────
+// Only used when the database is intentionally unavailable during local dev.
+// NOT used in production to fabricate tutor listings.
+
+export const DEMO_TUTOR_DATA: TutorData[] = [
   {
     id: "rahul-kumar-ielts",
     name: "Rahul Kumar",
     email: "rahul.kumar@example.com",
     role: "tutor",
-    bio: `I've been teaching IELTS for 8 years, mostly to students targeting university admission abroad. My own IELTS score is Band 8.5 — I scored it twice, once for myself and once to understand what the examiners are actually looking for.\n\nMy approach: session 1 is a diagnostic. I listen to you speak, read your writing, and find the exact gap between where you are and where your target score is. Most students don't need more practice — they need targeted correction on the 2–3 things holding them back. I work on those.\n\nI specialise in Writing Task 2 and Speaking — the two sections where I see the most students lose marks unnecessarily. I've had students go from 6.0 to 7.5 in writing alone in about 6 weeks.\n\nIf your test is within 4 weeks, we'll focus on strategy and exam technique. If you have more time, we'll build the language skills properly — that's more sustainable, and you'll keep the score longer.\n\nCredentials: IDP Certified IELTS Instructor (2018), MA English Literature, 500+ students coached.`,
+    bio: `I've been teaching IELTS for 8 years, mostly to students targeting university admission abroad. My own IELTS score is Band 8.5 — I scored it twice, once for myself and once to understand what the examiners are actually looking for.
+
+My approach: session 1 is a diagnostic. I listen to you speak, read your writing, and find the exact gap between where you are and where your target score is. Most students don't need more practice — they need targeted correction on the 2–3 things holding them back. I work on those.
+
+I specialise in Writing Task 2 and Speaking — the two sections where I see the most students lose marks unnecessarily. I've had students go from 6.0 to 7.5 in writing alone in about 6 weeks.
+
+If your test is within 4 weeks, we'll focus on strategy and exam technique. If you have more time, we'll build the language skills properly — that's more sustainable, and you'll keep the score longer.
+
+Credentials: IDP Certified IELTS Instructor (2018), MA English Literature, 500+ students coached.`,
     hourly_rate: 1200,
     subjects: ["ielts"],
     verified: true,
@@ -67,7 +84,15 @@ export const TUTOR_DATA: TutorData[] = [
     name: "Ananya Sharma",
     email: "ananya.sharma@example.com",
     role: "tutor",
-    bio: `I scored 112/120 on the TOEFL iBT myself — 30 in Reading, 29 in Listening, 28 in Speaking, 25 in Writing. I help students reach the 100+ range that most US universities require.\n\nMy focus is on the computer-based format specifically — timing, the integrated tasks, and how to handle the on-screen pressure. A lot of students know English well but lose marks to the format, not the language.\n\nFor Speaking, we do lots of recorded practice — you speak into a mic the way the test requires, and I give feedback on delivery, pacing, and structure. For Writing, we work on the integrated writing task specifically (that's where most students lose the most points), plus the independent essay.\n\nIf you're applying to US universities, I also help with the overall strategy: which schools, what scores they actually require, how to schedule your test date around application deadlines.\n\nCredentials: TOEFL iBT 112/120, MA Applied Linguistics, 3 years TOEFL coaching, 200+ students.`,
+    bio: `I scored 112/120 on the TOEFL iBT myself — 30 in Reading, 29 in Listening, 28 in Speaking, 25 in Writing. I help students reach the 100+ range that most US universities require.
+
+My focus is on the computer-based format specifically — timing, the integrated tasks, and how to handle the on-screen pressure. A lot of students know English well but lose marks to the format, not the language.
+
+For Speaking, we do lots of recorded practice — you speak into a mic the way the test requires, and I give feedback on delivery, pacing, and structure. For Writing, we work on the integrated writing task specifically (that's where most students lose the most points), plus the independent essay.
+
+If you're applying to US universities, I also help with the overall strategy: which schools, what scores they actually require, how to schedule your test date around application deadlines.
+
+Credentials: TOEFL iBT 112/120, MA Applied Linguistics, 3 years TOEFL coaching, 200+ students.`,
     hourly_rate: 1800,
     subjects: ["toefl"],
     verified: true,
@@ -97,7 +122,15 @@ export const TUTOR_DATA: TutorData[] = [
     name: "Vikram Patel",
     email: "vikram.patel@example.com",
     role: "tutor",
-    bio: `I specialise in spoken English — helping people who understand English but can't speak it confidently. This is different from test prep. If you're preparing for IELTS or TOEFL, I'd suggest one of my colleagues. If you need to walk into a meeting, a job interview, or a conversation and actually speak — that's what I do.\n\nMy background is in corporate training. I've worked with IT professionals, managers, and entrepreneurs who needed to communicate better in English — not to pass a test, but to do their job better. That's a different skill set from academic English.\n\nSessions are conversation-based. We talk about things that matter to you — your work, your goals, situations you face. I correct in real time, but not interruptively — the goal is to build flow and confidence first, accuracy second.\n\nPronunciation work is practical — the specific sounds that are hardest for Indian speakers (th, v/w, r/l distinctions, intonation patterns), and the rhythm of English sentences. Not phonetic theory — the actual speaking.\n\nCredentials: CELTA (Cambridge), 6 years corporate English training, 300+ professionals coached.`,
+    bio: `I specialise in spoken English — helping people who understand English but can't speak it confidently. This is different from test prep. If you're preparing for IELTS or TOEFL, I'd suggest one of my colleagues. If you need to walk into a meeting, a job interview, or a conversation and actually speak — that's what I do.
+
+My background is in corporate training. I've worked with IT professionals, managers, and entrepreneurs who needed to communicate better in English — not to pass a test, but to do their job better. That's a different skill set from academic English.
+
+Sessions are conversation-based. We talk about things that matter to you — your work, your goals, situations you face. I correct in real time, but not interruptively — the goal is to build flow and confidence first, accuracy second.
+
+Pronunciation work is practical — the specific sounds that are hardest for Indian speakers (th, v/w, r/l distinctions, intonation patterns), and the rhythm of English sentences. Not phonetic theory — the actual speaking.
+
+Credentials: CELTA (Cambridge), 6 years corporate English training, 300+ professionals coached.`,
     hourly_rate: 1000,
     subjects: ["spoken-english"],
     verified: true,
@@ -123,10 +156,14 @@ export const TUTOR_DATA: TutorData[] = [
   },
 ];
 
+// ─── Canonical data access ─────────────────────────────────────────────────────
+// Production path: always use the database.
+// If the DB is unreachable, throw rather than silently returning fabricated data.
+
 export async function getTutors(): Promise<TutorData[]> {
-  // Try DB first (when Turso is connected), fall back to static data
+  // Try DB first. If it's unavailable, do NOT fall back to static data.
   try {
-    const { query } = await import("@/lib/db");
+    const { query } = await import("./db");
     const rows = await query(
       "SELECT id, name, email, role, bio, hourly_rate, " +
       "COALESCE(subjects, '[]') as subjects, " +
@@ -136,7 +173,7 @@ export async function getTutors(): Promise<TutorData[]> {
       "COALESCE(languages, '[]') as languages, " +
       "COALESCE(availability, NULL) as availability, " +
       "COALESCE(avatar_url, NULL) as avatar_url " +
-      "FROM users WHERE role = 'tutor' AND status = 'active' ORDER BY created_at ASC"
+      "FROM users WHERE role = 'tutor' AND status = 'active' ORDER BY created_at ASC",
     );
     if (rows && rows.length > 0) {
       return rows.map((row: any) => ({
@@ -157,10 +194,19 @@ export async function getTutors(): Promise<TutorData[]> {
         avatar_url: row.avatar_url || undefined,
       }));
     }
-  } catch {
-    // DB unavailable — fall through to static data
+    // DB connected but no tutors — return empty list, not fake data.
+    return [];
+  } catch (err) {
+    // DB unavailable in production — throw so the page renders an error state,
+    // rather than silently showing fabricated demo tutors as if they were real.
+    const isDev = process.env.NODE_ENV !== "production";
+    if (isDev) {
+      // In local development only, fall back to demo data when DB is offline.
+      // This is intentionally NOT done in production.
+      return DEMO_TUTOR_DATA;
+    }
+    throw new Error("Tutor database unavailable");
   }
-  return TUTOR_DATA;
 }
 
 export async function getTutorById(id: string): Promise<TutorData | undefined> {
