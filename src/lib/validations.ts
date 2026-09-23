@@ -90,6 +90,8 @@ export const sessionUpdateSchema = z.object({
     .enum(["pending", "paid", "refunded", "free"])
     .optional(),
   notes: z.string().max(2000).optional(),
+  rating: z.number().int().min(1).max(5).optional(),
+  feedback: z.string().max(2000).optional(),
 });
 
 export const testimonialSchema = z.object({
