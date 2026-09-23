@@ -51,7 +51,9 @@ export async function GET(request: Request) {
 
     const canRead =
       actor.role === "admin" ||
-      (actor.role === "student" && String(lead.email || "").toLowerCase() === actor.email.toLowerCase()) ||
+      (actor.role === "student" &&
+        (lead.student_id === actor.id ||
+          (!lead.student_id && String(lead.email || "").toLowerCase() === actor.email.toLowerCase()))) ||
       (actor.role === "tutor" && (!lead.assigned_tutor_id || lead.assigned_tutor_id === actor.id));
 
     if (!canRead) return NextResponse.json({ error: "Forbidden." }, { status: 403 });
@@ -78,7 +80,7 @@ export async function GET(request: Request) {
   if (actor.role === "admin") {
     leadsForUser = await getLeads();
   } else if (actor.role === "student") {
-    leadsForUser = await getLeadsForStudent(actor.email);
+    leadsForUser = await getLeadsForStudent(actor.id);
   } else {
     leadsForUser = await query(
       "SELECT * FROM leads WHERE status = 'new' OR assigned_tutor_id = ? ORDER BY created_at DESC",
