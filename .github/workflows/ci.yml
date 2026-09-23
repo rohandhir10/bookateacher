@@ -47,3 +47,13 @@ jobs:
 
       - name: Typecheck
         run: npx tsc --noEmit
+
+      - name: Build
+        env:
+          AUTH_SECRET: ci-build-secret-please-change
+          NEXTAUTH_SECRET: ci-build-secret-please-change
+          GOOGLE_CLIENT_ID: ""
+          GOOGLE_CLIENT_SECRET: ""
+          TURSO_DATABASE_URL: ""
+          TURSO_AUTH_TOKEN: ""
+        run: npm run build
