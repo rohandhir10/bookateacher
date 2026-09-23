@@ -51,6 +51,11 @@ export function RegisterForm() {
         redirect: false,
       });
 
+      if (parsed.role === "student") {
+        router.push("/onboarding/matching?subject=" + encodeURIComponent(formData.subject || "ielts"));
+        return;
+      }
+
       setSuccess(true);
       router.refresh();
     } catch (err) {
