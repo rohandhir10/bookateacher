@@ -12,8 +12,6 @@ import {
   apiDeclineLead,
   apiUpdateSession as apiUpdateSessionApi,
   apiCreateSession as apiCreateSessionApi,
-  apiRequestTestimonial,
-  apiSubmitTestimonial,
 } from "@/lib/api";
 
 const INK = "#14213D";
@@ -42,7 +40,7 @@ export default async function TutorDashboardPage() {
       apiGetSessionsForTutor(tutorId),
       apiGetTestimonialsForTutor(tutorId),
       apiGetTestimonialRequests(tutorId),
-      apiGetTutorProfile(tutorId),
+      apiGetTutorProfile(),
     ]);
 
   const leads = leadsRes.leads ?? [];
