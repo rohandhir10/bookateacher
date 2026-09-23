@@ -1,5 +1,3 @@
-import { signIn, signOut } from "next-auth/react";
-
 export interface ApiUser {
   id: string;
   email: string;
@@ -35,20 +33,9 @@ export async function apiRegister(
   return { ok: result.success, user: result.user };
 }
 
-export async function apiLogin(data: { email: string; password: string }): Promise<{ ok: boolean }> {
-  const result = await signIn("credentials", { ...data, redirect: false });
-  if (!result?.ok) throw new Error("Invalid email or password");
-  return { ok: true };
-}
-
 export async function apiGetSession(): Promise<{ user: ApiUser | null }> {
   const res = await fetch("/api/auth/session", { cache: "no-store", credentials: "same-origin" });
   return res.json();
-}
-
-export async function apiSignOut(): Promise<{ ok: boolean }> {
-  await signOut({ redirect: false });
-  return { ok: true };
 }
 
 export type Lead = {
