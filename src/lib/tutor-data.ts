@@ -8,8 +8,6 @@
 // The static demo data below is ONLY used in local development when DB is
 // deliberately offline. In production, DB unavailability must surface an error.
 
-import { SUBJECT_LABELS } from "./utils";
-
 export interface TutorData {
   id: string;
   name: string;
@@ -168,15 +166,15 @@ export async function getTutors(): Promise<TutorData[]> {
       "SELECT id, name, email, role, bio, hourly_rate, " +
       "COALESCE(subjects, '[]') as subjects, " +
       "COALESCE(verified, 0) as verified, COALESCE(credentials, '') as credentials, " +
-      "COALESCE(rating, 0) as rating, COALESCE(reviews, 0) as reviews, " +
-      "COALESCE(specializations, '[]') as specializations, " +
-      "COALESCE(languages, '[]') as languages, " +
+      "COALESCE((SELECT AVG(t.rating) FROM testimonials t WHERE t.tutor_id = users.id AND t.visible = 1), 0) as rating, " +
+      "COALESCE((SELECT COUNT(*) FROM testimonials t WHERE t.tutor_id = users.id AND t.visible = 1), 0) as reviews, " +
+      "'[]' as specializations, '[]' as languages, " +
       "COALESCE(availability, NULL) as availability, " +
       "COALESCE(avatar_url, NULL) as avatar_url " +
       "FROM users WHERE role = 'tutor' AND status = 'active' ORDER BY created_at ASC",
     );
     if (rows && rows.length > 0) {
-      return rows.map((row: any) => ({
+      return rows.map((row) => ({
         id: row.id,
         name: row.name,
         email: row.email,
@@ -196,7 +194,7 @@ export async function getTutors(): Promise<TutorData[]> {
     }
     // DB connected but no tutors — return empty list, not fake data.
     return [];
-  } catch (err) {
+  } catch {
     // DB unavailable in production — throw so the page renders an error state,
     // rather than silently showing fabricated demo tutors as if they were real.
     const isDev = process.env.NODE_ENV !== "production";

@@ -42,8 +42,6 @@ const PAPER = "#FAF7F0";
 const PAPER_2 = "#F2ECE0";
 const LINE = "#D9D2C5";
 const MUTED = "#6B6557";
-const RED = "#B23A2E";
-const GREEN = "#2F5233";
 
 function hexToRgb(hex: string): string {
   const h = hex.replace("#", "");
@@ -51,6 +49,15 @@ function hexToRgb(hex: string): string {
 }
 
 function buildJsonLd(tutors: TutorData[]): string {
+  if (tutors.length === 0) {
+    return JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      itemListElement: [],
+      numberOfItems: 0,
+    });
+  }
+
   const itemListItems = tutors.map(
     (t) =>
       `{
@@ -244,7 +251,31 @@ export default async function TutorsPage() {
               gap: 20,
             }}
           >
-            {tutors.map((tutor) => (
+            {tutors.length === 0 ? (
+              <section
+                role="status"
+                style={{
+                  background: PAPER_2,
+                  border: `1px solid ${LINE}`,
+                  borderRadius: 14,
+                  padding: "28px 32px",
+                  textAlign: "center",
+                }}
+              >
+                <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 24, margin: "0 0 10px" }}>
+                  No tutor profiles are listed yet
+                </h2>
+                <p style={{ color: INK_SOFT, lineHeight: 1.6, margin: "0 0 18px" }}>
+                  We are adding tutors to the directory. If you teach IELTS, TOEFL, or Spoken English, you can create a profile.
+                </p>
+                <Link
+                  href="/register?role=tutor"
+                  style={{ color: INK, fontWeight: 600, textDecoration: "underline" }}
+                >
+                  Create a tutor profile
+                </Link>
+              </section>
+            ) : tutors.map((tutor) => (
               <div
                 key={tutor.id}
                 style={{
@@ -539,7 +570,7 @@ export default async function TutorsPage() {
                 lineHeight: 1.2,
               }}
             >
-              Don't see the right tutor?
+              Don&apos;t see the right tutor?
             </h2>
             <p
               style={{
@@ -549,7 +580,7 @@ export default async function TutorsPage() {
                 lineHeight: 1.6,
               }}
             >
-              Tell us your goal. We'll match you with the right person within 24 hours.
+              Tell us your goal. We&apos;ll match you with the right person within 24 hours.
             </p>
             <Link
               href="/register?role=student"
