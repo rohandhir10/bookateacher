@@ -4,12 +4,12 @@ import { breadcrumbSchema, webpageSchema } from "@/lib/page-seo";
 import { FAQ_SCHEMA as HOME_FAQ_SCHEMA } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "IELTS Tutor — Find Certified IELTS Coaches | bookateacher.in",
+  title: "IELTS Preparation — Tutor Directory | bookateacher.in",
   description:
-    "Find certified IELTS tutors across India. Live 1-on-1 coaching for IELTS Academic and General Training — writing, speaking, reading, listening. Book a session today.",
+    "Explore IELTS Academic and General Training preparation. Check the live tutor directory for current profiles and availability.",
   openGraph: {
-    title: "IELTS Tutor — Find Certified IELTS Coaches | bookateacher.in",
-    description: "Find certified IELTS tutors across India. Live 1-on-1 coaching for IELTS Academic and General Training.",
+    title: "IELTS Preparation — Tutor Directory | bookateacher.in",
+    description: "Explore IELTS preparation and check the live tutor directory for current profiles and availability.",
     type: "website",
     locale: "en_IN",
     siteName: "bookateacher.in",
@@ -25,8 +25,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "IELTS Tutor — bookateacher.in",
-    description: "Certified IELTS tutors across India. Live 1-on-1 coaching.",
+    title: "IELTS Preparation — bookateacher.in",
+    description: "IELTS preparation guidance and current tutor availability in the directory.",
     images: ["https://bookateacher.in/og-default.svg"],
   },
   alternates: {
@@ -153,9 +153,9 @@ export default function IeltsSubjectPage() {
         "@type": "WebPage",
         "@id": "https://bookateacher.in/subjects/ielts#webpage",
         url: "https://bookateacher.in/subjects/ielts",
-        name: "IELTS Tutor — Find Certified IELTS Coaches | bookateacher.in",
+        name: "IELTS Preparation — Tutor Directory | bookateacher.in",
         description:
-          "Find certified IELTS tutors across India. Live 1-on-1 coaching for IELTS Academic and General Training — writing, speaking, reading, listening.",
+          "Explore IELTS Academic and General Training preparation and check current tutor profiles in the live directory.",
         isPartOf: { "@id": "https://bookateacher.in/#website" },
         about: { "@id": "https://bookateacher.in/#organization" },
         inLanguage: "en-IN",
@@ -506,11 +506,11 @@ export default function IeltsSubjectPage() {
                   Need an IELTS tutor?
                 </h2>
                 <p style={{ fontSize: "0.9375rem", color: "rgba(250,247,240,0.65)", lineHeight: 1.6, marginBottom: 20 }}>
-                  Tell us your target score and test date. We'll match you with a certified IELTS specialist within 24 hours.
+                  Check current IELTS tutor profiles and availability in the live directory before requesting a match.
                 </p>
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                   <Link
-                    href="/register?role=student"
+                    href="/tutors"
                     style={{
                       display: "inline-flex",
                       alignItems: "center",
@@ -526,7 +526,7 @@ export default function IeltsSubjectPage() {
                       transition: "all 0.15s",
                     }}
                   >
-                    Find my IELTS tutor
+                    View IELTS tutor directory
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={INK} strokeWidth="2.5">
                       <path d="M5 12h14M13 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
@@ -565,23 +565,13 @@ export default function IeltsSubjectPage() {
                   padding: 20,
                 }}
               >
-                <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                  {[
-                    { value: "3", label: "certified IELTS tutors on the platform", sub: "IDP-certified, Band 8.5 scorers" },
-                    { value: "8.5", label: "highest tutor IELTS score", sub: "Vikram Singh" },
-                    { value: "24h", label: "typical match time", sub: "from your request" },
-                  ].map((s) => (
-                    <div key={s.value} style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
-                      <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "1.5rem", fontWeight: 600, color: RED, letterSpacing: "-0.02em", flexShrink: 0 }}>
-                        {s.value}
-                      </div>
-                      <div style={{ fontSize: "0.8125rem", color: INK_SOFT, lineHeight: 1.4 }}>
-                        <div style={{ color: INK, fontWeight: 500 }}>{s.label}</div>
-                        <div style={{ color: MUTED, fontSize: "0.75rem" }}>{s.sub}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <p style={{ fontSize: "0.9375rem", fontWeight: 600, color: INK, marginBottom: 8 }}>Current availability</p>
+                <p style={{ fontSize: "0.8125rem", color: INK_SOFT, lineHeight: 1.5, marginBottom: 12 }}>
+                  Tutor profiles and availability are shown in the live directory.
+                </p>
+                <Link href="/tutors" style={{ fontSize: "0.875rem", fontWeight: 600, color: INK, textDecoration: "underline" }}>
+                  View tutor directory
+                </Link>
               </div>
             </div>
           </div>

@@ -2,11 +2,11 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Subjects — IELTS, TOEFL & Spoken English Tutors | bookateacher.in",
-  description: "Find certified tutors for IELTS, TOEFL, and Spoken English across India. Live 1-on-1 coaching, mock tests, and personal feedback.",
+  title: "Subjects — IELTS, TOEFL & Spoken English Preparation | bookateacher.in",
+  description: "Explore IELTS, TOEFL, and Spoken English preparation guides. Check the live tutor directory for current profiles and availability.",
   openGraph: {
-    title: "Subjects — IELTS, TOEFL & Spoken English Tutors | bookateacher.in",
-    description: "Find certified tutors for IELTS, TOEFL, and Spoken English across India.",
+    title: "Subjects — IELTS, TOEFL & Spoken English Preparation | bookateacher.in",
+    description: "Explore preparation guides and check the live tutor directory for current profiles and availability.",
     type: "website",
     locale: "en_IN",
     siteName: "bookateacher.in",
@@ -15,8 +15,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Subjects — bookateacher.in",
-    description: "IELTS, TOEFL, and Spoken English tutors across India.",
+    title: "Subject preparation — bookateacher.in",
+    description: "IELTS, TOEFL, and Spoken English preparation guides with current tutor availability in the directory.",
   },
   alternates: {
     canonical: "https://bookateacher.in/subjects",
@@ -28,10 +28,10 @@ const SUBJECTS = [
   {
     slug: "ielts",
     name: "IELTS",
-    description: "Certified IELTS Academic and General Training tutors across India. Live 1-on-1 coaching for Writing, Speaking, Reading, and Listening. Mock tests under real test conditions. Book a session — move your score.",
+    description: "IELTS Academic and General Training preparation for Writing, Speaking, Reading, and Listening. Check the live directory for current tutor profiles.",
     tags: ["IELTS Academic", "IELTS General Training", "Band 7+", "Writing Task 2", "Speaking"],
     color: "#B23A2E",
-    stats: { tutors: "3", targetBand: "6.5 → 7.5", matchTime: "24h" },
+
     faq: [
       { q: "What is a good IELTS score?", a: "Most universities require Band 6.5–7.5. Immigration programs often need Band 6.0–7.0. Band 8+ opens more doors. Your tutor will tell you your target and how to reach it." },
       { q: "How long to go from 6.5 to 7.5?", a: "Typically 6–12 weeks with focused 1-on-1 coaching 2–3× per week. Writing and speaking usually take longer. A tutor assesses you in session 1 and sets a realistic plan." },
@@ -42,10 +42,10 @@ const SUBJECTS = [
   {
     slug: "toefl",
     name: "TOEFL",
-    description: "TOEFL iBT tutors for US university applications. Section-by-section coaching — Reading, Listening, Speaking, Writing. Strategy for every question type, full-length mock tests under timed conditions. Book a session.",
+    description: "TOEFL iBT preparation for US university applications, with guidance for all four sections. Check the live directory for current tutor profiles.",
     tags: ["TOEFL iBT", "US universities", "100+", "Speaking", "Writing"],
     color: "#2F5233",
-    stats: { tutors: "1", targetScore: "100+", matchTime: "24h" },
+
     faq: [
       { q: "What is a good TOEFL score?", a: "Most US universities require 80–100/120. Top schools often want 100+. Some programs require minimums per section (e.g. 26+ in Speaking for teaching assistants). Your target depends on the schools you're applying to." },
       { q: "How is TOEFL different from IELTS?", a: "TOEFL is fully computer-based (in most centres). The Speaking section is recorded, not live. IELTS has a live speaking interview. TOEFL Reading and Listening are longer. Both test the same underlying skills — a good tutor will know which test suits you better." },
@@ -56,10 +56,10 @@ const SUBJECTS = [
   {
     slug: "spoken-english",
     name: "Spoken English",
-    description: "Spoken English coaching for confidence, fluency, and real conversation — not scripts. Pronunciation, vocabulary for your situation, and the exact words you need. Live 1-on-1 sessions. Book a session.",
+    description: "Spoken English preparation for confidence, fluency, pronunciation, and real conversation. Check the live directory for current tutor profiles.",
     tags: ["Fluency", "Pronunciation", "Confidence", "Conversation", "Interviews"],
     color: "#B23A2E",
-    stats: { tutors: "2", focus: "fluency + confidence", matchTime: "24h" },
+
     faq: [
       { q: "Is this for beginners?", a: "Yes. If you understand English but struggle to speak it, this is exactly what we help with. If you're below basic comprehension, we'll suggest a general English course first." },
       { q: "How is this different from an app?", a: "Apps give you words and phrases. A tutor listens to how you actually speak, corrects your pronunciation in real time, and builds your confidence to use English in real situations — interviews, meetings, conversations." },
@@ -76,8 +76,7 @@ export default function SubjectsPage() {
   const PAPER_2 = "#F2ECE0";
   const LINE = "#D9D2C5";
   const MUTED = "#6B6557";
-  const RED = "#B23A2E";
-  const GREEN = "#2F5233";
+
 
   const jsonLd = JSON.stringify({
     "@context": "https://schema.org",
@@ -86,8 +85,8 @@ export default function SubjectsPage() {
         "@type": "WebPage",
         "@id": "https://bookateacher.in/subjects#webpage",
         url: "https://bookateacher.in/subjects",
-        name: "Subjects — IELTS, TOEFL & Spoken English Tutors | bookateacher.in",
-        description: "Find certified tutors for IELTS, TOEFL, and Spoken English across India.",
+        name: "Subjects — IELTS, TOEFL & Spoken English Preparation | bookateacher.in",
+        description: "Explore preparation guides and check the live tutor directory for current profiles and availability.",
         isPartOf: { "@id": "https://bookateacher.in/#website" },
         about: { "@id": "https://bookateacher.in/#organization" },
         inLanguage: "en-IN",
@@ -105,7 +104,7 @@ export default function SubjectsPage() {
           "@type": "ListItem",
           position: i + 1,
           url: `https://bookateacher.in/subjects/${s.slug}`,
-          name: `${s.name} Tutors`,
+          name: `${s.name} Preparation Guide`,
         })),
       },
       ...SUBJECTS.map((s) => ({
@@ -140,7 +139,7 @@ export default function SubjectsPage() {
             <span style={{ color: INK }}>bookateacher<span style={{ color: MUTED, fontFamily: "Inter, sans-serif", fontSize: "0.75rem", fontWeight: 400 }}>.in</span></span>
           </Link>
           <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-            <Link href="/register" style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 18px", borderRadius: 6, fontSize: "0.875rem", fontWeight: 500, background: INK, color: PAPER, textDecoration: "none", transition: "all 0.15s" }}>Find a tutor</Link>
+            <Link href="/tutors" style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 18px", borderRadius: 6, fontSize: "0.875rem", fontWeight: 500, background: INK, color: PAPER, textDecoration: "none", transition: "all 0.15s" }}>Browse tutors</Link>
           </div>
         </div>
       </header>
@@ -154,7 +153,7 @@ export default function SubjectsPage() {
               Subjects
             </h1>
             <p style={{ fontSize: "1.0625rem", color: INK_SOFT, lineHeight: 1.6, maxWidth: 560 }}>
-              Pick the subject you need help with. Each has its own certified tutors, pricing, and preparation guide.
+              Explore preparation guides for each subject and check the live directory for current tutor profiles and availability.
             </p>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
@@ -163,7 +162,7 @@ export default function SubjectsPage() {
                 <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 4 }}>
                     <div style={{ width: 28, height: 28, borderRadius: 6, background: s.color, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: "0.875rem", fontWeight: 700, color: "white", fontFamily: "'Playfair Display', Georgia, serif" }}>{s.name.slice(0,2)}</div>
-                    <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "1.75rem", fontWeight: 600, letterSpacing: "-0.02em", color: INK, lineHeight: 1.15 }}>{s.name} Tutors</h2>
+                    <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "1.75rem", fontWeight: 600, letterSpacing: "-0.02em", color: INK, lineHeight: 1.15 }}>{s.name} Preparation</h2>
                   </div>
                   <p style={{ fontSize: "0.9375rem", color: INK_SOFT, lineHeight: 1.65, flex: 1 }}>{s.description}</p>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 4 }}>
@@ -172,21 +171,14 @@ export default function SubjectsPage() {
                     ))}
                   </div>
                   <div style={{ display: "flex", gap: 12, marginTop: 8 }}>
-                    <Link href={`/subjects/${s.slug}`} style={{ fontSize: "0.875rem", fontWeight: 500, color: INK, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 4, padding: "6px 0" }}>View {s.name} tutors →</Link>
+                    <Link href={`/subjects/${s.slug}`} style={{ fontSize: "0.875rem", fontWeight: 500, color: INK, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 4, padding: "6px 0" }}>View {s.name} guide →</Link>
                     <Link href="/subjects" style={{ fontSize: "0.875rem", color: INK_SOFT, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 4 }}>All subjects</Link>
                   </div>
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 10, background: PAPER, border: `1px solid ${LINE}`, borderRadius: 12, padding: 20 }}>
-                  {[
-                    { value: s.stats.tutors || s.stats.targetBand || s.stats.focus, label: s.stats.tutors ? "tutors on platform" : s.stats.targetBand?.includes("→") ? "typical goal" : "focus" },
-                    ...(s.stats.targetScore ? [{ value: s.stats.targetScore, label: "typical target" }] : []),
-                    ...(s.stats.matchTime ? [{ value: s.stats.matchTime, label: "match time" }] : []),
-                  ].filter((_, i) => i < 3).map((st) => (
-                    <div key={st.label} style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
-                      <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "1.5rem", fontWeight: 600, color: s.color, letterSpacing: "-0.02em", flexShrink: 0 }}>{st.value}</div>
-                      <div style={{ fontSize: "0.8125rem", color: INK_SOFT, lineHeight: 1.4 }}><div style={{ color: INK, fontWeight: 500 }}>{st.label}</div></div>
-                    </div>
-                  ))}
+                  <div style={{ fontSize: "0.9375rem", fontWeight: 600, color: INK }}>Current availability</div>
+                  <p style={{ fontSize: "0.8125rem", color: INK_SOFT, lineHeight: 1.5, margin: 0 }}>See current tutor profiles in the live directory.</p>
+                  <Link href="/tutors" style={{ fontSize: "0.875rem", fontWeight: 600, color: INK, textDecoration: "underline" }}>View tutor directory →</Link>
                 </div>
               </div>
             ))}

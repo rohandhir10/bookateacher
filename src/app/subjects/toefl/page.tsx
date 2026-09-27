@@ -2,12 +2,12 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "TOEFL Tutor — Find Certified TOEFL Coaches | bookateacher.in",
+  title: "TOEFL Preparation — Tutor Directory | bookateacher.in",
   description:
-    "Find certified TOEFL iBT tutors for US university applications. Section-by-section coaching — Reading, Listening, Speaking, Writing. Strategy for every question type, full-length mock tests. Book a session.",
+    "Explore TOEFL iBT preparation for US university applications. Check the live tutor directory for current profiles and availability.",
   openGraph: {
-    title: "TOEFL Tutor — Find Certified TOEFL Coaches | bookateacher.in",
-    description: "Certified TOEFL iBT tutors for US university applications. Live 1-on-1 coaching.",
+    title: "TOEFL Preparation — Tutor Directory | bookateacher.in",
+    description: "Explore TOEFL preparation and check the live tutor directory for current profiles and availability.",
     type: "website",
     locale: "en_IN",
     siteName: "bookateacher.in",
@@ -23,8 +23,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "TOEFL Tutor — bookateacher.in",
-    description: "Certified TOEFL iBT tutors for US university applications. Live 1-on-1 coaching.",
+    title: "TOEFL Preparation — bookateacher.in",
+    description: "TOEFL preparation guidance and current tutor availability in the directory.",
     images: ["https://bookateacher.in/og-default.svg"],
   },
   alternates: {
@@ -150,9 +150,9 @@ export default function ToeflSubjectPage() {
         "@type": "WebPage",
         "@id": "https://bookateacher.in/subjects/toefl#webpage",
         url: "https://bookateacher.in/subjects/toefl",
-        name: "TOEFL Tutor — Find Certified TOEFL Coaches | bookateacher.in",
+        name: "TOEFL Preparation — Tutor Directory | bookateacher.in",
         description:
-          "Find certified TOEFL iBT tutors for US university applications. Section-by-section coaching — Reading, Listening, Speaking, Writing.",
+          "Explore TOEFL iBT preparation and check current tutor profiles in the live directory.",
         isPartOf: { "@id": "https://bookateacher.in/#website" },
         about: { "@id": "https://bookateacher.in/#organization" },
         inLanguage: "en-IN",
@@ -517,11 +517,11 @@ export default function ToeflSubjectPage() {
                   Need a TOEFL tutor?
                 </h2>
                 <p style={{ fontSize: "0.9375rem", color: "rgba(250,247,240,0.65)", lineHeight: 1.6, marginBottom: 20 }}>
-                  Tell us your target score and test date. We'll match you with a certified TOEFL specialist within 24 hours.
+                  Check current TOEFL tutor profiles and availability in the live directory before requesting a match.
                 </p>
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                   <Link
-                    href="/register?role=student"
+                    href="/tutors"
                     style={{
                       display: "inline-flex",
                       alignItems: "center",
@@ -537,7 +537,7 @@ export default function ToeflSubjectPage() {
                       transition: "all 0.15s",
                     }}
                   >
-                    Find my TOEFL tutor
+                    View TOEFL tutor directory
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={INK} strokeWidth="2.5">
                       <path d="M5 12h14M13 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
@@ -576,23 +576,13 @@ export default function ToeflSubjectPage() {
                   padding: 20,
                 }}
               >
-                <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                  {[
-                    { value: "1", label: "certified TOEFL tutor on the platform", sub: "TOEFL iBT 112 scorer" },
-                    { value: "112", label: "highest tutor TOEFL score", sub: "Ananya Sharma" },
-                    { value: "24h", label: "typical match time", sub: "from your request" },
-                  ].map((s) => (
-                    <div key={s.value} style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
-                      <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "1.5rem", fontWeight: 600, color: GREEN, letterSpacing: "-0.02em", flexShrink: 0 }}>
-                        {s.value}
-                      </div>
-                      <div style={{ fontSize: "0.8125rem", color: INK_SOFT, lineHeight: 1.4 }}>
-                        <div style={{ color: INK, fontWeight: 500 }}>{s.label}</div>
-                        <div style={{ color: MUTED, fontSize: "0.75rem" }}>{s.sub}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <p style={{ fontSize: "0.9375rem", fontWeight: 600, color: INK, marginBottom: 8 }}>Current availability</p>
+                <p style={{ fontSize: "0.8125rem", color: INK_SOFT, lineHeight: 1.5, marginBottom: 12 }}>
+                  Tutor profiles and availability are shown in the live directory.
+                </p>
+                <Link href="/tutors" style={{ fontSize: "0.875rem", fontWeight: 600, color: INK, textDecoration: "underline" }}>
+                  View tutor directory
+                </Link>
               </div>
             </div>
           </div>

@@ -4,12 +4,12 @@ import { getTutors, type TutorData } from "@/lib/tutor-data";
 import { SUBJECT_LABELS } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Tutors — Certified IELTS, TOEFL & Spoken English Coaches | bookateacher.in",
+  title: "Tutor Directory — IELTS, TOEFL & Spoken English | bookateacher.in",
   description:
-    "Find certified tutors for IELTS, TOEFL, and Spoken English across India. Live 1-on-1 coaching, verified profiles, transparent pricing. Browse tutors and book a session.",
+    "Browse current tutor profiles for IELTS, TOEFL, and Spoken English. Check availability, credentials, and rates before requesting a match.",
   openGraph: {
-    title: "Tutors — Certified IELTS, TOEFL & Spoken English Coaches | bookateacher.in",
-    description: "Find certified tutors for IELTS, TOEFL, and Spoken English across India. Browse profiles and book a session.",
+    title: "Tutor Directory — IELTS, TOEFL & Spoken English | bookateacher.in",
+    description: "Browse current IELTS, TOEFL, and Spoken English tutor profiles and check availability.",
     type: "website",
     locale: "en_IN",
     siteName: "bookateacher.in",
@@ -25,8 +25,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Tutors — bookateacher.in",
-    description: "Certified IELTS, TOEFL, and Spoken English tutors across India.",
+    title: "Tutor Directory — bookateacher.in",
+    description: "Current IELTS, TOEFL, and Spoken English tutor profiles and availability.",
   },
   alternates: {
     canonical: "https://bookateacher.in/tutors",
@@ -236,10 +236,10 @@ export default async function TutorsPage() {
                 lineHeight: 1.1,
               }}
             >
-              Certified Tutors
+              Tutor directory
             </h1>
             <p style={{ fontSize: "1.0625rem", color: INK_SOFT, lineHeight: 1.6, maxWidth: 600, margin: "0 auto" }}>
-              Verified IELTS, TOEFL, and Spoken English coaches across India. Review their profiles, credentials, and rates — then book a session.
+              Browse current IELTS, TOEFL, and Spoken English tutor profiles. Review credentials and rates before requesting a match.
             </p>
           </div>
 
@@ -267,6 +267,9 @@ export default async function TutorsPage() {
                 </h2>
                 <p style={{ color: INK_SOFT, lineHeight: 1.6, margin: "0 0 18px" }}>
                   We are adding tutors to the directory. If you teach IELTS, TOEFL, or Spoken English, you can create a profile.
+                </p>
+                <p style={{ color: INK_SOFT, lineHeight: 1.6, margin: "0 0 18px" }}>
+                  Looking for a tutor? <Link href="/contact" style={{ color: INK, fontWeight: 600, textDecoration: "underline" }}>Contact us about availability</Link>.
                 </p>
                 <Link
                   href="/register?role=tutor"
