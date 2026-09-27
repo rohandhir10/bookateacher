@@ -2,6 +2,7 @@
 
 import { useState, FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { registerSchema } from "@/lib/validations";
 import { SUBJECT_LABELS, SUBJECT_DESCRIPTIONS } from "@/lib/utils";
@@ -110,9 +111,9 @@ export function RegisterForm() {
           >
             {formData.role === "tutor" ? "Complete profile" : "Go to dashboard"}
           </a>
-          <a href="/" className="btn btn-ghost flex-1">
+          <Link href="/tutors" className="btn btn-ghost flex-1">
             Browse tutors
-          </a>
+          </Link>
         </div>
       </div>
     );

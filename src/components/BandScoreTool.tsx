@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import Link from "next/link";
 
 const BANDS = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9];
 
@@ -212,9 +213,9 @@ export default function BandScoreTool() {
           </div>
           <p style={{ fontSize: "0.8125rem", color: "#6B6557", marginTop: 10 }}>
             Or skip the wait —{" "}
-            <a href="/register" style={{ color: "#B23A2E", fontWeight: 500, textDecoration: "underline" }}>
+            <Link href="/tutors" style={{ color: "#B23A2E", fontWeight: 500, textDecoration: "underline" }}>
               browse tutors now
-            </a>
+            </Link>
           </p>
         </div>
       )}

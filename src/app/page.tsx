@@ -74,7 +74,7 @@ export default function HomePage() {
           </nav>
           <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
             <Link href="/login" style={{ fontSize: "0.875rem", color: INK_SOFT, transition: "color 0.15s" }}>Sign in</Link>
-            <Link href="/register" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "9px 20px", borderRadius: 6, fontSize: "0.875rem", fontWeight: 500, background: INK, color: PAPER, transition: "all 0.15s", whiteSpace: "nowrap", textDecoration: "none" }}>
+            <Link href="/tutors" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "9px 20px", borderRadius: 6, fontSize: "0.875rem", fontWeight: 500, background: INK, color: PAPER, transition: "all 0.15s", whiteSpace: "nowrap", textDecoration: "none" }}>
               Find a tutor
             </Link>
           </div>
@@ -98,7 +98,7 @@ export default function HomePage() {
               keeping your score down. Book a session. Move your score.
             </p>
             <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap", marginBottom: 16 }}>
-              <Link href="/register" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "12px 24px", borderRadius: 6, fontSize: "0.9375rem", fontWeight: 500, background: INK, color: PAPER, transition: "all 0.15s", whiteSpace: "nowrap", textDecoration: "none", cursor: "pointer", border: "none", fontFamily: "inherit" }}>
+              <Link href="/tutors" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "12px 24px", borderRadius: 6, fontSize: "0.9375rem", fontWeight: 500, background: INK, color: PAPER, transition: "all 0.15s", whiteSpace: "nowrap", textDecoration: "none", cursor: "pointer", border: "none", fontFamily: "inherit" }}>
                 Find a tutor
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M13 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" /></svg>
               </Link>
