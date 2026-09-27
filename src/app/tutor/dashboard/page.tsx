@@ -127,14 +127,6 @@ export default async function TutorDashboardPage() {
                 cursor: "pointer",
                 transition: "all 0.15s",
               }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "rgba(250,247,240,0.1)";
-                e.currentTarget.style.borderColor = "rgba(250,247,240,0.5)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "transparent";
-                e.currentTarget.style.borderColor = "rgba(250,247,240,0.25)";
-              }}
             >
               Sign out
             </button>
@@ -241,14 +233,6 @@ export default async function TutorDashboardPage() {
                 fontFamily: "Inter, sans-serif",
                 boxShadow: "0 1px 2px rgba(20,33,61,0.15)",
                 transition: "all 0.15s",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = INK_SOFT;
-                e.currentTarget.style.boxShadow = "0 2px 6px rgba(20,33,61,0.2)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = INK;
-                e.currentTarget.style.boxShadow = "0 1px 2px rgba(20,33,61,0.15)";
               }}
             >
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={PAPER} strokeWidth="2">
@@ -1114,12 +1098,6 @@ function LeadActions({
               fontFamily: "Inter, sans-serif",
               transition: "all 0.15s",
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = `${RED}15`;
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = "transparent";
-            }}
           >
             Decline
           </button>
@@ -1141,14 +1119,6 @@ function LeadActions({
               fontFamily: "Inter, sans-serif",
               boxShadow: "0 1px 2px rgba(47,82,51,0.2)",
               transition: "all 0.15s",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = "#25432a";
-              e.currentTarget.style.boxShadow = "0 2px 6px rgba(47,82,51,0.3)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = GREEN;
-              e.currentTarget.style.boxShadow = "0 1px 2px rgba(47,82,51,0.2)";
             }}
           >
             Accept
@@ -1176,12 +1146,6 @@ function LeadActions({
             fontFamily: "Inter, sans-serif",
             boxShadow: "0 1px 2px rgba(20,33,61,0.15)",
             transition: "all 0.15s",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = INK_SOFT;
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = INK;
           }}
         >
           View lead
@@ -1219,12 +1183,6 @@ function LeadActions({
           fontFamily: "Inter, sans-serif",
           boxShadow: "0 1px 2px rgba(20,33,61,0.15)",
           transition: "all 0.15s",
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.background = INK_SOFT;
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.background = INK;
         }}
       >
         View lead

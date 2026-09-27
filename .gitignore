@@ -20,3 +20,9 @@ src/app/tutor/dashboard/README.md
 .env
 .env.local
 .env.vercel.*
+
+# Next.js and local test artifacts
+.next/
+next-env.d.ts
+tsconfig.tsbuildinfo
+bookateacher.db*

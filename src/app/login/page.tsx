@@ -115,8 +115,6 @@ export default function LoginPage() {
               transition: "opacity 0.15s",
               textDecoration: "none",
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.opacity = "1")}
-            onMouseLeave={(e) => (e.currentTarget.style.opacity = "0.85")}
           >
             Back to home
           </Link>

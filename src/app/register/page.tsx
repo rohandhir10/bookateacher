@@ -118,8 +118,6 @@ export default function RegisterPage() {
                 transition: "opacity 0.15s",
                 textDecoration: "none",
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.opacity = "1")}
-              onMouseLeave={(e) => (e.currentTarget.style.opacity = "0.85")}
             >
               Sign in
             </Link>
