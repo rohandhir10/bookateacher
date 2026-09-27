@@ -34,6 +34,8 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+export const dynamic = "force-dynamic";
+
 const INK = "#14213D";
 const INK_SOFT = "#3D4A63";
 const PAPER = "#FAF7F0";
