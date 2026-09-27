@@ -53,6 +53,12 @@ class TutorAvailabilityCopyTests(unittest.TestCase):
             self.fail("the subject index does not link to the live tutor directory")
 
 
+    def test_directory_does_not_guarantee_a_match_timeline_without_listings(self):
+        source = (ROOT / "src/app/tutors/page.tsx").read_text(encoding="utf-8").lower()
+        for promise in ("within 24 hours", "we'll match you", "get matched now"):
+            if promise in source:
+                self.fail(f"the directory still makes an unsupported promise: {promise}")
+
     def test_empty_directory_offers_learners_a_contact_next_step(self):
         source = (ROOT / "src/app/tutors/page.tsx").read_text(encoding="utf-8")
         if "No tutor profiles are listed yet" not in source:

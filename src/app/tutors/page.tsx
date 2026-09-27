@@ -573,7 +573,7 @@ export default async function TutorsPage() {
                 lineHeight: 1.2,
               }}
             >
-              Don&apos;t see the right tutor?
+              Need help with tutor availability?
             </h2>
             <p
               style={{
@@ -583,10 +583,10 @@ export default async function TutorsPage() {
                 lineHeight: 1.6,
               }}
             >
-              Tell us your goal. We&apos;ll match you with the right person within 24 hours.
+              Have a question about current profiles or availability? Contact us and tell us what you are looking for.
             </p>
             <Link
-              href="/register?role=student"
+              href="/contact"
               style={{
                 display: "inline-block",
                 background: PAPER,
@@ -600,7 +600,7 @@ export default async function TutorsPage() {
                 fontFamily: "'Inter', sans-serif",
               }}
             >
-              Get matched now
+              Contact us
             </Link>
           </div>
         </div>

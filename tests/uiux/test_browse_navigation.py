@@ -28,6 +28,18 @@ class BrowseNavigationTests(unittest.TestCase):
         destinations = destinations_for_visible_text("src/app/page.tsx", "Find a tutor")
         self.assertEqual(destinations, ["/tutors", "/tutors"])
 
+    def test_subject_pages_browse_actions_open_public_directory(self):
+        pages = (
+            "src/app/subjects/page.tsx",
+            "src/app/subjects/ielts/page.tsx",
+            "src/app/subjects/toefl/page.tsx",
+            "src/app/subjects/spoken-english/page.tsx",
+        )
+        for page in pages:
+            with self.subTest(page=page):
+                destinations = destinations_for_visible_text(page, "Browse tutors")
+                self.assertEqual(destinations, ["/tutors"])
+
     def test_score_tool_browse_action_opens_public_directory(self):
         destinations = destinations_for_visible_text(
             "src/components/BandScoreTool.tsx", "browse tutors now"

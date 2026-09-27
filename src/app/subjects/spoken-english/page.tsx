@@ -233,8 +233,8 @@ export default function SpokenEnglishSubjectPage() {
             <Link href="/subjects/toefl" style={{ fontSize: "0.875rem", color: INK_SOFT, textDecoration: "none", padding: "6px 14px", border: `1px solid ${LINE}`, borderRadius: 6, transition: "all 0.15s" }}>
               TOEFL
             </Link>
-            <Link href="/register" style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 18px", borderRadius: 6, fontSize: "0.875rem", fontWeight: 500, background: INK, color: PAPER, textDecoration: "none", transition: "all 0.15s" }}>
-              Find a tutor
+            <Link href="/tutors" style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 18px", borderRadius: 6, fontSize: "0.875rem", fontWeight: 500, background: INK, color: PAPER, textDecoration: "none", transition: "all 0.15s" }}>
+              Browse tutors
             </Link>
           </div>
         </div>
@@ -288,8 +288,7 @@ export default function SpokenEnglishSubjectPage() {
               Spoken English
             </h1>
             <p style={{ fontSize: "1.125rem", color: INK_SOFT, lineHeight: 1.6, maxWidth: 680 }}>
-              Spoken English tutors for confidence, fluency, and real conversation — not scripts.
-              Pronunciation, vocabulary for your situation, and the exact words you need. Live 1-on-1 sessions. Book a session.
+              Explore spoken English preparation for confidence, fluency, and real conversation. Check the live directory for current tutor profiles.
             </p>
           </div>
 

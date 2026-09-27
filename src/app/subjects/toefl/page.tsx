@@ -257,8 +257,8 @@ export default function ToeflSubjectPage() {
             <Link href="/subjects/spoken-english" style={{ fontSize: "0.875rem", color: INK_SOFT, textDecoration: "none", padding: "6px 14px", border: `1px solid ${LINE}`, borderRadius: 6, transition: "all 0.15s" }}>
               Spoken English
             </Link>
-            <Link href="/register" style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 18px", borderRadius: 6, fontSize: "0.875rem", fontWeight: 500, background: INK, color: PAPER, textDecoration: "none", transition: "all 0.15s" }}>
-              Find a tutor
+            <Link href="/tutors" style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 18px", borderRadius: 6, fontSize: "0.875rem", fontWeight: 500, background: INK, color: PAPER, textDecoration: "none", transition: "all 0.15s" }}>
+              Browse tutors
             </Link>
           </div>
         </div>
@@ -312,8 +312,8 @@ export default function ToeflSubjectPage() {
               TOEFL
             </h1>
             <p style={{ fontSize: "1.125rem", color: INK_SOFT, lineHeight: 1.6, maxWidth: 680 }}>
-              Certified TOEFL iBT tutors for US university applications. Section-by-section coaching — Reading, Listening, Speaking, Writing.
-              Strategy for every question type. Full-length mock tests. Book a session.
+              Explore TOEFL iBT preparation for US university applications, with guidance for all four sections. Check the live directory for current tutor profiles.
+              Strategy for every question type and full-length mock tests.
             </p>
           </div>
 
