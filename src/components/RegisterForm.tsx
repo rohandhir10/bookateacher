@@ -122,10 +122,10 @@ export function RegisterForm() {
   return (
     <div className="w-full max-w-lg mx-auto">
       {/* Role toggle */}
-      <div className="flex bg-bg-secondary rounded-lg p-1 mb-6" role="tablist">
+      <div className="flex bg-bg-secondary rounded-lg p-1 mb-6" role="group" aria-label="Account type">
         <button
-          role="tab"
-          aria-selected={formData.role === "student"}
+          type="button"
+          aria-pressed={formData.role === "student"}
           className={`flex-1 py-2.5 px-4 rounded-md text-sm font-medium transition-all ${
             formData.role === "student"
               ? "bg-surface text-foreground shadow-sm"
@@ -138,8 +138,8 @@ export function RegisterForm() {
           I&apos;m a student
         </button>
         <button
-          role="tab"
-          aria-selected={formData.role === "tutor"}
+          type="button"
+          aria-pressed={formData.role === "tutor"}
           className={`flex-1 py-2.5 px-4 rounded-md text-sm font-medium transition-all ${
             formData.role === "tutor"
               ? "bg-surface text-foreground shadow-sm"

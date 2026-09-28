@@ -72,10 +72,10 @@ export function LoginForm() {
   return (
     <div className="w-full max-w-md mx-auto">
       {/* Tab switcher */}
-      <div className="flex bg-bg-secondary rounded-lg p-1 mb-6" role="tablist">
+      <div className="flex bg-bg-secondary rounded-lg p-1 mb-6" role="group" aria-label="Account mode">
         <button
-          role="tab"
-          aria-selected={mode === "login"}
+          type="button"
+          aria-pressed={mode === "login"}
           className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all ${
             mode === "login"
               ? "bg-surface text-foreground shadow-sm"
@@ -86,8 +86,8 @@ export function LoginForm() {
           Sign in
         </button>
         <button
-          role="tab"
-          aria-selected={mode === "register"}
+          type="button"
+          aria-pressed={mode === "register"}
           className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all ${
             mode === "register"
               ? "bg-surface text-foreground shadow-sm"
