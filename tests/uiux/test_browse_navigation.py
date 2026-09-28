@@ -42,7 +42,7 @@ class BrowseNavigationTests(unittest.TestCase):
 
     def test_score_tool_browse_action_opens_public_directory(self):
         destinations = destinations_for_visible_text(
-            "src/components/BandScoreTool.tsx", "browse tutors now"
+            "src/components/BandScoreTool.tsx", "Browse current tutor profiles"
         )
         self.assertEqual(destinations, ["/tutors"])
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import Link from "next/link";
 
 const BANDS = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9];
@@ -34,18 +34,10 @@ const CATEGORY_LABELS: Record<number, string> = {
 export default function BandScoreTool() {
   const [current, setCurrent] = useState<number>(6.5);
   const [target, setTarget] = useState<number>(7.5);
-  const [email, setEmail] = useState("");
   const [showResult, setShowResult] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
 
   const result = weeksToImprove(current, target);
   const canImprove = target > current;
-
-  const handleSubmit = useCallback(() => {
-    if (!email.trim() || !canImprove) return;
-    setShowResult(true);
-    setSubmitted(true);
-  }, [email, canImprove]);
 
   return (
     <div style={{ background: "#F2ECE0", border: "1px solid #D9D2C5", borderRadius: 14, padding: 32, position: "relative" }}>
@@ -129,7 +121,7 @@ export default function BandScoreTool() {
       <div style={{ borderTop: "1px solid #D9D2C5", paddingTop: 20, marginBottom: 16, minHeight: 60 }}>
         {!showResult ? (
           <div style={{ fontSize: "0.9375rem", color: "#6B6557", textAlign: "center" }}>
-            Pick your current and target band, then enter your email to see your typical timeline.
+            Select your current and target band, then view your estimate.
           </div>
         ) : (
           <div style={{ textAlign: "center" }}>
@@ -159,34 +151,13 @@ export default function BandScoreTool() {
         )}
       </div>
 
-      {/* Email capture */}
-      {!submitted ? (
-        <form
-          onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}
-          style={{ display: "flex", gap: 10, flexWrap: "wrap", justifyContent: "center" }}
-        >
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@university.edu"
-            required
-            style={{
-              flex: "1 1 220px",
-              padding: "10px 14px",
-              borderRadius: 6,
-              border: "1px solid #D9D2C5",
-              fontSize: "0.9375rem",
-              fontFamily: "'Inter', sans-serif",
-              background: "#FAF7F0",
-              color: "#14213D",
-              outline: "none",
-              transition: "border-color 0.15s",
-            }}
-          />
+      {!showResult ? (
+        <div style={{ display: "flex", justifyContent: "center", padding: "8px 0" }}>
           <button
-            type="submit"
-            disabled={!email.trim() || !canImprove}
+            type="button"
+            className="band-score-reveal-button"
+            onClick={() => setShowResult(true)}
+            disabled={!canImprove}
             style={{
               padding: "10px 22px",
               borderRadius: 6,
@@ -196,27 +167,28 @@ export default function BandScoreTool() {
               fontWeight: 500,
               fontFamily: "'Inter', sans-serif",
               border: "none",
-              cursor: canImprove && email.trim() ? "pointer" : "not-allowed",
-              opacity: canImprove && email.trim() ? 1 : 0.5,
+              cursor: canImprove ? "pointer" : "not-allowed",
+              opacity: canImprove ? 1 : 0.5,
               transition: "all 0.15s",
               whiteSpace: "nowrap",
             }}
           >
             See my timeline
           </button>
-        </form>
+        </div>
       ) : (
-        <div style={{ textAlign: "center", padding: "16px 0" }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "10px 18px", background: "#FAF7F0", border: "1px solid #D9D2C5", borderRadius: 8, fontSize: "0.9375rem", color: "#14213D", fontWeight: 500 }}>
-            <span style={{ width: 8, height: 8, background: "#2F5233", borderRadius: "50%" }}></span>
-            You're on the list. We'll reach out within 24 hours with tutor matches.
-          </div>
-          <p style={{ fontSize: "0.8125rem", color: "#6B6557", marginTop: 10 }}>
-            Or skip the wait —{" "}
-            <Link href="/tutors" style={{ color: "#B23A2E", fontWeight: 500, textDecoration: "underline" }}>
-              browse tutors now
-            </Link>
+        <div
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+          style={{ textAlign: "center", padding: "16px 0" }}
+        >
+          <p style={{ fontSize: "0.875rem", color: "#3D4A63", marginBottom: 8 }}>
+            Your estimate is shown above. Actual results vary; this is not a guarantee.
           </p>
+          <Link href="/tutors" style={{ color: "#B23A2E", fontWeight: 500, textDecoration: "underline" }}>
+            Browse current tutor profiles
+          </Link>
         </div>
       )}
 
