@@ -106,18 +106,20 @@ export default function LoginPage() {
               </span>
             </span>
           </Link>
-          <Link
-            href="/"
-            style={{
-              fontSize: "0.875rem",
-              color: PAPER,
-              opacity: 0.85,
-              transition: "opacity 0.15s",
-              textDecoration: "none",
-            }}
-          >
-            Back to home
-          </Link>
+          <nav aria-label="Account navigation">
+            <Link
+              href="/"
+              style={{
+                fontSize: "0.875rem",
+                color: PAPER,
+                opacity: 0.85,
+                transition: "opacity 0.15s",
+                textDecoration: "none",
+              }}
+            >
+              Back to home
+            </Link>
+          </nav>
         </div>
       </header>
 
@@ -274,11 +276,11 @@ export default function LoginPage() {
               </span>
             </span>
           </div>
-          <div style={{ display: "flex", gap: 28 }}>
+          <nav aria-label="Legal and support" style={{ display: "flex", gap: 28 }}>
             <Link href="/privacy" style={{ fontSize: "0.875rem", color: INK_SOFT, textDecoration: "none" }}>Privacy</Link>
             <Link href="/terms" style={{ fontSize: "0.875rem", color: INK_SOFT, textDecoration: "none" }}>Terms</Link>
             <Link href="/contact" style={{ fontSize: "0.875rem", color: INK_SOFT, textDecoration: "none" }}>Contact</Link>
-          </div>
+          </nav>
           <p style={{ fontSize: "0.8125rem", color: MUTED, textAlign: "right", flex: 1 }}>
             © {new Date().getFullYear()} bookateacher.in — Made in India
           </p>

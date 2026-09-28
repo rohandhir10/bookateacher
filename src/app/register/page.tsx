@@ -108,7 +108,7 @@ export default function RegisterPage() {
               </span>
             </span>
           </Link>
-          <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+          <nav aria-label="Account navigation" style={{ display: "flex", gap: 12, alignItems: "center" }}>
             <Link
               href="/login"
               style={{
@@ -121,7 +121,7 @@ export default function RegisterPage() {
             >
               Sign in
             </Link>
-          </div>
+          </nav>
         </div>
       </header>
 
@@ -361,11 +361,11 @@ export default function RegisterPage() {
               </span>
             </span>
           </div>
-          <div style={{ display: "flex", gap: 28 }}>
+          <nav aria-label="Legal and support" style={{ display: "flex", gap: 28 }}>
             <Link href="/privacy" style={{ fontSize: "0.875rem", color: INK_SOFT, textDecoration: "none" }}>Privacy</Link>
             <Link href="/terms" style={{ fontSize: "0.875rem", color: INK_SOFT, textDecoration: "none" }}>Terms</Link>
             <Link href="/contact" style={{ fontSize: "0.875rem", color: INK_SOFT, textDecoration: "none" }}>Contact</Link>
-          </div>
+          </nav>
           <p style={{ fontSize: "0.8125rem", color: MUTED, textAlign: "right", flex: 1 }}>
             © {new Date().getFullYear()} bookateacher.in — Made in India
           </p>
