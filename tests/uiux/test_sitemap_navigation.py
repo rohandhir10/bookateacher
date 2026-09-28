@@ -66,6 +66,18 @@ class SitemapNavigationTests(unittest.TestCase):
         self.assertIn("/_next/", robots)
         self.assertIn("https://bookateacher.in/sitemap.xml", robots)
 
+    def test_tutor_onboarding_has_wayfinding_and_exit_paths(self):
+        source = (ROOT / "src/app/tutor/profile/page.tsx").read_text(encoding="utf-8")
+        for expected in (
+            'aria-label="Account navigation"',
+            'aria-label="Breadcrumb"',
+            'href="/"',
+            'href="/register?role=tutor"',
+            'href="/tutors"',
+            'href="/login"',
+        ):
+            self.assertIn(expected, source)
+
     def test_site_map_routes_have_real_page_files(self):
         for route, relative in PUBLIC_ROUTES.items():
             self.assertTrue((ROOT / relative).is_file(), f"No page file for {route}")

@@ -1,10 +1,25 @@
+import Link from "next/link";
 import { TutorRegistrationForm } from "@/components/TutorRegistrationForm";
 
 export default function TutorOnboardingPage() {
   return (
-    <div className="min-h-screen bg-bg-primary py-12">
+    <div className="min-h-screen bg-bg-primary py-8">
+      <header className="container flex items-center justify-between gap-4 mb-6">
+        <Link href="/" className="font-semibold text-foreground underline-offset-4 hover:underline">bookateacher.in</Link>
+        <nav aria-label="Account navigation" className="flex items-center gap-4 text-sm">
+          <Link href="/tutors" className="text-foreground-muted underline-offset-4 hover:underline">Browse tutors</Link>
+          <Link href="/login" className="text-foreground-muted underline-offset-4 hover:underline">Sign in</Link>
+        </nav>
+      </header>
       <main id="main-content" tabIndex={-1}>
         <div className="container">
+        <nav aria-label="Breadcrumb" className="max-w-xl mx-auto mb-4 text-sm text-foreground-muted">
+          <Link href="/" className="underline underline-offset-4">Home</Link>
+          <span aria-hidden="true"> / </span>
+          <Link href="/register?role=tutor" className="underline underline-offset-4">Tutor sign up</Link>
+          <span aria-hidden="true"> / </span>
+          <span aria-current="page">Profile details</span>
+        </nav>
         <div className="card p-6 sm:p-8 max-w-xl mx-auto">
           <div className="text-center mb-6">
             <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center mx-auto mb-3">
