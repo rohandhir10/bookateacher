@@ -1,13 +1,12 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { FAQ_SCHEMA as HOME_FAQ_SCHEMA } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Spoken English Preparation — Tutor Directory | bookateacher.in",
+  title: "Spoken English Preparation — Tutor Directory",
   description:
     "Explore spoken English preparation for confidence, fluency, and real conversation. Check the live tutor directory for current profiles and availability.",
   openGraph: {
-    title: "Spoken English Preparation — Tutor Directory | bookateacher.in",
+    title: "Spoken English Preparation — Tutor Directory",
     description: "Explore spoken English preparation and check the live tutor directory for current profiles and availability.",
     type: "website",
     locale: "en_IN",
@@ -15,18 +14,18 @@ export const metadata: Metadata = {
     url: "https://bookateacher.in/subjects/spoken-english",
     images: [
       {
-        url: "https://bookateacher.in/og-default.svg",
+        url: "https://bookateacher.in/og-social.png",
         width: 1200,
         height: 630,
-        alt: "Spoken English tutors — bookateacher.in",
+        alt: "bookateacher.in — English preparation guides",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Spoken English Preparation — bookateacher.in",
+    title: "Spoken English Preparation — Tutor Directory",
     description: "Spoken English preparation guidance and current tutor availability in the directory.",
-    images: ["https://bookateacher.in/og-default.svg"],
+    images: ["https://bookateacher.in/og-social.png"],
   },
   alternates: {
     canonical: "https://bookateacher.in/subjects/spoken-english",
@@ -126,7 +125,7 @@ export default function SpokenEnglishSubjectPage() {
         "@type": "WebPage",
         "@id": "https://bookateacher.in/subjects/spoken-english#webpage",
         url: "https://bookateacher.in/subjects/spoken-english",
-        name: "Spoken English Preparation — Tutor Directory | bookateacher.in",
+        name: "Spoken English Preparation — Tutor Directory",
         description:
           "Explore spoken English preparation and check current tutor profiles in the live directory.",
         isPartOf: { "@id": "https://bookateacher.in/#website" },

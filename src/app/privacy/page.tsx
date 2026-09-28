@@ -3,9 +3,25 @@ import Link from "next/link";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | bookateacher.in",
+  title: "Privacy Policy",
   description:
-    "Detailed Privacy Policy for bookateacher.in — what personal data we collect from students and tutors, how we use it to match and book sessions, what we share with payment partners and analytics, your rights under India's Digital Personal Data Protection Act 2023, data retention, security, cookies, and how to contact us.",
+    "Privacy Policy for bookateacher.in: how personal data is collected and used, your privacy rights, data retention, security, cookies, and how to contact us.",
+  openGraph: {
+    title: "Privacy Policy",
+    description: "How bookateacher.in handles personal data, privacy rights, retention, security, and cookies.",
+    type: "website",
+    locale: "en_IN",
+    siteName: "bookateacher.in",
+    url: "https://bookateacher.in/privacy",
+    images: [{ url: "https://bookateacher.in/og-social.png", width: 1200, height: 630, alt: "bookateacher.in — English preparation guides" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Privacy Policy",
+    description: "How bookateacher.in handles personal data and privacy rights.",
+    images: ["https://bookateacher.in/og-social.png"],
+  },
+  alternates: { canonical: "https://bookateacher.in/privacy" },
 };
 
 const PAPER = "#FAF7F0";

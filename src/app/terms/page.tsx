@@ -2,21 +2,23 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Terms of Service | bookateacher.in",
+  title: "Terms of Service",
   description:
     "Complete Terms of Service for bookateacher.in — the IELTS, TOEFL, and Spoken English tutoring platform. Covers eligibility, tutor requirements, session booking, cancellations, refunds, payments, fees, content, disclaimers, liability, termination, governing law, and dispute resolution.",
   openGraph: {
-    title: "Terms of Service | bookateacher.in",
+    title: "Terms of Service",
     description:
       "Complete Terms of Service for bookateacher.in — eligibility, bookings, cancellations, refunds, payments, fees, disclaimers, liability.",
     type: "website",
     locale: "en_IN",
     siteName: "bookateacher.in",
     url: "https://bookateacher.in/terms",
+    images: [{ url: "https://bookateacher.in/og-social.png", width: 1200, height: 630, alt: "bookateacher.in — English preparation guides" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Terms of Service | bookateacher.in",
+    images: ["https://bookateacher.in/og-social.png"],
+    title: "Terms of Service",
     description:
       "Complete Terms of Service for bookateacher.in — eligibility, bookings, cancellations, refunds, payments, fees, disclaimers, liability.",
   },
@@ -31,7 +33,6 @@ const PAPER = "#FAF7F0";
 const PAPER_2 = "#F2ECE0";
 const LINE = "#D9D2C5";
 const MUTED = "#6B6557";
-const RED = "#B23A2E";
 
 function section(n: string, title: string, body: string) {
   return {

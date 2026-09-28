@@ -25,8 +25,8 @@ def destinations_for_visible_text(relative_path: str, expected_text: str) -> lis
 
 class BrowseNavigationTests(unittest.TestCase):
     def test_homepage_find_tutor_actions_open_public_directory(self):
-        destinations = destinations_for_visible_text("src/app/page.tsx", "Find a tutor")
-        self.assertEqual(destinations, ["/tutors", "/tutors"])
+        destinations = destinations_for_visible_text("src/app/page.tsx", "Browse tutors")
+        self.assertEqual(destinations, ["/tutors", "/tutors", "/tutors"])
 
     def test_subject_pages_browse_actions_open_public_directory(self):
         pages = (

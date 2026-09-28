@@ -4,11 +4,11 @@ import { getTutors, type TutorData } from "@/lib/tutor-data";
 import { SUBJECT_LABELS } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Tutor Directory — IELTS, TOEFL & Spoken English | bookateacher.in",
+  title: "Tutor Directory — IELTS, TOEFL & Spoken English",
   description:
     "Browse current tutor profiles for IELTS, TOEFL, and Spoken English. Check availability, credentials, and rates before requesting a match.",
   openGraph: {
-    title: "Tutor Directory — IELTS, TOEFL & Spoken English | bookateacher.in",
+    title: "Tutor Directory — IELTS, TOEFL & Spoken English",
     description: "Browse current IELTS, TOEFL, and Spoken English tutor profiles and check availability.",
     type: "website",
     locale: "en_IN",
@@ -16,16 +16,17 @@ export const metadata: Metadata = {
     url: "https://bookateacher.in/tutors",
     images: [
       {
-        url: "https://bookateacher.in/og-default.svg",
+        url: "https://bookateacher.in/og-social.png",
         width: 1200,
         height: 630,
-        alt: "Tutors — bookateacher.in",
+        alt: "bookateacher.in — English preparation guides",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Tutor Directory — bookateacher.in",
+    images: ["https://bookateacher.in/og-social.png"],
+    title: "Tutor Directory — IELTS, TOEFL & Spoken English",
     description: "Current IELTS, TOEFL, and Spoken English tutor profiles and availability.",
   },
   alternates: {

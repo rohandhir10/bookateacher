@@ -1,9 +1,9 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "bookateacher.in — Find Verified IELTS, TOEFL & Spoken English Tutors",
+  title: "English preparation & tutor directory",
   description:
-    "Connect with certified IELTS, TOEFL, and Spoken English tutors across India. Live 1-on-1 coaching, mock tests, personal feedback. Book a session today.",
+    "Explore English preparation guides for IELTS, TOEFL, and Spoken English, then check current tutor availability in the directory.",
 };
 
 export default function RootLayout({

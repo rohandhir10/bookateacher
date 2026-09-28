@@ -8,7 +8,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const { id } = await params;
   const tutor: any = await getTutorById(id);
   if (!tutor || tutor.role !== "tutor") {
-    return { title: "Tutor not found | bookateacher.in" };
+    return { title: "Tutor not found" };
   }
   const subjects: string[] = (tutor.subjects || []).map((s: string) => SUBJECT_LABELS[s] ?? s);
   const subjectLabel = subjects.join(" / ") || "Tutor";
@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
         "@type": "WebPage",
         "@id": `https://bookateacher.in/tutors/${tutor.id}#webpage`,
         url: `https://bookateacher.in/tutors/${tutor.id}`,
-        name: `${tutor.name} — ${subjectLabel} Tutor | bookateacher.in`,
+        name: `${tutor.name} — ${subjectLabel} Tutor`,
         description: tutor.bio || `Certified ${subjectLabel.toLowerCase()} tutor on bookateacher.in.`,
         isPartOf: { "@id": "https://bookateacher.in/#website" },
         about: { "@id": "https://bookateacher.in/#organization" },
@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
         givenName: tutor.name.split(" ")[0],
         familyName: tutor.name.split(" ").slice(1).join(" "),
         url: `https://bookateacher.in/tutors/${tutor.id}`,
-        image: tutor.avatar_url || `https://bookateacher.in/og-default.svg`,
+        image: tutor.avatar_url || `https://bookateacher.in/og-social.png`,
         description: tutor.bio || `Certified ${subjectLabel.toLowerCase()} tutor on bookateacher.in.`,
         jobTitle: `Certified ${subjects.join(" / ")} Tutor`,
         sameAs: [],
@@ -140,7 +140,7 @@ export default async function TutorProfilePage({ params }: { params: Promise<{ i
         "@type": "WebPage",
         "@id": `https://bookateacher.in/tutors/${tutor.id}#webpage`,
         url: `https://bookateacher.in/tutors/${tutor.id}`,
-        name: `${tutor.name} — ${subjectLabel} Tutor | bookateacher.in`,
+        name: `${tutor.name} — ${subjectLabel} Tutor`,
         description: tutor.bio || `Certified ${subjectLabel} tutor on bookateacher.in.`,
         isPartOf: { "@id": "https://bookateacher.in/#website" },
         about: { "@id": "https://bookateacher.in/#organization" },
@@ -161,7 +161,7 @@ export default async function TutorProfilePage({ params }: { params: Promise<{ i
         givenName: tutor.name.split(" ")[0],
         familyName: tutor.name.split(" ").slice(1).join(" "),
         url: `https://bookateacher.in/tutors/${tutor.id}`,
-        image: tutor.avatar_url || `https://bookateacher.in/og-default.svg`,
+        image: tutor.avatar_url || `https://bookateacher.in/og-social.png`,
         description: tutor.bio || `Certified ${subjectLabel.toLowerCase()} tutor on bookateacher.in.`,
         jobTitle: `Certified ${subjects.join(" / ")} Tutor`,
         sameAs: [],

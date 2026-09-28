@@ -2,20 +2,21 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Subjects — IELTS, TOEFL & Spoken English Preparation | bookateacher.in",
+  title: "Subjects — IELTS, TOEFL & Spoken English Preparation",
   description: "Explore IELTS, TOEFL, and Spoken English preparation guides. Check the live tutor directory for current profiles and availability.",
   openGraph: {
-    title: "Subjects — IELTS, TOEFL & Spoken English Preparation | bookateacher.in",
+    title: "Subjects — IELTS, TOEFL & Spoken English Preparation",
     description: "Explore preparation guides and check the live tutor directory for current profiles and availability.",
     type: "website",
     locale: "en_IN",
     siteName: "bookateacher.in",
     url: "https://bookateacher.in/subjects",
-    images: [{ url: "https://bookateacher.in/og-default.svg", width: 1200, height: 630, alt: "Subjects — bookateacher.in" }],
+    images: [{ url: "https://bookateacher.in/og-social.png", width: 1200, height: 630, alt: "Subjects — bookateacher.in" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Subject preparation — bookateacher.in",
+    title: "Subjects — IELTS, TOEFL & Spoken English Preparation",
+    images: ["https://bookateacher.in/og-social.png"],
     description: "IELTS, TOEFL, and Spoken English preparation guides with current tutor availability in the directory.",
   },
   alternates: {
@@ -85,7 +86,7 @@ export default function SubjectsPage() {
         "@type": "WebPage",
         "@id": "https://bookateacher.in/subjects#webpage",
         url: "https://bookateacher.in/subjects",
-        name: "Subjects — IELTS, TOEFL & Spoken English Preparation | bookateacher.in",
+        name: "Subjects — IELTS, TOEFL & Spoken English Preparation",
         description: "Explore preparation guides and check the live tutor directory for current profiles and availability.",
         isPartOf: { "@id": "https://bookateacher.in/#website" },
         about: { "@id": "https://bookateacher.in/#organization" },

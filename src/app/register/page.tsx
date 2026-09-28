@@ -3,15 +3,23 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Sign up | bookateacher.in",
+  title: "Sign up",
   description:
-    "Create your account to find verified IELTS, TOEFL, and Spoken English tutors, or to become a tutor on bookateacher.in",
+    "Create a learner or tutor account. Check the public directory for current tutor profiles and availability.",
   openGraph: {
-    title: "Sign up | bookateacher.in",
-    description: "Create your account to find verified IELTS, TOEFL, and Spoken English tutors, or to become a tutor on bookateacher.in",
+    title: "Sign up",
+    description: "Create a learner or tutor account. Check the public directory for current tutor profiles and availability.",
     type: "website",
     locale: "en_IN",
     siteName: "bookateacher.in",
+    url: "https://bookateacher.in/register",
+    images: [{ url: "https://bookateacher.in/og-social.png", width: 1200, height: 630, alt: "bookateacher.in — English preparation guides" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sign up",
+    description: "Create a bookateacher.in account.",
+    images: ["https://bookateacher.in/og-social.png"],
   },
   alternates: {
     canonical: "https://bookateacher.in/register",
@@ -174,7 +182,7 @@ export default function RegisterPage() {
               Create your account
             </h1>
             <p style={{ fontSize: "1.0625rem", color: INK_SOFT, lineHeight: 1.6, maxWidth: 480, margin: "0 auto" }}>
-              Join bookateacher.in to find verified tutors or start earning as a tutor.
+              Create a learner or tutor account. Check the public directory for current tutor profiles and availability before requesting a match.
             </p>
           </div>
 
@@ -201,8 +209,8 @@ export default function RegisterPage() {
                       d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 3.373-1.204 6.994-3.04 9-5.408V9c0-.489-.012-.97-.025-1.4-.074-.672.216-1.926.79-2.895.098-.14.173-.282.222-.436H12v.188c0 .243.092.445.222.436.574.969.79 2.223.79 2.895.013.43.025.92.025 1.4 0 2.466-2.11 4.39-4.79 4.911m0 3a8.001 8.001 0 100-16 8.001 8.001 0 000 16z" />
                   </svg>
                 ),
-                title: "Verified tutors",
-                desc: "Every tutor vetted and verified",
+                title: "Public tutor profiles",
+                desc: "Check current listings and availability",
               },
               {
                 icon: (
@@ -211,8 +219,8 @@ export default function RegisterPage() {
                       d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 ),
-                title: "Fast matching",
-                desc: "Matched within 24 hours",
+                title: "Availability varies",
+                desc: "Confirm current schedules before requesting",
               },
               {
                 icon: (

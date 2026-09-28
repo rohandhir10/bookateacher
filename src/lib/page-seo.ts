@@ -22,16 +22,15 @@ export type TutorProfile = {
 };
 
 export function tutorProfileMetadata(tutor: TutorProfile, subjectLabel: string): Metadata {
-  const initial = tutor.name.charAt(0).toUpperCase();
   const priceRange = tutor.hourly_rate
     ? `₹${tutor.hourly_rate.toLocaleString("en-IN")}/hr`
     : "From ₹800/hr";
 
   return {
-    title: `${tutor.name} — ${subjectLabel} Tutor | bookateacher.in`,
+    title: `${tutor.name} — ${subjectLabel} Tutor`,
     description: `${tutor.name}, ${subjectLabel.toLowerCase()} tutor on bookateacher.in. ${tutor.bio ? tutor.bio.slice(0, 155) + "…" : `Certified ${subjectLabel} coaching, live 1-on-1 sessions.`} Hourly rate: ${priceRange}. Book a session.`,
     openGraph: {
-      title: `${tutor.name} — ${subjectLabel} Tutor | bookateacher.in`,
+      title: `${tutor.name} — ${subjectLabel} Tutor`,
       description: `${tutor.name} is a verified ${subjectLabel.toLowerCase()} tutor on bookateacher.in. Live 1-on-1 coaching, ₹${tutor.hourly_rate?.toLocaleString("en-IN") ?? "800"}/hr.`,
       type: "profile",
       locale: "en_IN",
@@ -39,7 +38,7 @@ export function tutorProfileMetadata(tutor: TutorProfile, subjectLabel: string):
       url: `https://bookateacher.in/tutors/${tutor.id}`,
       images: [
         {
-          url: tutor.avatar_url || `https://bookateacher.in/og-default.svg`,
+          url: tutor.avatar_url || `https://bookateacher.in/og-social.png`,
           width: 1200,
           height: 630,
           alt: `${tutor.name} — ${subjectLabel} tutor`,
@@ -50,7 +49,7 @@ export function tutorProfileMetadata(tutor: TutorProfile, subjectLabel: string):
       card: "summary_large_image",
       title: `${tutor.name} — ${subjectLabel} Tutor`,
       description: `Verified ${subjectLabel.toLowerCase()} tutor on bookateacher.in. ₹${tutor.hourly_rate?.toLocaleString("en-IN") ?? "800"}/hr.`,
-      images: [tutor.avatar_url || "https://bookateacher.in/og-default.svg"],
+      images: [tutor.avatar_url || "https://bookateacher.in/og-social.png"],
     },
     alternates: {
       canonical: `https://bookateacher.in/tutors/${tutor.id}`,
@@ -64,10 +63,10 @@ export function tutorProfileMetadata(tutor: TutorProfile, subjectLabel: string):
 
 export function subjectPageMetadata(subject: string, subjectLabel: string, subjectDescription: string): Metadata {
   return {
-    title: `${subjectLabel} Tutor — Find Certified ${subjectLabel} Coaches | bookateacher.in`,
+    title: `${subjectLabel} Preparation — Tutor Directory`,
     description: subjectDescription,
     openGraph: {
-      title: `${subjectLabel} Tutor — Find Certified ${subjectLabel} Coaches | bookateacher.in`,
+      title: `${subjectLabel} Preparation — Tutor Directory`,
       description: subjectDescription,
       type: "website",
       locale: "en_IN",
@@ -75,18 +74,18 @@ export function subjectPageMetadata(subject: string, subjectLabel: string, subje
       url: `https://bookateacher.in/subjects/${subject}`,
       images: [
         {
-          url: `https://bookateacher.in/og-default.svg`,
+          url: `https://bookateacher.in/og-social.png`,
           width: 1200,
           height: 630,
-          alt: `${subjectLabel} tutors — bookateacher.in`,
+          alt: "bookateacher.in — English preparation guides",
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${subjectLabel} Tutor — bookateacher.in`,
+      title: `${subjectLabel} Preparation — Tutor Directory`,
       description: subjectDescription.slice(0, 155),
-      images: ["https://bookateacher.in/og-default.svg"],
+      images: ["https://bookateacher.in/og-social.png"],
     },
     alternates: {
       canonical: `https://bookateacher.in/subjects/${subject}`,

@@ -2,11 +2,11 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "TOEFL Preparation — Tutor Directory | bookateacher.in",
+  title: "TOEFL Preparation — Tutor Directory",
   description:
     "Explore TOEFL iBT preparation for US university applications. Check the live tutor directory for current profiles and availability.",
   openGraph: {
-    title: "TOEFL Preparation — Tutor Directory | bookateacher.in",
+    title: "TOEFL Preparation — Tutor Directory",
     description: "Explore TOEFL preparation and check the live tutor directory for current profiles and availability.",
     type: "website",
     locale: "en_IN",
@@ -14,18 +14,18 @@ export const metadata: Metadata = {
     url: "https://bookateacher.in/subjects/toefl",
     images: [
       {
-        url: "https://bookateacher.in/og-default.svg",
+        url: "https://bookateacher.in/og-social.png",
         width: 1200,
         height: 630,
-        alt: "TOEFL tutors — bookateacher.in",
+        alt: "bookateacher.in — English preparation guides",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "TOEFL Preparation — bookateacher.in",
+    title: "TOEFL Preparation — Tutor Directory",
     description: "TOEFL preparation guidance and current tutor availability in the directory.",
-    images: ["https://bookateacher.in/og-default.svg"],
+    images: ["https://bookateacher.in/og-social.png"],
   },
   alternates: {
     canonical: "https://bookateacher.in/subjects/toefl",
@@ -150,7 +150,7 @@ export default function ToeflSubjectPage() {
         "@type": "WebPage",
         "@id": "https://bookateacher.in/subjects/toefl#webpage",
         url: "https://bookateacher.in/subjects/toefl",
-        name: "TOEFL Preparation — Tutor Directory | bookateacher.in",
+        name: "TOEFL Preparation — Tutor Directory",
         description:
           "Explore TOEFL iBT preparation and check current tutor profiles in the live directory.",
         isPartOf: { "@id": "https://bookateacher.in/#website" },

@@ -1,14 +1,12 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { breadcrumbSchema, webpageSchema } from "@/lib/page-seo";
-import { FAQ_SCHEMA as HOME_FAQ_SCHEMA } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "IELTS Preparation — Tutor Directory | bookateacher.in",
+  title: "IELTS Preparation — Tutor Directory",
   description:
     "Explore IELTS Academic and General Training preparation. Check the live tutor directory for current profiles and availability.",
   openGraph: {
-    title: "IELTS Preparation — Tutor Directory | bookateacher.in",
+    title: "IELTS Preparation — Tutor Directory",
     description: "Explore IELTS preparation and check the live tutor directory for current profiles and availability.",
     type: "website",
     locale: "en_IN",
@@ -16,18 +14,18 @@ export const metadata: Metadata = {
     url: "https://bookateacher.in/subjects/ielts",
     images: [
       {
-        url: "https://bookateacher.in/og-default.svg",
+        url: "https://bookateacher.in/og-social.png",
         width: 1200,
         height: 630,
-        alt: "IELTS tutors — bookateacher.in",
+        alt: "bookateacher.in — English preparation guides",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "IELTS Preparation — bookateacher.in",
+    title: "IELTS Preparation — Tutor Directory",
     description: "IELTS preparation guidance and current tutor availability in the directory.",
-    images: ["https://bookateacher.in/og-default.svg"],
+    images: ["https://bookateacher.in/og-social.png"],
   },
   alternates: {
     canonical: "https://bookateacher.in/subjects/ielts",
@@ -144,7 +142,6 @@ export default function IeltsSubjectPage() {
   const LINE = "#D9D2C5";
   const MUTED = "#6B6557";
   const RED = "#B23A2E";
-  const GREEN = "#2F5233";
 
   const jsonLd = JSON.stringify({
     "@context": "https://schema.org",
@@ -153,7 +150,7 @@ export default function IeltsSubjectPage() {
         "@type": "WebPage",
         "@id": "https://bookateacher.in/subjects/ielts#webpage",
         url: "https://bookateacher.in/subjects/ielts",
-        name: "IELTS Preparation — Tutor Directory | bookateacher.in",
+        name: "IELTS Preparation — Tutor Directory",
         description:
           "Explore IELTS Academic and General Training preparation and check current tutor profiles in the live directory.",
         isPartOf: { "@id": "https://bookateacher.in/#website" },

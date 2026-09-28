@@ -2,16 +2,24 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Contact bookateacher.in",
+  title: "Contact",
   description:
     "Contact the bookateacher.in team for help with tutor profiles, learner enquiries, or the platform.",
   alternates: { canonical: "https://bookateacher.in/contact" },
   openGraph: {
-    title: "Contact bookateacher.in",
+    title: "Contact",
     description: "Get in touch with the bookateacher.in support team.",
     type: "website",
     locale: "en_IN",
     siteName: "bookateacher.in",
+    url: "https://bookateacher.in/contact",
+    images: [{ url: "https://bookateacher.in/og-social.png", width: 1200, height: 630, alt: "bookateacher.in — English preparation guides" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact",
+    description: "Contact the bookateacher.in team for platform support.",
+    images: ["https://bookateacher.in/og-social.png"],
   },
 };
 

@@ -3,14 +3,22 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Sign in | bookateacher.in",
+  title: "Sign in",
   description: "Sign in to your bookateacher.in account to track your tutor match, manage sessions, and continue your IELTS, TOEFL, or Spoken English preparation.",
   openGraph: {
-    title: "Sign in | bookateacher.in",
+    title: "Sign in",
     description: "Sign in to your bookateacher.in account to track your tutor match and manage your sessions.",
     type: "website",
     locale: "en_IN",
     siteName: "bookateacher.in",
+    url: "https://bookateacher.in/login",
+    images: [{ url: "https://bookateacher.in/og-social.png", width: 1200, height: 630, alt: "bookateacher.in — English preparation guides" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sign in",
+    description: "Sign in to your bookateacher.in account.",
+    images: ["https://bookateacher.in/og-social.png"],
   },
   alternates: {
     canonical: "https://bookateacher.in/login",

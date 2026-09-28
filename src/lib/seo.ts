@@ -1,11 +1,9 @@
-import { Metadata } from "next";
-
 // FAQ schema data — shared between page.tsx metadata and the visible FAQ section
 export const FAQ_DATA = [
   {
-    question: "What if I don't get matched with someone good?",
+    question: "What if I don't see a suitable tutor?",
     answer:
-      "You can reject your first match for free — no questions, no wait. We'll send another within 24 hours. If your first session doesn't feel right, message us and we'll re-match you. You're not locked into anyone.",
+      "Tutor availability depends on current listings in the public directory. Check profiles and contact us if you have questions. We cannot guarantee a match or a response time.",
   },
   {
     question: "What's your refund policy if I don't like the first session?",
@@ -15,7 +13,7 @@ export const FAQ_DATA = [
   {
     question: "How fast can you match me if my test is in 10 days?",
     answer:
-      "We match within 24 hours even on short timelines — we keep a pool of available tutors for exactly this. But be realistic: 10 days is enough for targeted strategy and final polish, not a full overhaul. Tell us your test date upfront and we'll suggest a realistic plan.",
+      "We cannot guarantee tutor availability or a match timeline. Check current profiles in the directory and confirm a tutor's schedule directly before planning around a test date. With 10 days, targeted practice may be more realistic than a full overhaul.",
   },
   {
     question: "How much does it cost?",
@@ -117,7 +115,7 @@ export const ORGANIZATION_SCHEMA = {
   name: "bookateacher.in",
   url: "https://bookateacher.in",
   description:
-    "Online platform connecting students with certified IELTS, TOEFL, and Spoken English tutors across India.",
+    "Online platform with English preparation resources and a directory for IELTS, TOEFL, and Spoken English.",
   logo: "https://bookateacher.in/favicon.svg",
   sameAs: [
     "https://www.instagram.com/bookateacher_in",
@@ -174,7 +172,7 @@ export function getHomepageJsonLd() {
         url: "https://bookateacher.in",
         name: "bookateacher.in",
         description:
-          "Certified IELTS, TOEFL, and Spoken English tutors across India. Live 1-on-1 coaching, mock tests, and personal feedback.",
+          "Explore IELTS, TOEFL, and Spoken English preparation guides, then check current tutor availability in the directory.",
         publisher: { "@id": "https://bookateacher.in/#organization" },
         potentialAction: {
           "@type": "SearchAction",
@@ -189,9 +187,9 @@ export function getHomepageJsonLd() {
         "@type": "WebPage",
         "@id": "https://bookateacher.in/#webpage",
         url: "https://bookateacher.in",
-        name: "bookateacher.in — From 6.5 to 7.5. In six weeks.",
+        name: "English preparation & tutor directory",
         description:
-          "Certified IELTS, TOEFL, and Spoken English tutors across India. Live 1-on-1 coaching, mock tests under real test conditions, and personal feedback.",
+          "Explore preparation guides for IELTS, TOEFL, and Spoken English, and check current tutor availability.",
         isPartOf: { "@id": "https://bookateacher.in/#website" },
         about: { "@id": "https://bookateacher.in/#organization" },
         inLanguage: "en-IN",

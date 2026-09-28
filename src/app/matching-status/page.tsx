@@ -5,10 +5,10 @@ import { redirect } from "next/navigation";
 import { MatchingStatusContent } from "./MatchingStatusContent";
 
 export const metadata: Metadata = {
-  title: "Your match request | bookateacher.in",
+  title: "Your match request",
   description: "Track the status of your tutor match request.",
   openGraph: {
-    title: "Your match request | bookateacher.in",
+    title: "Your match request",
     description: "Track the status of your tutor match request.",
     type: "website",
     locale: "en_IN",

@@ -2,17 +2,25 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "About bookateacher.in",
+  title: "About",
   description:
     "Learn how bookateacher.in helps students find tutors for IELTS, TOEFL, and Spoken English.",
   alternates: { canonical: "https://bookateacher.in/about" },
   openGraph: {
-    title: "About bookateacher.in",
+    title: "About",
     description:
       "A straightforward way to find a tutor for IELTS, TOEFL, or Spoken English.",
     type: "website",
     locale: "en_IN",
     siteName: "bookateacher.in",
+    url: "https://bookateacher.in/about",
+    images: [{ url: "https://bookateacher.in/og-social.png", width: 1200, height: 630, alt: "bookateacher.in — English preparation guides" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About",
+    description: "About bookateacher.in and its English preparation resources.",
+    images: ["https://bookateacher.in/og-social.png"],
   },
 };
 

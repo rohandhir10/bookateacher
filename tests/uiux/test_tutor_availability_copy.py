@@ -53,6 +53,21 @@ class TutorAvailabilityCopyTests(unittest.TestCase):
             self.fail("the subject index does not link to the live tutor directory")
 
 
+    def test_home_and_signup_do_not_guarantee_a_24_hour_match(self):
+        for relative_path in ("src/app/page.tsx", "src/app/register/page.tsx"):
+            source = (ROOT / relative_path).read_text(encoding="utf-8").lower()
+            if relative_path == "src/app/page.tsx":
+                source = source.split("/* ── testimonials ── */", 1)[0]
+            for promise in ("within 24 hours", "matched within 24 hours", "24h"):
+                if promise in source:
+                    self.fail(f"{relative_path} still promises an unsupported match timeline: {promise}")
+
+    def test_homepage_faq_does_not_claim_a_tutor_pool_or_match_time(self):
+        source = (ROOT / "src/lib/seo.ts").read_text(encoding="utf-8").lower()
+        for promise in ("within 24 hours", "pool of available tutors", "we'll re-match you"):
+            if promise in source:
+                self.fail(f"homepage FAQ/schema still promises unavailable matching: {promise}")
+
     def test_directory_does_not_guarantee_a_match_timeline_without_listings(self):
         source = (ROOT / "src/app/tutors/page.tsx").read_text(encoding="utf-8").lower()
         for promise in ("within 24 hours", "we'll match you", "get matched now"):

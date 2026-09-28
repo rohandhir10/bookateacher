@@ -1,31 +1,31 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { FAQ_DATA, getHomepageJsonLd, FAQ_SCHEMA, COURSE_SCHEMA } from "@/lib/seo";
+import { FAQ_SCHEMA, COURSE_SCHEMA } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "bookateacher.in — From 6.5 to 7.5. In six weeks.",
-  description: "Certified IELTS, TOEFL, and Spoken English tutors across India. Live 1-on-1 coaching, mock tests under real test conditions, and personal feedback. Book a session today.",
+  title: "English preparation & tutor directory",
+  description: "Explore IELTS, TOEFL, and Spoken English preparation guides, then check current tutor availability in the directory.",
   openGraph: {
-    title: "bookateacher.in — From 6.5 to 7.5. In six weeks.",
-    description: "Certified IELTS, TOEFL, and Spoken English tutors across India. Live 1-on-1 coaching, mock tests under real test conditions, and personal feedback.",
+    title: "English preparation & tutor directory",
+    description: "Explore preparation guides for IELTS, TOEFL, and Spoken English, and check current tutor availability.",
     type: "website",
     locale: "en_IN",
     siteName: "bookateacher.in",
     url: "https://bookateacher.in",
     images: [
       {
-        url: "https://bookateacher.in/og-default.svg",
+        url: "https://bookateacher.in/og-social.png",
         width: 1200,
         height: 630,
-        alt: "bookateacher.in — From 6.5 to 7.5. In six weeks.",
+        alt: "English preparation & tutor directory",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "bookateacher.in — From 6.5 to 7.5. In six weeks.",
-    description: "Certified IELTS, TOEFL, and Spoken English tutors across India.",
-    images: ["https://bookateacher.in/og-default.svg"],
+    title: "English preparation & tutor directory",
+    description: "English preparation guides and current tutor availability for IELTS, TOEFL, and Spoken English.",
+    images: ["https://bookateacher.in/og-social.png"],
   },
   alternates: {
     canonical: "https://bookateacher.in",
@@ -68,14 +68,14 @@ export default function HomePage() {
             <span style={{ color: INK }}>bookateacher<span style={{ color: MUTED, fontFamily: "Inter, sans-serif", fontSize: "0.75rem", fontWeight: 400 }}>.in</span></span>
           </Link>
           <nav style={{ display: "flex", gap: 28, alignItems: "center" }}>
-            <a href="#for" style={{ fontSize: "0.875rem", color: INK_SOFT, transition: "color 0.15s" }}>Who it's for</a>
+            <a href="#for" style={{ fontSize: "0.875rem", color: INK_SOFT, transition: "color 0.15s" }}>Who it&apos;s for</a>
             <a href="#how" style={{ fontSize: "0.875rem", color: INK_SOFT, transition: "color 0.15s" }}>How it works</a>
             <a href="#reviews" style={{ fontSize: "0.875rem", color: INK_SOFT, transition: "color 0.15s" }}>Results</a>
           </nav>
           <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
             <Link href="/login" style={{ fontSize: "0.875rem", color: INK_SOFT, transition: "color 0.15s" }}>Sign in</Link>
             <Link href="/tutors" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "9px 20px", borderRadius: 6, fontSize: "0.875rem", fontWeight: 500, background: INK, color: PAPER, transition: "all 0.15s", whiteSpace: "nowrap", textDecoration: "none" }}>
-              Find a tutor
+              Browse tutors
             </Link>
           </div>
         </div>
@@ -90,23 +90,21 @@ export default function HomePage() {
               IELTS · TOEFL · Spoken English
             </div>
             <h1 style={{ fontSize: "clamp(2.75rem, 4.5vw, 4rem)", fontWeight: 600, letterSpacing: "-0.035em", lineHeight: 1.05, marginBottom: 20, fontFamily: "'Playfair Display', Georgia, serif" }}>
-              From <em style={{ fontStyle: "italic", color: RED, fontWeight: 400 }}>6.5</em> to 7.5.<br />In six weeks.
+              Prepare for your next English test.
             </h1>
             <p style={{ fontSize: "1.125rem", color: INK_SOFT, lineHeight: 1.65, marginBottom: 32, maxWidth: 560, margin: "0 auto 32px" }}>
-              Certified tutors for high-stakes English tests. Live 1-on-1 coaching,
-              mock tests under real test conditions, and feedback that targets exactly what's
-              keeping your score down. Book a session. Move your score.
+              Explore preparation guides for IELTS, TOEFL, and Spoken English, then check the live directory for current tutor profiles and availability.
             </p>
             <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap", marginBottom: 16 }}>
               <Link href="/tutors" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "12px 24px", borderRadius: 6, fontSize: "0.9375rem", fontWeight: 500, background: INK, color: PAPER, transition: "all 0.15s", whiteSpace: "nowrap", textDecoration: "none", cursor: "pointer", border: "none", fontFamily: "inherit" }}>
-                Find a tutor
+                Browse tutors
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M13 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" /></svg>
               </Link>
               <Link href="/register?role=tutor" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", padding: "12px 24px", borderRadius: 6, fontSize: "0.9375rem", fontWeight: 500, background: "transparent", color: INK, border: `1px solid ${LINE}`, transition: "all 0.15s", whiteSpace: "nowrap", textDecoration: "none", cursor: "pointer", fontFamily: "inherit" }}>
-                I'm a tutor
+                I&apos;m a tutor
               </Link>
             </div>
-            <p style={{ fontSize: "0.875rem", color: MUTED, marginTop: 4 }}>Browse verified tutors — no sign-up required.</p>
+            <p style={{ fontSize: "0.875rem", color: MUTED, marginTop: 4 }}>Check current tutor profiles — no sign-up required.</p>
           </div>
 
           {/* ── Band score diagram — centered ── */}
@@ -121,21 +119,21 @@ export default function HomePage() {
             <div style={{ display: "flex", gap: 0, borderLeft: `1px solid rgba(255,255,255,0.1)` }}>
               <div style={{ flex: 1, padding: "0 28px", borderRight: `1px solid rgba(255,255,255,0.1)`, display: "flex", flexDirection: "column", gap: 4 }}>
                 <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "1.875rem", fontWeight: 600, letterSpacing: "-0.03em", lineHeight: 1, color: PAPER }}>
-                  6.5<span style={{ color: RED, fontSize: "1rem", fontWeight: 400 }}>→7.5</span>
+                  IELTS
                 </div>
-                <div style={{ fontSize: "0.8125rem", color: "rgba(250,247,240,0.6)", marginTop: 6, lineHeight: 1.5 }}>Average IELTS improvement for our students</div>
+                <div style={{ fontSize: "0.8125rem", color: "rgba(250,247,240,0.6)", marginTop: 6, lineHeight: 1.5 }}>Explore IELTS preparation and current tutor listings</div>
               </div>
               <div style={{ flex: 1, padding: "0 28px", borderRight: `1px solid rgba(255,255,255,0.1)`, display: "flex", flexDirection: "column", gap: 4 }}>
                 <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "1.875rem", fontWeight: 600, letterSpacing: "-0.03em", lineHeight: 1, color: PAPER }}>
-                  24<span style={{ color: RED, fontSize: "1rem", fontWeight: 400 }}>h</span>
+                  Live
                 </div>
-                <div style={{ fontSize: "0.8125rem", color: "rgba(250,247,240,0.6)", marginTop: 6, lineHeight: 1.5 }}>We match you within 24 hours of your request</div>
+                <div style={{ fontSize: "0.8125rem", color: "rgba(250,247,240,0.6)", marginTop: 6, lineHeight: 1.5 }}>Check current tutor availability in the directory</div>
               </div>
               <div style={{ flex: 1, padding: "0 28px", borderRight: "none", display: "flex", flexDirection: "column", gap: 4 }}>
                 <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "1.875rem", fontWeight: 600, letterSpacing: "-0.03em", lineHeight: 1, color: PAPER }}>
-                  100<span style={{ color: RED, fontSize: "1rem", fontWeight: 400 }}>%</span>
+                  Public
                 </div>
-                <div style={{ fontSize: "0.8125rem", color: "rgba(250,247,240,0.6)", marginTop: 6, lineHeight: 1.5 }}>Every tutor vetted — credentials, background, test experience</div>
+                <div style={{ fontSize: "0.8125rem", color: "rgba(250,247,240,0.6)", marginTop: 6, lineHeight: 1.5 }}>Browse the directory without creating an account</div>
               </div>
             </div>
           </div>
@@ -146,12 +144,12 @@ export default function HomePage() {
           <div className="wrap" style={{ width: "100%", maxWidth: 1180, margin: "0 auto", padding: "0 24px" }}>
             <div style={{ marginBottom: 48, textAlign: "center" }}>
               <h2 style={{ fontSize: "clamp(1.875rem, 2.8vw, 2.5rem)", fontWeight: 600, letterSpacing: "-0.035em", marginBottom: 12, fontFamily: "'Playfair Display', Georgia, serif" }}>This is for people at a deadline.</h2>
-              <p style={{ fontSize: "1.0625rem", color: INK_SOFT, maxWidth: 540, lineHeight: 1.65, margin: "0 auto" }}>Not for casual learners. For students whose visa, university place, or career plan depends on a score they don't have yet.</p>
+              <p style={{ fontSize: "1.0625rem", color: INK_SOFT, maxWidth: 540, lineHeight: 1.65, margin: "0 auto" }}>Not for casual learners. For students whose visa, university place, or career plan depends on a score they don&apos;t have yet.</p>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 1, background: LINE, border: `1px solid ${LINE}`, borderRadius: 14, overflow: "hidden" }}>
               {[
                 { tag: "IELTS · University admission", title: "You need Band 7+ and you're stuck at 6.5", desc: "Writing and speaking feedback that targets exactly what's keeping your score down — not generic practice.", claim: "6.5 → 7.5", claimSub: "in 6 weeks, on average" },
-                { tag: "TOEFL · US university apps", title: "Your test date is weeks away and you're not ready", desc: "Tutors who know the TOEFL format section by section. Strategy for each question type. Mock tests under timed conditions.", claim: "Matched within 24 hours", claimSub: "of your request" },
+                { tag: "TOEFL · US university apps", title: "Your test date is weeks away and you're not ready", desc: "Tutors who know the TOEFL format section by section. Strategy for each question type. Mock tests under timed conditions.", claim: "Current listings", claimSub: "Check profile availability" },
                 { tag: "Spoken English · Confidence", title: "You understand English. You just can't speak it.", desc: "Sessions built around real conversation — not scripts. Pronunciation, fluency, the exact words you need for your situation.", claim: "Live 1-on-1", claimSub: "in India and online" },
                 { tag: "Retake · Stuck at the same score", title: "You've taken the test twice. Same score.", desc: "A fresh tutor with a fresh eye on your answers. The things you've stopped noticing — they spot immediately.", claim: "7.0 → 8.0", claimSub: "reported by retake students" },
               ].map((p) => (
@@ -188,7 +186,7 @@ export default function HomePage() {
               ))}
             </div>
             <p style={{ fontSize: "0.8125rem", color: MUTED, textAlign: "center", marginTop: 24, borderTop: `1px solid ${LINE}`, paddingTop: 16, width: "100%", maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}>
-              Every tutor on bookateacher.in has passed all four. No profiles without the full vetting — if we haven't checked all four boxes, they're not on the platform.
+              Every tutor on bookateacher.in has passed all four. No profiles without the full vetting — if we haven&apos;t checked all four boxes, they&apos;re not on the platform.
             </p>
           </div>
         </section>
@@ -198,13 +196,13 @@ export default function HomePage() {
           <div className="wrap" style={{ width: "100%", maxWidth: 720, margin: "0 auto", padding: "0 24px" }}>
             <div style={{ marginBottom: 48, textAlign: "center" }}>
               <h2 style={{ fontSize: "clamp(1.875rem, 2.8vw, 2.5rem)", fontWeight: 600, letterSpacing: "-0.035em", marginBottom: 12, fontFamily: "'Playfair Display', Georgia, serif" }}>Questions people actually ask.</h2>
-              <p style={{ fontSize: "1.0625rem", color: INK_SOFT, maxWidth: 540, lineHeight: 1.65, margin: "0 auto" }}>If you're at a deadline, these are probably the things worrying you right now.</p>
+              <p style={{ fontSize: "1.0625rem", color: INK_SOFT, maxWidth: 540, lineHeight: 1.65, margin: "0 auto" }}>If you&apos;re at a deadline, these are probably the things worrying you right now.</p>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
               {[
-                { q: "What if I don't get matched with someone good?", a: "You can reject your first match for free — no questions, no wait. We'll send another within 24 hours. If your first session doesn't feel right, message us and we'll re-match you. You're not locked into anyone." },
+                { q: "What if I don't see a suitable tutor?", a: "Tutor availability depends on current listings. Check the public directory and contact us if you have questions. We cannot guarantee a match or a response time." },
                 { q: "What's your refund policy if I don't like the first session?", a: "If you don't feel the session was worth it, we refund the session fee in full — including any trial session fee, if applicable. Email us within 48 hours. Most students stay after the first session, but the option is there." },
-                { q: "How fast can you match me if my test is in 10 days?", a: "We match within 24 hours even on short timelines — we keep a pool of available tutors for exactly this. But be realistic: 10 days is enough for targeted strategy and final polish, not a full overhaul. Tell us your test date upfront and we'll suggest a realistic plan." },
+                { q: "How should I plan if my test is in 10 days?", a: "We cannot guarantee tutor availability or a match timeline. Check current profiles in the directory and confirm a tutor's schedule directly before planning around a test date. With 10 days, targeted practice may be more realistic than a full overhaul." },
                 { q: "How much does it cost?", a: "Tutor rates vary by experience and subject — typically ₹800–₹2,500 per hour for test prep. You see the rate before you book. Payment is collected at booking time through Razorpay (UPI, cards). No hidden fees. Trial sessions may be free or discounted — check the tutor's profile." },
                 { q: "Can I chat with a tutor before booking?", a: "Yes — every tutor profile has a message button. Send a short intro, ask about their approach, and see if it's a fit before you pay. Most tutors reply within a few hours." },
                 { q: "What if my English is very basic — is this still for me?", a: "If you're below Band 4, we'll be honest: 1:1 test-prep coaching works best from Band 5+ where there's a foundation to build on. For absolute beginners, we can suggest general English tutors first. Tell us your current level in the form and we'll guide you." },
@@ -226,13 +224,13 @@ export default function HomePage() {
         <section id="how" style={{ padding: "72px 0", background: PAPER_2, borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
           <div className="wrap" style={{ width: "100%", maxWidth: 1180, margin: "0 auto", padding: "0 24px" }}>
             <div style={{ marginBottom: 48, textAlign: "center" }}>
-              <h2 style={{ fontSize: "clamp(1.875rem, 2.8vw, 2.5rem)", fontWeight: 600, letterSpacing: "-0.035em", marginBottom: 12, fontFamily: "'Playfair Display', Georgia, serif" }}>Three steps from "I need a tutor" to "I've booked a session."</h2>
+              <h2 style={{ fontSize: "clamp(1.875rem, 2.8vw, 2.5rem)", fontWeight: 600, letterSpacing: "-0.035em", marginBottom: 12, fontFamily: "'Playfair Display', Georgia, serif" }}>Three steps from &quot;I need a tutor&quot; to &quot;I&apos;ve booked a session.&quot;</h2>
               <p style={{ fontSize: "1.0625rem", color: INK_SOFT, maxWidth: 540, lineHeight: 1.65, margin: "0 auto" }}>No long sign-up forms. No waiting weeks for a response. No hidden fees.</p>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 36 }}>
               {[
                 { n: "01", title: "Tell us what you need", desc: "Subject, target score, test date, budget, preferred times. Takes under two minutes. Fill it out now — no sign-up required." },
-                { n: "02", title: "A real person matches you", desc: "Not an algorithm. A human reviews your requirements and pairs you with the best-fit verified tutor — within 24 hours." },
+                { n: "02", title: "Review tutor profiles", desc: "Compare current profiles and contact a tutor to confirm availability and fit before you request a match." },
                 { n: "03", title: "Book and start", desc: "Chat with your tutor directly, confirm the time, and book. Payment is simple — UPI, cards. First session is where the real work starts." },
               ].map((s) => (
                 <div key={s.n} style={{ position: "relative", paddingLeft: 24, borderLeft: `2px solid ${LINE}`, paddingTop: 4 }}>
@@ -250,7 +248,7 @@ export default function HomePage() {
           <div className="wrap" style={{ width: "100%", maxWidth: 1180, margin: "0 auto", padding: "0 24px" }}>
             <div style={{ marginBottom: 48, textAlign: "center" }}>
               <h2 style={{ fontSize: "clamp(1.875rem, 2.8vw, 2.5rem)", fontWeight: 600, letterSpacing: "-0.035em", marginBottom: 12, fontFamily: "'Playfair Display', Georgia, serif" }}>What the score actually did.</h2>
-              <p style={{ fontSize: "1.0625rem", color: INK_SOFT, maxWidth: 540, lineHeight: 1.65, margin: "0 auto" }}>Real students. Real score changes. These are early results — representative, not the best we've done.</p>
+              <p style={{ fontSize: "1.0625rem", color: INK_SOFT, maxWidth: 540, lineHeight: 1.65, margin: "0 auto" }}>Real students. Real score changes. These are early results — representative, not the best we&apos;ve done.</p>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
               {[
@@ -286,11 +284,11 @@ export default function HomePage() {
         <section style={{ background: INK, color: PAPER, padding: "72px 0", textAlign: "center", position: "relative", overflow: "hidden" }}>
           <div style={{ position: "absolute", top: -80, right: -80, width: 280, height: 280, background: "rgba(178,58,46,0.15)", borderRadius: "50%", pointerEvents: "none" }}></div>
           <div className="wrap" style={{ width: "100%", maxWidth: 1180, margin: "0 auto", padding: "0 24px", position: "relative" }}>
-            <h2 style={{ fontSize: "clamp(2rem, 3vw, 2.75rem)", fontWeight: 600, letterSpacing: "-0.035em", marginBottom: 14, color: PAPER, lineHeight: 1.15, fontFamily: "'Playfair Display', Georgia, serif" }}>Your score isn't going to move by itself.</h2>
-            <p style={{ fontSize: "1.0625rem", color: "rgba(250,247,240,0.6)", maxWidth: 500, margin: "0 auto 32px", lineHeight: 1.65 }}>A verified tutor. A real plan. A session booked today. That's what changes a number on a score report — and the university offer that depends on it.</p>
+            <h2 style={{ fontSize: "clamp(2rem, 3vw, 2.75rem)", fontWeight: 600, letterSpacing: "-0.035em", marginBottom: 14, color: PAPER, lineHeight: 1.15, fontFamily: "'Playfair Display', Georgia, serif" }}>Start by checking current tutor availability.</h2>
+            <p style={{ fontSize: "1.0625rem", color: "rgba(250,247,240,0.6)", maxWidth: 500, margin: "0 auto 32px", lineHeight: 1.65 }}>Review public tutor profiles and availability before deciding whether to request a match.</p>
             <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-              <Link href="/register" className="btn-white" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "14px 28px", borderRadius: 6, fontSize: "0.9375rem", fontWeight: 600, background: PAPER, color: INK, textDecoration: "none", cursor: "pointer", border: "none", fontFamily: "inherit", transition: "all 0.15s" }}>
-                Find a tutor now
+              <Link href="/tutors" className="btn-white" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "14px 28px", borderRadius: 6, fontSize: "0.9375rem", fontWeight: 600, background: PAPER, color: INK, textDecoration: "none", cursor: "pointer", border: "none", fontFamily: "inherit", transition: "all 0.15s" }}>
+                Browse tutors
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M13 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" /></svg>
               </Link>
               <Link href="/register?role=tutor" className="btn-outline" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", padding: "14px 28px", borderRadius: 6, fontSize: "0.9375rem", fontWeight: 500, background: "transparent", color: PAPER, border: `1px solid rgba(250,247,240,0.25)`, textDecoration: "none", cursor: "pointer", fontFamily: "inherit", transition: "all 0.15s" }}>
