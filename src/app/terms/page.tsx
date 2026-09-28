@@ -238,7 +238,7 @@ export default function TermsPage() {
       </header>
 
       {/* Main */}
-      <main style={{ flex: 1, padding: "48px 24px" }}>
+      <main id="main-content" tabIndex={-1} style={{ flex: 1, padding: "48px 24px" }}>
         <div style={{ width: "100%", maxWidth: 760, margin: "0 auto" }}>
           {/* Breadcrumb */}
           <nav

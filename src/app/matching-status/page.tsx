@@ -52,7 +52,7 @@ export default async function MatchingStatusPage({
   return (
     <div className="min-h-screen flex flex-col bg-bg-primary">
       <MatchingStatusHeader />
-      <main className="flex-1">
+      <main id="main-content" tabIndex={-1} className="flex-1">
         <MatchingStatusContent
           lead={{
             id: lead.id,

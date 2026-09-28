@@ -124,7 +124,7 @@ export default function LoginPage() {
       </header>
 
       {/* Main — centered auth card on parchment */}
-      <main
+      <main id="main-content" tabIndex={-1}
         style={{
           flex: 1,
           display: "flex",

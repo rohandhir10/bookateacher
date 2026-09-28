@@ -70,7 +70,7 @@ export default function ContactPage() {
         </div>
       </header>
 
-      <main style={{ flex: 1, padding: "28px 24px 72px" }}>
+      <main id="main-content" tabIndex={-1} style={{ flex: 1, padding: "28px 24px 72px" }}>
         <div style={{ maxWidth: 760, margin: "0 auto" }}>
           <article style={{ marginTop: 36 }}>
             <p

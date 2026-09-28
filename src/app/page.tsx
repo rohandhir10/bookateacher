@@ -81,7 +81,7 @@ export default function HomePage() {
         </div>
       </header>
 
-      <main>
+      <main id="main-content" tabIndex={-1}>
         {/* ── Hero — centered, single column ── */}
         <section style={{ padding: "80px 0 56px", textAlign: "center" }}>
           <div style={{ width: "100%", maxWidth: 720, margin: "0 auto" }}>

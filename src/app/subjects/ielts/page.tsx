@@ -270,7 +270,7 @@ export default function IeltsSubjectPage() {
       </header>
 
       {/* Main */}
-      <main style={{ flex: 1, padding: "48px 24px" }}>
+      <main id="main-content" tabIndex={-1} style={{ flex: 1, padding: "48px 24px" }}>
         <div style={{ width: "100%", maxWidth: 1180, margin: "0 auto" }}>
           {/* Breadcrumb */}
           <nav

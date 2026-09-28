@@ -195,7 +195,7 @@ export default function PrivacyPage() {
       />
       </header>
 
-      <main
+      <main id="main-content" tabIndex={-1}
         style={{
           flex: 1,
           maxWidth: 780,

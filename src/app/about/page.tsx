@@ -23,7 +23,7 @@ const line = "#D9D2C5";
 
 export default function AboutPage() {
   return (
-    <main
+    <main id="main-content" tabIndex={-1}
       style={{
         minHeight: "100vh",
         background: paper,

@@ -134,7 +134,7 @@ export default async function TutorDashboardPage() {
         </div>
       </header>
 
-      <main style={{ maxWidth: 1200, margin: "0 auto", padding: "32px 24px 80px" }}>
+      <main id="main-content" tabIndex={-1} style={{ maxWidth: 1200, margin: "0 auto", padding: "32px 24px 80px" }}>
         {/* Page title */}
         <div
           style={{

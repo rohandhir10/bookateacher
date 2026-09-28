@@ -3,7 +3,8 @@ import { TutorRegistrationForm } from "@/components/TutorRegistrationForm";
 export default function TutorOnboardingPage() {
   return (
     <div className="min-h-screen bg-bg-primary py-12">
-      <div className="container">
+      <main id="main-content" tabIndex={-1}>
+        <div className="container">
         <div className="card p-6 sm:p-8 max-w-xl mx-auto">
           <div className="text-center mb-6">
             <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center mx-auto mb-3">
@@ -29,6 +30,7 @@ export default function TutorOnboardingPage() {
           </p>
         </div>
       </div>
+      </main>
     </div>
   );
 }

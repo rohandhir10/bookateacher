@@ -143,7 +143,7 @@ export default function SubjectsPage() {
           </div>
         </div>
       </header>
-      <main style={{ flex: 1, padding: "48px 24px" }}>
+      <main id="main-content" tabIndex={-1} style={{ flex: 1, padding: "48px 24px" }}>
         <div style={{ width: "100%", maxWidth: 1180, margin: "0 auto" }}>
           <nav style={{ display: "flex", gap: 8, marginBottom: 32, fontSize: "0.8125rem", color: MUTED }} aria-label="Breadcrumb">
             <Link href="/" style={{ color: INK_SOFT, textDecoration: "none" }}>Home</Link><span>/</span><span style={{ color: INK, fontWeight: 500 }}>Subjects</span>

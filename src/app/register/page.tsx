@@ -126,7 +126,7 @@ export default function RegisterPage() {
       </header>
 
       {/* Main */}
-      <main
+      <main id="main-content" tabIndex={-1}
         style={{
           flex: 1,
           display: "flex",

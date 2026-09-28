@@ -230,7 +230,7 @@ export default async function TutorProfilePage({ params }: { params: Promise<{ i
       </header>
 
       {/* Main */}
-      <main style={{ flex: 1, padding: "40px 24px" }}>
+      <main id="main-content" tabIndex={-1} style={{ flex: 1, padding: "40px 24px" }}>
         <div style={{ width: "100%", maxWidth: 960, margin: "0 auto" }}>
           {/* Breadcrumb */}
           <nav style={{ display: "flex", gap: 8, marginBottom: 28, fontSize: "0.8125rem", color: MUTED }} aria-label="Breadcrumb">
