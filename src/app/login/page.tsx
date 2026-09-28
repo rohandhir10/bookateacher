@@ -23,6 +23,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://bookateacher.in/login",
   },
+  robots: { index: false, follow: true },
 };
 
 export const dynamic = "force-dynamic";

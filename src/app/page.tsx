@@ -313,6 +313,7 @@ export default function HomePage() {
             <a href="/privacy" style={{ fontSize: "0.875rem", color: INK_SOFT }}>Privacy</a>
             <a href="/terms" style={{ fontSize: "0.875rem", color: INK_SOFT }}>Terms</a>
             <a href="/contact" style={{ fontSize: "0.875rem", color: INK_SOFT }}>Contact</a>
+            <a href="/site-map" style={{ fontSize: "0.875rem", color: INK_SOFT }}>Site map</a>
           </div>
           <p style={{ fontSize: "0.8125rem", color: MUTED, textAlign: "right" }}>© 2026 bookateacher.in — Made in India</p>
         </div>

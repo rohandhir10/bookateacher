@@ -679,6 +679,7 @@ export default async function TutorsPage() {
             <Link href="/contact" style={{ fontSize: "0.875rem", color: INK_SOFT, textDecoration: "none" }}>
               Contact
             </Link>
+            <Link href="/site-map" style={{ fontSize: "0.875rem", color: INK_SOFT, textDecoration: "none" }}>Site map</Link>
           </div>
           <p style={{ fontSize: "0.8125rem", color: MUTED, textAlign: "right", flex: 1 }}>
             © {new Date().getFullYear()} bookateacher.in — Made in India
