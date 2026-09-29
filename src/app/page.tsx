@@ -344,19 +344,6 @@ export default function HomePage() {
         </section>
       </main>
 
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: "https://bookateacher.in" },
-            ],
-          }),
-        }}
-      />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: FAQ_SCHEMA }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: homepageJsonLd() }} />
     </div>
   );
