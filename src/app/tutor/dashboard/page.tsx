@@ -19,8 +19,6 @@ const GREEN = "#2F5233";
 const RED = "#B23A2E";
 const AMBER = "#8A5A00";
 
-import { apiSignOut } from "@/lib/api";
-
 export default async function TutorDashboardPage() {
   const session = await getServerSession();
   if (!session.user) redirect("/login");
@@ -146,7 +144,7 @@ export default async function TutorDashboardPage() {
                 const count = leads.filter((l) => l.status === status).length;
                 if (count === 0 && status !== "new") return null;
                 return (
-                  <button
+                  <span
                     key={status}
                     style={{
                       padding: "6px 14px",
@@ -161,18 +159,6 @@ export default async function TutorDashboardPage() {
                       textTransform: "capitalize",
                       transition: "all 0.15s",
                       whiteSpace: "nowrap",
-                    }}
-                    onClick={(e) => {
-                      const btn = e.currentTarget as HTMLButtonElement;
-                      document.querySelectorAll(".lead-filter-btn").forEach((b) => {
-                        const el = b as HTMLElement;
-                        el.style.color = MUTED;
-                        el.style.fontWeight = "450";
-                        el.style.borderBottomColor = "transparent";
-                      });
-                      btn.style.color = INK;
-                      btn.style.fontWeight = "600";
-                      btn.style.borderBottomColor = INK;
                     }}
                     className="lead-filter-btn"
                   >
@@ -189,7 +175,7 @@ export default async function TutorDashboardPage() {
                     >
                       {count}
                     </span>
-                  </button>
+                  </span>
                 );
               })}
             </div>
