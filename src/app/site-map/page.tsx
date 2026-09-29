@@ -43,14 +43,6 @@ const groups = [
 export default function SiteMapPage() {
   return (
     <div className="site-map-page">
-      <header className="site-map-header">
-        <Link href="/" aria-label="bookateacher.in home">bookateacher.in</Link>
-        <nav aria-label="Primary navigation">
-          <Link href="/subjects">Subjects</Link>
-          <Link href="/tutors">Tutors</Link>
-          <Link href="/contact">Contact</Link>
-        </nav>
-      </header>
       <main id="main-content" tabIndex={-1}>
         <nav aria-label="Breadcrumb" className="site-map-breadcrumb">
           <Link href="/">Home</Link><span aria-hidden="true"> / </span><span aria-current="page">Site map</span>
@@ -70,15 +62,6 @@ export default function SiteMapPage() {
           ))}
         </div>
       </main>
-      <footer className="site-map-footer">
-        <nav aria-label="Legal and support">
-          <Link href="/site-map" aria-current="page">Site map</Link>
-          <Link href="/contact">Contact</Link>
-          <Link href="/privacy">Privacy</Link>
-          <Link href="/terms">Terms</Link>
-        </nav>
-        <Link href="/" className="site-map-home">Back to home</Link>
-      </footer>
       <style>{`
         .site-map-page { min-height: 100vh; display: flex; flex-direction: column; background: #FAF7F0; color: #14213D; }
         .site-map-header, .site-map-footer { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding: 18px max(24px, calc((100% - 960px) / 2)); border-bottom: 1px solid #D9D2C5; }
