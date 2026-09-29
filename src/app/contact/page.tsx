@@ -139,6 +139,7 @@ export default function ContactPage() {
             <Link href="/contact" style={{ color: inkSoft, textDecoration: "none" }}>Contact</Link>
             <Link href="/privacy" style={{ color: inkSoft, textDecoration: "none" }}>Privacy</Link>
             <Link href="/terms" style={{ color: inkSoft, textDecoration: "none" }}>Terms</Link>
+            <Link href="/site-map" style={{ color: inkSoft, textDecoration: "none" }}>Site map</Link>
           </nav>
         </div>
       </footer>

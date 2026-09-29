@@ -370,6 +370,7 @@ export default function PrivacyPage() {
             >
               Terms of Service
             </Link>
+            <Link href="/site-map" style={{ color: INK_SOFT, textDecoration: "none", fontSize: "13px", fontWeight: 450 }}>Site map</Link>
           </div>
           <span style={{ fontSize: "12px", color: MUTED }}>
             bookateacher.in &middot; Delhi, India

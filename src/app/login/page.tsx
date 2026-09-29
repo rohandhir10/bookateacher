@@ -288,6 +288,7 @@ export default function LoginPage() {
           <nav aria-label="Legal and support" style={{ display: "flex", gap: 28 }}>
             <Link href="/privacy" style={{ fontSize: "0.875rem", color: INK_SOFT, textDecoration: "none" }}>Privacy</Link>
             <Link href="/terms" style={{ fontSize: "0.875rem", color: INK_SOFT, textDecoration: "none" }}>Terms</Link>
+            <Link href="/site-map" style={{ fontSize: "0.875rem", color: INK_SOFT, textDecoration: "none" }}>Site map</Link>
             <Link href="/contact" style={{ fontSize: "0.875rem", color: INK_SOFT, textDecoration: "none" }}>Contact</Link>
           </nav>
           <p style={{ fontSize: "0.8125rem", color: MUTED, textAlign: "right", flex: 1 }}>

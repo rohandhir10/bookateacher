@@ -424,6 +424,7 @@ export default function TermsPage() {
             <Link href="/terms" style={{ fontSize: "0.875rem", color: INK_SOFT, textDecoration: "none" }}>
               Terms
             </Link>
+            <Link href="/site-map" style={{ fontSize: "0.875rem", color: INK_SOFT, textDecoration: "none" }}>Site map</Link>
             <Link href="/contact" style={{ fontSize: "0.875rem", color: INK_SOFT, textDecoration: "none" }}>
               Contact
             </Link>

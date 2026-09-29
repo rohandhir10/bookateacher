@@ -1,12 +1,11 @@
-import { Metadata } from "next";
 import Link from "next/link";
-import { getTutorById } from "@/lib/tutor-data";
+import { getTutorById, type TutorData } from "@/lib/tutor-data";
 import { SUBJECT_LABELS } from "@/lib/utils";
 import { tutorProfileMetadata } from "@/lib/page-seo";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const tutor: any = await getTutorById(id);
+  const tutor: TutorData | undefined = await getTutorById(id);
   if (!tutor || tutor.role !== "tutor") {
     return { title: "Tutor not found" };
   }
@@ -78,8 +77,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       {
         "@type": "AggregateRating",
         "@id": `https://bookateacher.in/tutors/${tutor.id}#rating`,
-        ratingValue:
-          (tutor.rating ?? 4.5).toFixed(1) as any,
+        ratingValue: (tutor.rating ?? 4.5).toFixed(1),
         bestRating: 5,
         worstRating: 1,
         ratingCount: tutor.reviews ?? 0,
@@ -89,7 +87,13 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   });
 
   return {
-    ...tutorProfileMetadata(tutor, subjectLabel),
+    ...tutorProfileMetadata({
+      ...tutor,
+      verified: Number(tutor.verified),
+      avatar_url: tutor.avatar_url ?? null,
+      ielts_score: tutor.credentials.ielts_score?.toString() ?? null,
+      toefl_score: tutor.credentials.toefl_score?.toString() ?? null,
+    }, subjectLabel),
     other: {
       "application/ld+json": jsonLd,
     },
@@ -98,7 +102,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 export default async function TutorProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const tutor: any = await getTutorById(id);
+  const tutor: TutorData | undefined = await getTutorById(id);
 
   if (!tutor || tutor.role !== "tutor") {
     return (
@@ -108,11 +112,11 @@ export default async function TutorProfilePage({ params }: { params: Promise<{ i
             Tutor not found
           </h1>
           <p style={{ fontSize: "0.9375rem", color: "#3D4A63", lineHeight: 1.6, marginBottom: 24 }}>
-            This tutor profile doesn't exist or has been removed.
+            This tutor profile doesn&apos;t exist or has been removed.
           </p>
-          <a href="/tutors" style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "10px 20px", borderRadius: 6, fontSize: "0.9375rem", fontWeight: 500, background: "#14213D", color: "#FAF7F0", textDecoration: "none" }}>
+          <Link href="/tutors" style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "10px 20px", borderRadius: 6, fontSize: "0.9375rem", fontWeight: 500, background: "#14213D", color: "#FAF7F0", textDecoration: "none" }}>
             Back to tutors
-          </a>
+          </Link>
         </div>
       </div>
     );
@@ -172,7 +176,7 @@ export default async function TutorProfilePage({ params }: { params: Promise<{ i
           name: tutor.credentials.certification,
           educationalLevel: `Verified ${subjects.join(" / ")} tutor`,
         } : undefined,
-        award: tutor.ielts_score ? { "@type": "Award", name: `IELTS Band ${tutor.ielts_score}` } : tutor.toefl_score ? { "@type": "Award", name: `TOEFL iBT Score ${tutor.toefl_score}` } : undefined,
+        award: tutor.credentials.ielts_score ? { "@type": "Award", name: `IELTS Band ${tutor.credentials.ielts_score}` } : tutor.credentials.toefl_score ? { "@type": "Award", name: `TOEFL iBT Score ${tutor.credentials.toefl_score}` } : undefined,
         experienceSummary: {
           "@type": "OccupationalExperience",
           description: tutor.credentials?.background || `Certified ${subjects.join(" / ")} tutor with ${tutor.credentials?.experience_years ?? 5} years of experience.`,
@@ -374,7 +378,7 @@ export default async function TutorProfilePage({ params }: { params: Promise<{ i
                   </h2>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
                     {(["monday","tuesday","wednesday","thursday","friday","saturday","sunday"] as string[]).map((day) => {
-                      const slots = (tutor.availability as any)[day];
+                      const slots = tutor.availability?.[day];
                       const hasSlots = slots && slots.length > 0;
                       return (
                         <span key={day} style={{ display: "inline-block", padding: "4px 10px", borderRadius: 6, fontSize: "0.75rem", fontWeight: 500, textTransform: "capitalize", background: hasSlots ? "#E8F0E4" : PAPER_2, color: hasSlots ? GREEN : MUTED, border: `1px solid ${hasSlots ? "#C8D8C0" : LINE}` }}>
@@ -412,10 +416,12 @@ export default async function TutorProfilePage({ params }: { params: Promise<{ i
               {/* CTA band */}
               <div style={{ marginTop: 24, padding: "20px 24px", background: PAPER_2, border: `1px solid ${LINE}`, borderRadius: 12, textAlign: "center" }}>
                 <p style={{ fontSize: "0.875rem", color: INK_SOFT, lineHeight: 1.5, marginBottom: 12 }}>
-                  Not sure if {tutor.name} is the right fit? Tell us what you need and we'll match you with the best tutor for your goals and budget.
+                  Not sure if {tutor.name} is the right fit?{" "}
+                  <Link href="/contact" style={{ color: INK, textDecoration: "underline", textUnderlineOffset: 3 }}>Contact us</Link>
+                  {" "}to discuss options before making a decision.
                 </p>
                 <Link href="/register?role=student" style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "10px 20px", borderRadius: 8, fontSize: "0.875rem", fontWeight: 600, background: INK, color: PAPER, textDecoration: "none", transition: "all 0.15s" }}>
-                  Get matched instead
+                  Create learner account
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={PAPER} strokeWidth="2.5"><path d="M5 12h14M13 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" /></svg>
                 </Link>
               </div>
@@ -436,6 +442,7 @@ export default async function TutorProfilePage({ params }: { params: Promise<{ i
           <div style={{ display: "flex", gap: 28 }}>
             <Link href="/privacy" style={{ fontSize: "0.875rem", color: INK_SOFT, textDecoration: "none" }}>Privacy</Link>
             <Link href="/terms" style={{ fontSize: "0.875rem", color: INK_SOFT, textDecoration: "none" }}>Terms</Link>
+            <Link href="/site-map" style={{ fontSize: "0.875rem", color: INK_SOFT, textDecoration: "none" }}>Site map</Link>
             <Link href="/contact" style={{ fontSize: "0.875rem", color: INK_SOFT, textDecoration: "none" }}>Contact</Link>
           </div>
           <p style={{ fontSize: "0.8125rem", color: MUTED, textAlign: "right", flex: 1 }}>© {new Date().getFullYear()} bookateacher.in — Made in India</p>

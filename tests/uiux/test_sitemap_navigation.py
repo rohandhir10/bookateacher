@@ -49,6 +49,13 @@ class SitemapNavigationTests(unittest.TestCase):
             "src/app/subjects/toefl/page.tsx",
             "src/app/subjects/spoken-english/page.tsx",
             "src/app/tutors/page.tsx",
+            "src/app/about/page.tsx",
+            "src/app/contact/page.tsx",
+            "src/app/privacy/page.tsx",
+            "src/app/terms/page.tsx",
+            "src/app/login/page.tsx",
+            "src/app/register/page.tsx",
+            "src/app/tutors/[id]/page.tsx",
         ):
             source = (ROOT / relative).read_text(encoding="utf-8")
             self.assertIn('href="/site-map"', source, f"No site-map link in {relative}")
