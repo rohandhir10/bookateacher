@@ -54,151 +54,51 @@ export default async function TutorDashboardPage() {
       verified={session.user.verified}
     >
 
-        {/* Page title */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "flex-start",
-            justifyContent: "space-between",
-            marginBottom: 28,
-            gap: 16,
-            flexWrap: "wrap",
-          }}
-        >
+        <div className="dashboard-hero">
           <div>
-            <h1
-              style={{
-                fontFamily: "Playfair Display, Georgia, serif",
-                fontSize: "28px",
-                fontWeight: 600,
-                color: INK,
-                margin: 0,
-                letterSpacing: "-0.02em",
-              }}
-            >
-              Your dashboard
-            </h1>
-            <p
-              style={{
-                fontSize: "14px",
-                color: INK_SOFT,
-                marginTop: 6,
-                fontFamily: "Inter, sans-serif",
-              }}
-            >
-              {profile?.name || "Tutor"}{" "}
-              <span style={{ color: MUTED }}>·</span> Manage your leads, sessions, and
-              reviews in one place.
+            <span className="dashboard-eyebrow">Tutor dashboard</span>
+            <h1 className="dashboard-title">Run your teaching workspace from one place.</h1>
+            <p className="dashboard-copy">
+              See new leads, upcoming sessions and learner feedback without the
+              visual clutter of a traditional admin dashboard.
             </p>
           </div>
-          <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-            {user.verified ? (
-              <span
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 6,
-                  padding: "6px 12px",
-                  background: "rgba(47,82,51,0.1)",
-                  border: `1px solid rgba(47,82,51,0.25)`,
-                  borderRadius: 20,
-                  fontSize: "12px",
-                  color: GREEN,
-                  fontWeight: 500,
-                  fontFamily: "Inter, sans-serif",
-                }}
-              >
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={GREEN} strokeWidth="2.5">
-                  <path d="M5 12l5 5L20 7" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                Verified tutor
-              </span>
-            ) : (
-              <span
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 6,
-                  padding: "6px 12px",
-                  background: `rgba(138,90,0,0.08)`,
-                  border: `1px solid rgba(138,90,0,0.2)`,
-                  borderRadius: 20,
-                  fontSize: "12px",
-                  color: AMBER,
-                  fontWeight: 500,
-                  fontFamily: "Inter, sans-serif",
-                }}
-              >
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={AMBER} strokeWidth="2">
-                  <path d="M12 9v4M12 17h.01" strokeLinecap="round" />
-                  <path d="M10.7 10.7l2.8-2.8M17.3 7.3l-2.8 2.8" strokeLinecap="round" />
-                </svg>
-                Pending verification
-              </span>
-            )}
-            <a
-              href="/tutor/profile"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 6,
-                padding: "8px 16px",
-                background: INK,
-                color: PAPER,
-                borderRadius: 6,
-                fontSize: "13px",
-                fontWeight: 500,
-                textDecoration: "none",
-                fontFamily: "Inter, sans-serif",
-                boxShadow: "0 1px 2px rgba(20,33,61,0.15)",
-                transition: "all 0.15s",
-              }}
-            >
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={PAPER} strokeWidth="2">
-                <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              Edit profile
-            </a>
+          <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
+            <span className={user.verified ? "dashboard-status dashboard-status-success" : "dashboard-status dashboard-status-warning"}>
+              <span className="dashboard-status-dot" />
+              {user.verified ? "Profile verified" : "Verification pending"}
+            </span>
+            <a href="/tutor/profile" className="btn btn-primary">Edit profile <span aria-hidden="true">→</span></a>
           </div>
         </div>
 
-        {/* Stats row */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: 16,
-            marginBottom: 32,
-          }}
-        >
-          <StatCard
-            label="New leads"
-            value={leads.filter((l) => l.status === "new").length}
-            sub="Awaiting your response"
-            color={INK}
-          />
-          <StatCard
-            label="Active sessions"
-            value={sessions.filter((s) => s.status === "scheduled").length}
-            sub="Upcoming this week"
-            color={INK_SOFT}
-          />
-          <StatCard
-            label="Completed"
-            value={sessions.filter((s) => s.status === "completed").length}
-            sub="This month"
-            color={GREEN}
-          />
-          <StatCard
-            label="Avg rating"
-            value={testimonials.length > 0 ? (testimonials.reduce((s, t) => s + t.rating, 0) / testimonials.length).toFixed(1) : "—"}
-            sub={`${testimonials.length} review${testimonials.length !== 1 ? "s" : ""}`}
-            color={INK}
-          />
-        </div>
+        <section className="dashboard-stats" aria-label="Tutor overview">
+          <article className="dashboard-stat">
+            <div className="dashboard-stat-label">New leads</div>
+            <div className="dashboard-stat-value">{leads.filter((l) => l.status === "new").length}</div>
+            <div className="dashboard-panel-copy">Awaiting your response</div>
+          </article>
+          <article className="dashboard-stat">
+            <div className="dashboard-stat-label">Upcoming</div>
+            <div className="dashboard-stat-value">{sessions.filter((s) => s.status === "scheduled").length}</div>
+            <div className="dashboard-panel-copy">Scheduled sessions</div>
+          </article>
+          <article className="dashboard-stat">
+            <div className="dashboard-stat-label">Completed</div>
+            <div className="dashboard-stat-value">{sessions.filter((s) => s.status === "completed").length}</div>
+            <div className="dashboard-panel-copy">Lessons completed</div>
+          </article>
+          <article className="dashboard-stat">
+            <div className="dashboard-stat-label">Average rating</div>
+            <div className="dashboard-stat-value">
+              {testimonials.length ? (testimonials.reduce((sum, item) => sum + Number(item.rating || 0), 0) / testimonials.length).toFixed(1) : "—"}
+            </div>
+            <div className="dashboard-panel-copy">{testimonials.length} review{testimonials.length === 1 ? "" : "s"}</div>
+          </article>
+        </section>
 
         {/* Two-column layout: leads + sidebar */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 24, alignItems: "start" }}>
+        <div className="dashboard-two-column">
           {/* Leads section */}
           <div>
             <div
@@ -699,39 +599,6 @@ export default async function TutorDashboardPage() {
             })()}
           </aside>
     </DashboardShell>
-  );
-}
-
-function StatCard({
-  label,
-  value,
-  sub,
-  color,
-}: {
-  label: string;
-  value: string | number;
-  sub: string;
-  color: string;
-}) {
-  return (
-    <div
-      style={{
-        background: PAPER_2,
-        border: `1px solid ${LINE}`,
-        borderRadius: 8,
-        padding: "16px 18px",
-      }}
-    >
-      <div style={{ fontSize: "12px", color: MUTED, fontFamily: "Inter, sans-serif", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.04em", fontWeight: 500 }}>
-        {label}
-      </div>
-      <div style={{ fontSize: "26px", fontWeight: 700, color, fontFamily: "Inter, sans-serif", lineHeight: 1.1, marginBottom: 4 }}>
-        {value}
-      </div>
-      <div style={{ fontSize: "12px", color: MUTED, fontFamily: "Inter, sans-serif" }}>
-        {sub}
-      </div>
-    </div>
   );
 }
 
