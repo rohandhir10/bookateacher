@@ -2,102 +2,34 @@ import Link from "next/link";
 import { getTutorById, type TutorData } from "@/lib/tutor-data";
 import { SUBJECT_LABELS } from "@/lib/utils";
 import { tutorProfileMetadata } from "@/lib/page-seo";
+import { breadcrumbSchema, profilePageSchema, SITE_URL } from "@/lib/seo";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const tutor: TutorData | undefined = await getTutorById(id);
+
   if (!tutor || tutor.role !== "tutor") {
-    return { title: "Tutor not found" };
+    return {
+      title: "Tutor not found",
+      robots: { index: false, follow: true },
+    };
   }
-  const subjects: string[] = (tutor.subjects || []).map((s: string) => SUBJECT_LABELS[s] ?? s);
+
+  const subjects = (tutor.subjects || []).map(
+    (s: string) => SUBJECT_LABELS[s] ?? s,
+  );
   const subjectLabel = subjects.join(" / ") || "Tutor";
 
-  const jsonLd = JSON.stringify({
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebPage",
-        "@id": `https://bookateacher.in/tutors/${tutor.id}#webpage`,
-        url: `https://bookateacher.in/tutors/${tutor.id}`,
-        name: `${tutor.name} — ${subjectLabel} Tutor`,
-        description: tutor.bio || `Certified ${subjectLabel.toLowerCase()} tutor on bookateacher.in.`,
-        isPartOf: { "@id": "https://bookateacher.in/#website" },
-        about: { "@id": "https://bookateacher.in/#organization" },
-        inLanguage: "en-IN",
-      },
-      {
-        "@type": "BreadcrumbList",
-        itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: "https://bookateacher.in" },
-          { "@type": "ListItem", position: 2, name: "Tutors", item: "https://bookateacher.in/tutors" },
-          { "@type": "ListItem", position: 3, name: tutor.name, item: `https://bookateacher.in/tutors/${tutor.id}` },
-        ],
-      },
-      {
-        "@type": "Person",
-        "@id": `https://bookateacher.in/tutors/${tutor.id}#person`,
-        name: tutor.name,
-        givenName: tutor.name.split(" ")[0],
-        familyName: tutor.name.split(" ").slice(1).join(" "),
-        url: `https://bookateacher.in/tutors/${tutor.id}`,
-        image: tutor.avatar_url || `https://bookateacher.in/og-social.png`,
-        description: tutor.bio || `Certified ${subjectLabel.toLowerCase()} tutor on bookateacher.in.`,
-        jobTitle: `Certified ${subjects.join(" / ")} Tutor`,
-        sameAs: [],
-        knowsAbout: [subjects.join(", "), "IELTS", "TOEFL", "Spoken English", "Test Preparation", "English Language Teaching"].slice(0, 5),
-        hasCredential: tutor.credentials?.certification ? {
-          "@type": "EducationalOccupationalCredential",
-          credentialCategory: "Certification",
-          name: tutor.credentials.certification,
-          educationalLevel: `Verified ${subjects.join(" / ")} tutor`,
-        } : undefined,
-        award: tutor.credentials?.ielts_score ? { "@type": "Award", name: `IELTS Band ${tutor.credentials.ielts_score}` } : tutor.credentials?.toefl_score ? { "@type": "Award", name: `TOEFL iBT Score ${tutor.credentials.toefl_score}` } : undefined,
-        experienceSummary: {
-          "@type": "OccupationalExperience",
-          description: tutor.credentials?.background || `Certified ${subjects.join(" / ")} tutor with ${tutor.credentials?.experience_years ?? 5} years of experience.`,
-          duration: `${tutor.credentials?.experience_years ?? 5} years`,
-        },
-      },
-      {
-        "@type": "Offer",
-        "@id": `https://bookateacher.in/tutors/${tutor.id}#offer`,
-        url: `https://bookateacher.in/tutors/${tutor.id}`,
-        name: `Book a session with ${tutor.name}`,
-        description: `1-on-1 ${subjects.join(", ")} coaching session with ${tutor.name}. Live, personalised.`,
-        provider: { "@type": "Person", "@id": `https://bookateacher.in/tutors/${tutor.id}#person` },
-        priceSpecification: {
-          "@type": "PriceSpecification",
-          priceCurrency: "INR",
-          price: tutor.hourly_rate ?? 800,
-          unitText: "HOUR",
-        },
-        availability: "https://schema.org/InStock",
-        category: subjects.join(", "),
-      },
-      {
-        "@type": "AggregateRating",
-        "@id": `https://bookateacher.in/tutors/${tutor.id}#rating`,
-        ratingValue: (tutor.rating ?? 4.5).toFixed(1),
-        bestRating: 5,
-        worstRating: 1,
-        ratingCount: tutor.reviews ?? 0,
-        reviewCount: tutor.reviews ?? 0,
-      },
-    ],
-  });
-
-  return {
-    ...tutorProfileMetadata({
+  return tutorProfileMetadata(
+    {
       ...tutor,
       verified: Number(tutor.verified),
       avatar_url: tutor.avatar_url ?? null,
-      ielts_score: tutor.credentials.ielts_score?.toString() ?? null,
-      toefl_score: tutor.credentials.toefl_score?.toString() ?? null,
-    }, subjectLabel),
-    other: {
-      "application/ld+json": jsonLd,
+      ielts_score: tutor.credentials?.ielts_score?.toString() ?? null,
+      toefl_score: tutor.credentials?.toefl_score?.toString() ?? null,
     },
-  };
+    subjectLabel,
+  );
 }
 
 export default async function TutorProfilePage({ params }: { params: Promise<{ id: string }> }) {
@@ -137,78 +69,26 @@ export default async function TutorProfilePage({ params }: { params: Promise<{ i
   const RED = "#B23A2E";
   const GREEN = "#2F5233";
 
+  const profileUrl = `${SITE_URL}/tutors/${tutor.id}`;
+  const description =
+    tutor.bio ||
+    `${tutor.name} is a ${subjectLabel.toLowerCase()} tutor on bookateacher.in.`;
+
   const jsonLd = JSON.stringify({
     "@context": "https://schema.org",
     "@graph": [
-      {
-        "@type": "WebPage",
-        "@id": `https://bookateacher.in/tutors/${tutor.id}#webpage`,
-        url: `https://bookateacher.in/tutors/${tutor.id}`,
-        name: `${tutor.name} — ${subjectLabel} Tutor`,
-        description: tutor.bio || `Certified ${subjectLabel} tutor on bookateacher.in.`,
-        isPartOf: { "@id": "https://bookateacher.in/#website" },
-        about: { "@id": "https://bookateacher.in/#organization" },
-        inLanguage: "en-IN",
-      },
-      {
-        "@type": "BreadcrumbList",
-        itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: "https://bookateacher.in" },
-          { "@type": "ListItem", position: 2, name: "Tutors", item: "https://bookateacher.in/tutors" },
-          { "@type": "ListItem", position: 3, name: tutor.name, item: `https://bookateacher.in/tutors/${tutor.id}` },
-        ],
-      },
-      {
-        "@type": "Person",
-        "@id": `https://bookateacher.in/tutors/${tutor.id}#person`,
+      profilePageSchema({
+        url: profileUrl,
         name: tutor.name,
-        givenName: tutor.name.split(" ")[0],
-        familyName: tutor.name.split(" ").slice(1).join(" "),
-        url: `https://bookateacher.in/tutors/${tutor.id}`,
-        image: tutor.avatar_url || `https://bookateacher.in/og-social.png`,
-        description: tutor.bio || `Certified ${subjectLabel.toLowerCase()} tutor on bookateacher.in.`,
-        jobTitle: `Certified ${subjects.join(" / ")} Tutor`,
-        sameAs: [],
-        knowsAbout: [subjects.join(", "), "IELTS", "TOEFL", "Spoken English", "Test Preparation", "English Language Teaching"].slice(0, 5),
-        hasCredential: tutor.credentials?.certification ? {
-          "@type": "EducationalOccupationalCredential",
-          credentialCategory: "Certification",
-          name: tutor.credentials.certification,
-          educationalLevel: `Verified ${subjects.join(" / ")} tutor`,
-        } : undefined,
-        award: tutor.credentials.ielts_score ? { "@type": "Award", name: `IELTS Band ${tutor.credentials.ielts_score}` } : tutor.credentials.toefl_score ? { "@type": "Award", name: `TOEFL iBT Score ${tutor.credentials.toefl_score}` } : undefined,
-        experienceSummary: {
-          "@type": "OccupationalExperience",
-          description: tutor.credentials?.background || `Certified ${subjects.join(" / ")} tutor with ${tutor.credentials?.experience_years ?? 5} years of experience.`,
-          duration: `${tutor.credentials?.experience_years ?? 5} years`,
-        },
-        alumniOf: tutor.credentials?.experience_years && tutor.credentials?.experience_years >= 8 ? [{ "@type": "EducationalOrganization", name: "IDP Certified IELTS Trainer Programme" }] : [],
-      },
-      {
-        "@type": "Offer",
-        "@id": `https://bookateacher.in/tutors/${tutor.id}#offer`,
-        url: `https://bookateacher.in/tutors/${tutor.id}`,
-        name: `Book a session with ${tutor.name}`,
-        description: `1-on-1 ${subjects.join(", ")} coaching session with ${tutor.name}. Live, personalised, ${price}.`,
-        provider: { "@type": "Person", "@id": `https://bookateacher.in/tutors/${tutor.id}#person` },
-        priceSpecification: {
-          "@type": "PriceSpecification",
-          priceCurrency: "INR",
-          price: tutor.hourly_rate ?? 800,
-          unitText: "HOUR",
-        },
-        availability: "https://schema.org/InStock",
-        category: subjects.join(", "),
-      },
-      {
-        "@type": "AggregateRating",
-        "@id": `https://bookateacher.in/tutors/${tutor.id}#rating`,
-        ratingValue: rating,
-        bestRating: 5,
-        worstRating: 1,
-        ratingCount: tutor.reviews ?? 0,
-        reviewCount: tutor.reviews ?? 0,
-      },
+        description,
+        image: tutor.avatar_url ?? null,
+        identifier: tutor.id,
+      }),
+      breadcrumbSchema([
+        { name: "Home", url: SITE_URL },
+        { name: "Tutors", url: `${SITE_URL}/tutors` },
+        { name: tutor.name, url: profileUrl },
+      ]),
     ],
   });
 
