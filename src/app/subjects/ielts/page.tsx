@@ -165,8 +165,6 @@ export default function IeltsSubjectPage() {
           { "@type": "ListItem", position: 3, name: "IELTS", item: "https://bookateacher.in/subjects/ielts" },
         ],
       },
-      IELTS_COURSE_SCHEMA,
-      IELTS_FAQ_SCHEMA,
     ],
   });
 
