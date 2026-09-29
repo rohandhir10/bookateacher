@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { FAQ_SCHEMA, COURSE_SCHEMA } from "@/lib/seo";
+import { homepageJsonLd } from "@/lib/seo";
 import BandScoreTool from "@/components/BandScoreTool";
 
 export const metadata: Metadata = {
