@@ -1,39 +1,37 @@
 import type { MetadataRoute } from "next";
 import { query } from "@/lib/db";
 
-async function getActiveTutorUrls(baseUrl: string, lastModified: Date): Promise<MetadataRoute.Sitemap> {
+async function getActiveTutorUrls(baseUrl: string): Promise<MetadataRoute.Sitemap> {
   try {
     const tutors = await query(
-      'SELECT id FROM users WHERE role = "tutor" AND status = "active" ORDER BY created_at ASC',
-    ) as Array<{ id: string }>;
-    return tutors.map(({ id }) => ({
+      "SELECT id, updated_at FROM users WHERE role = 'tutor' AND status = 'active' ORDER BY updated_at DESC",
+    ) as Array<{ id: string; updated_at?: string | null }>;
+
+    return tutors.map(({ id, updated_at }) => ({
       url: `${baseUrl}/tutors/${id}`,
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.7,
+      ...(updated_at ? { lastModified: new Date(updated_at) } : {}),
     }));
   } catch {
-    // Keep the public sitemap available if the optional tutor database is unavailable.
     return [];
   }
 }
 
-/** Only public, canonical content belongs here; account and app routes are excluded. */
+/** Only public, canonical content belongs in the sitemap. */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://bookateacher.in";
-  const lastModified = new Date();
 
   const publicPages: MetadataRoute.Sitemap = [
-    { url: baseUrl, lastModified, changeFrequency: "weekly", priority: 1 },
-    { url: `${baseUrl}/subjects`, lastModified, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${baseUrl}/subjects/ielts`, lastModified, changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/subjects/toefl`, lastModified, changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/subjects/spoken-english`, lastModified, changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/tutors`, lastModified, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${baseUrl}/about`, lastModified, changeFrequency: "monthly", priority: 0.5 },
-    { url: `${baseUrl}/contact`, lastModified, changeFrequency: "yearly", priority: 0.5 },
-    { url: `${baseUrl}/privacy`, lastModified, changeFrequency: "yearly", priority: 0.3 },
-    { url: `${baseUrl}/terms`, lastModified, changeFrequency: "yearly", priority: 0.3 },,
+    { url: baseUrl },
+    { url: `${baseUrl}/subjects` },
+    { url: `${baseUrl}/subjects/ielts` },
+    { url: `${baseUrl}/subjects/toefl` },
+    { url: `${baseUrl}/subjects/spoken-english` },
+    { url: `${baseUrl}/tutors` },
+    { url: `${baseUrl}/about` },
+    { url: `${baseUrl}/contact` },
+    { url: `${baseUrl}/privacy` },
+    { url: `${baseUrl}/terms` },
   ];
-  return [...publicPages, ...(await getActiveTutorUrls(baseUrl, lastModified))];
+
+  return [...publicPages, ...(await getActiveTutorUrls(baseUrl))];
 }
