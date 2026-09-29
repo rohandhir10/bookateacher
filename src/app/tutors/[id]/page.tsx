@@ -57,8 +57,8 @@ export default async function TutorProfilePage({ params }: { params: Promise<{ i
   const subjects: string[] = (tutor.subjects || []).map((s: string) => SUBJECT_LABELS[s] ?? s);
   const subjectLabel = subjects.join(" / ") || "Tutor";
   const initials = tutor.name.split(" ").map((n: string) => n[0]).join("").slice(0, 2).toUpperCase();
-  const price = tutor.hourly_rate ? `₹${tutor.hourly_rate.toLocaleString("en-IN")}/hr` : "From ₹800/hr";
-  const rating = (4.5 + ((parseInt(tutor.id.slice(-2), 16) % 50) / 100)).toFixed(1) as string;
+  const price = tutor.hourly_rate ? `₹${tutor.hourly_rate.toLocaleString("en-IN")}/hr` : "Rate on request";
+  const rating = Number(tutor.rating ?? 0);
 
   const INK = "#14213D";
   const INK_SOFT = "#3D4A63";
@@ -154,14 +154,14 @@ export default async function TutorProfilePage({ params }: { params: Promise<{ i
               {/* Rating */}
               <div style={{ textAlign: "center", paddingBottom: 24, flexShrink: 0 }}>
                 <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "2rem", fontWeight: 600, color: RED, letterSpacing: "-0.02em", lineHeight: 1 }}>
-                  {rating}
+                  {rating > 0 ? rating.toFixed(1) : "—"}
                 </div>
                 <div style={{ fontSize: "0.75rem", color: MUTED, marginTop: 4 }}>out of 5</div>
                 <div style={{ display: "flex", gap: 2, justifyContent: "center", marginTop: 6 }}>
-                  {Array(parseInt(rating)).fill(null).map((_: null, i: number) => (
+                  {Array(Math.round(rating)).fill(null).map((_: null, i: number) => (
                     <span key={i} style={{ color: RED, fontSize: "1rem" }}>★</span>
                   ))}
-                  {Array(5 - parseInt(rating)).fill(null).map((_: null, i: number) => (
+                  {Array(Math.max(0, 5 - Math.round(rating))).fill(null).map((_: null, i: number) => (
                     <span key={i} style={{ color: LINE, fontSize: "1rem" }}>★</span>
                   ))}
                 </div>
@@ -205,7 +205,7 @@ export default async function TutorProfilePage({ params }: { params: Promise<{ i
                   </h2>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                     {[
-                      { label: "Experience", value: `${tutor.credentials?.experience_years ?? 5} years` },
+                      { label: "Experience", value: tutor.credentials?.experience_years ? `${tutor.credentials.experience_years} years` : "Not provided" },
                       { label: "Certification", value: tutor.credentials?.certification ?? "—" },
                       { label: "Teaching style", value: tutor.credentials?.teaching_style ?? "—" },
                       { label: "Background", value: tutor.credentials?.background ? tutor.credentials.background.slice(0, 120) + (tutor.credentials.background.length > 120 ? "…" : "") : "—" },
