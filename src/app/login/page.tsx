@@ -1,4 +1,5 @@
 import { LoginForm } from "@/components/LoginForm";
+import { DemoAccess } from "@/components/DemoAccess";
 import Link from "next/link";
 import { Metadata } from "next";
 
@@ -49,6 +50,9 @@ export default function LoginPage() {
           <div className="account-card">
             <LoginForm />
           </div>
+          {process.env.VERCEL_ENV === "preview" || process.env.NODE_ENV !== "production" ? (
+            <DemoAccess />
+          ) : null}
 
           <p className="account-legal">
             By continuing, you agree to our{" "}
