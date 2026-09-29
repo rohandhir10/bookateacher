@@ -112,42 +112,6 @@ const faqs = [
 export default function HomePage() {
   return (
     <div>
-      <header className="site-nav">
-        <div className="wrap nav-inner">
-          <Link href="/" className="brand" aria-label="bookateacher.in home">
-            <span className="brand-mark" aria-hidden="true">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M4 7h16M4 12h11M4 17h7"
-                  stroke="currentColor"
-                  strokeWidth="2.1"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </span>
-            <span className="brand-word">
-              bookateacher<span>.in</span>
-            </span>
-          </Link>
-
-          <nav className="nav-links" aria-label="Primary navigation">
-            <a className="nav-link" href="#for">Who it&apos;s for</a>
-            <a className="nav-link" href="#how">How it works</a>
-            <a className="nav-link" href="#stories">Stories</a>
-          </nav>
-
-          <div className="nav-actions">
-            <Link className="nav-link" href="/login">Sign in</Link>
-            <Link className="btn btn-primary" href="/tutors">
-              Browse tutors
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-                <path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </Link>
-          </div>
-        </div>
-      </header>
-
       <main id="main-content" tabIndex={-1}>
         <section className="hero">
           <div className="wrap hero-grid">
@@ -379,28 +343,6 @@ export default function HomePage() {
           </div>
         </section>
       </main>
-
-      <footer className="site-footer">
-        <div className="wrap footer-inner">
-          <Link href="/" className="brand" aria-label="bookateacher.in home">
-            <span className="brand-mark" aria-hidden="true">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                <path d="M4 7h16M4 12h11M4 17h7" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" />
-              </svg>
-            </span>
-            <span className="brand-word">bookateacher<span>.in</span></span>
-          </Link>
-
-          <nav className="footer-links" aria-label="Footer navigation">
-            <Link href="/privacy">Privacy</Link>
-            <Link href="/terms">Terms</Link>
-            <Link href="/contact">Contact</Link>
-            <Link href="/site-map">Site map</Link>
-          </nav>
-
-          <div className="footer-copy">© 2026 bookateacher.in</div>
-        </div>
-      </footer>
 
       <script
         type="application/ld+json"
