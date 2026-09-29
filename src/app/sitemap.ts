@@ -33,8 +33,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/about`, lastModified, changeFrequency: "monthly", priority: 0.5 },
     { url: `${baseUrl}/contact`, lastModified, changeFrequency: "yearly", priority: 0.5 },
     { url: `${baseUrl}/privacy`, lastModified, changeFrequency: "yearly", priority: 0.3 },
-    { url: `${baseUrl}/terms`, lastModified, changeFrequency: "yearly", priority: 0.3 },
-    { url: `${baseUrl}/site-map`, lastModified, changeFrequency: "monthly", priority: 0.4 },
+    { url: `${baseUrl}/terms`, lastModified, changeFrequency: "yearly", priority: 0.3 },,
   ];
   return [...publicPages, ...(await getActiveTutorUrls(baseUrl, lastModified))];
 }
