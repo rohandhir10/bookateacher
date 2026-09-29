@@ -1808,3 +1808,62 @@ svg {
   .dashboard-panel { padding: 18px; }
   .dashboard-list-item { align-items: flex-start; flex-direction: column; }
 }
+
+.demo-access {
+  margin-top: 14px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: rgb(247 245 240 / 0.9);
+}
+
+.demo-access-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.demo-access-head span {
+  color: var(--ink);
+  font-size: .75rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.demo-access-head small {
+  color: var(--subtle);
+  font-size: .69rem;
+}
+
+.demo-access-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.demo-access-actions .btn {
+  min-height: 42px;
+  padding-inline: 12px;
+  font-size: .8rem;
+}
+
+.demo-access-error {
+  margin: 9px 0 0;
+  color: #a8443c;
+  font-size: .74rem;
+}
+
+@media (max-width: 560px) {
+  .demo-access-head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .demo-access-actions {
+    grid-template-columns: 1fr;
+  }
+}
