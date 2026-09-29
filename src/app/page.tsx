@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { homepageJsonLd } from "@/lib/seo";
 import BandScoreTool from "@/components/BandScoreTool";
+import LearningMatchVisual from "@/components/LearningMatchVisual";
 
 export const metadata: Metadata = {
   title: "English preparation & tutor directory",
@@ -229,6 +230,27 @@ export default function HomePage() {
                 </article>
               ))}
             </div>
+          </div>
+        </section>
+
+        <section className="section learning-match-section" aria-labelledby="learning-match-heading">
+          <div className="wrap learning-match-grid">
+            <div className="learning-match-copy">
+              <span className="eyebrow">The choice gets clearer</span>
+              <h2 id="learning-match-heading" className="section-title">
+                Your goal should shape the tutor search.
+              </h2>
+              <p className="section-copy">
+                Instead of scanning a long list and guessing where to start, begin
+                with the kind of help you need. Then compare the tutors who fit.
+              </p>
+              <div className="learning-match-points">
+                <div><strong>01</strong><span>Choose the subject or exam.</span></div>
+                <div><strong>02</strong><span>Compare real tutor profiles.</span></div>
+                <div><strong>03</strong><span>Decide when the fit feels right.</span></div>
+              </div>
+            </div>
+            <LearningMatchVisual />
           </div>
         </section>
 

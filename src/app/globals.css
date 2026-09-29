@@ -241,11 +241,11 @@ svg {
 }
 
 .section {
-  padding: 92px 0;
+  padding: 76px 0;
 }
 
 .section-sm {
-  padding: 64px 0;
+  padding: 52px 0;
 }
 
 .eyebrow {
@@ -269,7 +269,7 @@ svg {
 
 .section-head {
   max-width: 680px;
-  margin-bottom: 46px;
+  margin-bottom: 38px;
 }
 
 .section-head.center {
@@ -301,7 +301,7 @@ svg {
 .hero {
   position: relative;
   overflow: hidden;
-  padding: 96px 0 78px;
+  padding: 82px 0 66px;
 }
 
 .hero::before {
@@ -1933,4 +1933,287 @@ svg {
   .not-found-actions .btn {
     width: 100%;
   }
+}
+
+
+.learning-match-section {
+  overflow: hidden;
+  background: var(--cream);
+  border-block: 1px solid var(--line);
+}
+
+.learning-match-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  align-items: center;
+  gap: 54px;
+}
+
+.learning-match-copy { max-width: 520px; }
+
+.learning-match-points {
+  display: grid;
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.learning-match-points > div {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 11px;
+  align-items: center;
+  padding: 11px 0;
+  border-top: 1px solid rgb(227 222 212 / 0.9);
+}
+
+.learning-match-points > div:last-child {
+  border-bottom: 1px solid rgb(227 222 212 / 0.9);
+}
+
+.learning-match-points strong {
+  color: var(--brand);
+  font-size: 0.73rem;
+  letter-spacing: 0.08em;
+}
+
+.learning-match-points span {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.learning-visual {
+  position: relative;
+  min-height: 460px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 1.75rem;
+  background:
+    radial-gradient(circle at 50% 50%, rgb(166 61 50 / 0.08), transparent 28%),
+    #fff;
+  box-shadow: 0 24px 60px rgb(23 33 58 / 0.08);
+}
+
+.learning-visual::before {
+  content: "";
+  position: absolute;
+  inset: 24px;
+  border: 1px dashed rgb(206 198 184 / 0.72);
+  border-radius: 1.3rem;
+}
+
+.learning-visual-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.learning-visual-grid::before,
+.learning-visual-grid::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 58%;
+  height: 1px;
+  background: var(--line);
+  transform: translate(-50%, -50%);
+}
+
+.learning-visual-grid::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.learning-visual-grid span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 26%;
+  height: 1px;
+  background: rgb(166 61 50 / 0.45);
+  transform-origin: left center;
+}
+
+.learning-visual-grid span:nth-child(1) { transform: rotate(-46deg); }
+.learning-visual-grid span:nth-child(2) { transform: rotate(46deg); }
+.learning-visual-grid span:nth-child(3) { transform: rotate(134deg); }
+.learning-visual-grid span:nth-child(4) { transform: rotate(-134deg); }
+
+.learning-match-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 3;
+  width: min(290px, calc(100% - 40px));
+  transform: translate(-50%, -50%);
+  padding: 28px;
+  border: 1px solid #d9d2c5;
+  border-radius: 1.35rem;
+  background: var(--ink);
+  color: #fff;
+  box-shadow: 0 20px 44px rgb(23 33 58 / 0.2);
+}
+
+.learning-match-kicker {
+  color: rgb(255 255 255 / 0.53);
+  font-size: 0.66rem;
+  font-weight: 750;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.learning-match-title {
+  margin-top: 14px;
+  color: rgb(255 255 255 / 0.7);
+  font-size: 0.8rem;
+}
+
+.learning-match-main {
+  margin-top: 3px;
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  letter-spacing: -0.04em;
+}
+
+.learning-match-card p {
+  margin: 10px 0 0;
+  color: rgb(255 255 255 / 0.65);
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+.learning-match-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 18px;
+}
+
+.learning-match-tags span {
+  padding: 6px 8px;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  border-radius: 99px;
+  background: rgb(255 255 255 / 0.06);
+  color: rgb(255 255 255 / 0.78);
+  font-size: 0.67rem;
+}
+
+.learning-match-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgb(255 255 255 / 0.1);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.learning-node {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 134px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 0.95rem;
+  background: rgb(255 255 255 / 0.94);
+  box-shadow: 0 10px 24px rgb(23 33 58 / 0.07);
+}
+
+.learning-node strong,
+.learning-node small { display: block; }
+
+.learning-node strong { font-size: 0.8rem; }
+
+.learning-node small {
+  margin-top: 2px;
+  color: var(--subtle);
+  font-size: 0.67rem;
+}
+
+.learning-node-dot {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--brand);
+  box-shadow: 0 0 0 5px var(--brand-soft);
+}
+
+.learning-node-top {
+  left: 50%;
+  top: 42px;
+  transform: translateX(-50%);
+}
+
+.learning-node-right {
+  right: 34px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.learning-node-bottom {
+  left: 50%;
+  bottom: 42px;
+  transform: translateX(-50%);
+}
+
+.learning-node-left {
+  left: 34px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.learning-visual-caption {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  z-index: 4;
+  transform: translateX(-50%);
+  color: var(--subtle);
+  font-size: 0.67rem;
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .learning-match-grid {
+    grid-template-columns: 1fr;
+    gap: 34px;
+  }
+
+  .learning-match-copy { max-width: 680px; }
+
+  .learning-visual { min-height: 410px; }
+}
+
+@media (max-width: 640px) {
+  .section { padding: 60px 0; }
+
+  .hero { padding: 62px 0 48px; }
+
+  .learning-visual {
+    min-height: 390px;
+    border-radius: 1.25rem;
+  }
+
+  .learning-node {
+    min-width: 116px;
+    padding: 9px 10px;
+  }
+
+  .learning-node-right { right: 18px; }
+  .learning-node-left { left: 18px; }
+  .learning-node-top { top: 26px; }
+  .learning-node-bottom { bottom: 28px; }
+
+  .learning-match-card {
+    width: min(270px, calc(100% - 56px));
+    padding: 23px;
+  }
+
+  .learning-visual-caption { display: none; }
 }
