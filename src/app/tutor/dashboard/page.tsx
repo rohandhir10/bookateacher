@@ -1,20 +1,13 @@
 import { redirect } from "next/navigation";
-import { auth } from "@/lib/auth";
-import { getServerSession, requireAuth } from "@/lib/session";
+import { DashboardShell } from "@/components/DashboardShell";
+import { getServerSession } from "@/lib/session";
 import {
-  apiGetSessionsForTutor,
-  apiGetTestimonialsForTutor,
-  apiGetTestimonialRequests,
-  apiGetTutorProfile,
-  apiGetLeads,
-  apiGetLead,
-  apiAcceptLead,
-  apiDeclineLead,
-  apiUpdateSession as apiUpdateSessionApi,
-  apiCreateSession as apiCreateSessionApi,
-  apiRequestTestimonial,
-  apiSubmitTestimonial,
-} from "@/lib/api";
+  getLeads,
+  getSessionsForTutor,
+  getTestimonialsForTutor,
+  getPendingTestimonialRequests,
+  getUserById,
+} from "@/lib/db";
 
 const INK = "#14213D";
 const INK_SOFT = "#3D4A63";
@@ -30,111 +23,37 @@ import { apiSignOut } from "@/lib/api";
 
 export default async function TutorDashboardPage() {
   const session = await getServerSession();
-  if (!session?.user) redirect("/login");
+  if (!session.user) redirect("/login");
+  if (session.user.role !== "tutor") redirect("/dashboard");
 
-  const user = session.user as unknown as { id: string; role: string; verified?: number };
-  if (user.role !== "tutor") redirect("/dashboard");
+  const tutorId = session.user.id;
+  const [allLeads, sessions, testimonials, pendingRequests, profile] = await Promise.all([
+    getLeads(),
+    getSessionsForTutor(tutorId),
+    getTestimonialsForTutor(tutorId),
+    getPendingTestimonialRequests(tutorId),
+    getUserById(tutorId),
+  ]);
 
-  const tutorId = user.id;
-  const [leadsRes, sessionsRes, testimonialsRes, requestsRes, profileRes] =
-    await Promise.all([
-      apiGetLeads(undefined, tutorId),
-      apiGetSessionsForTutor(tutorId),
-      apiGetTestimonialsForTutor(tutorId),
-      apiGetTestimonialRequests(tutorId),
-      apiGetTutorProfile(tutorId),
-    ]);
+  const leads = allLeads.filter(
+    (lead: any) =>
+      lead.status === "new" ||
+      lead.assigned_tutor_id === tutorId,
+  );
 
-  const leads = leadsRes.leads ?? [];
-  const sessions = sessionsRes.sessions ?? [];
-  const testimonials = testimonialsRes.testimonials ?? [];
-  const pendingRequests = requestsRes.requests ?? [];
-  const profile = profileRes.profile ?? null;
+  const user = {
+    id: tutorId,
+    role: "tutor",
+    verified: session.user.verified,
+  };
 
   return (
-    <div style={{ minHeight: "100vh", background: PAPER, color: INK }}>
-      {/* Header */}
-      <header
-        style={{
-          background: INK,
-          color: PAPER,
-          padding: "0 32px",
-          height: "64px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          borderBottom: `1px solid ${LINE}`,
-          position: "sticky",
-          top: 0,
-          zIndex: 50,
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <a
-            href="/"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-              color: PAPER,
-              textDecoration: "none",
-              fontSize: "18px",
-              fontWeight: 600,
-              fontFamily: "Playfair Display, Georgia, serif",
-            }}
-          >
-            <svg width="32" height="32" viewBox="0 0 36 36" fill="none">
-              <rect width="36" height="36" rx="8" fill={PAPER} />
-              <rect x="4" y="13" width="28" height="3" rx="1.5" fill={INK} />
-              <rect x="4" y="18" width="22" height="3" rx="1.5" fill={INK_SOFT} opacity="0.7" />
-              <rect x="4" y="23" width="26" height="3" rx="1.5" fill={INK_SOFT} opacity="0.5" />
-            </svg>
-            bookateacher
-            <span
-              style={{
-                color: "rgba(250,247,240,0.6)",
-                fontFamily: "Inter, sans-serif",
-                fontSize: "14px",
-                fontWeight: 400,
-              }}
-            >
-              .in
-            </span>
-          </a>
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <span
-            style={{
-              fontSize: "13px",
-              color: "rgba(250,247,240,0.7)",
-              fontFamily: "Inter, sans-serif",
-            }}
-          >
-            Tutor dashboard
-          </span>
-          <form action="/api/auth/signout" method="POST" style={{ display: "inline" }}>
-            <button
-              type="submit"
-              style={{
-                background: "transparent",
-                border: "1px solid rgba(250,247,240,0.25)",
-                color: PAPER,
-                padding: "6px 14px",
-                borderRadius: 6,
-                fontSize: "13px",
-                fontFamily: "Inter, sans-serif",
-                fontWeight: 450,
-                cursor: "pointer",
-                transition: "all 0.15s",
-              }}
-            >
-              Sign out
-            </button>
-          </form>
-        </div>
-      </header>
+    <DashboardShell
+      role="tutor"
+      userName={session.user.name}
+      verified={session.user.verified}
+    >
 
-      <main id="main-content" tabIndex={-1} style={{ maxWidth: 1200, margin: "0 auto", padding: "32px 24px 80px" }}>
         {/* Page title */}
         <div
           style={{
@@ -779,43 +698,9 @@ export default async function TutorDashboardPage() {
               );
             })()}
           </aside>
-        </div>
-      </main>
-
-      {/* Footer */}
-      <footer
-        style={{
-          borderTop: `1px solid ${LINE}`,
-          background: PAPER_2,
-          padding: "20px 32px",
-          fontSize: "12px",
-          color: MUTED,
-          fontFamily: "Inter, sans-serif",
-          display: "flex",
-          justifyContent: "space-between",
-          flexWrap: "wrap",
-          gap: 8,
-        }}
-      >
-        <span>© {new Date().getFullYear()} bookateacher.in — Made in India</span>
-        <div style={{ display: "flex", gap: 16 }}>
-          <a href="/privacy" style={{ color: INK_SOFT, textDecoration: "none" }}>Privacy</a>
-          <a href="/terms" style={{ color: INK_SOFT, textDecoration: "none" }}>Terms</a>
-        </div>
-      </footer>
-
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `.lead-card-accepted { opacity: 0.6; }
-.lead-card-accepted .lead-actions { pointer-events: none; }
-.lead-filter-btn { border-bottom: 2px solid transparent; }`,
-        }}
-      />
-    </div>
+    </DashboardShell>
   );
 }
-
-/* ---------- Sub-components ---------- */
 
 function StatCard({
   label,
