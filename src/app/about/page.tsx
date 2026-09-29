@@ -94,7 +94,6 @@ export default function AboutPage() {
             <Link href="/tutors" style={{ color: ink, fontWeight: 600 }}>Browse tutors</Link>
             <Link href="/subjects" style={{ color: ink, fontWeight: 600 }}>Explore subjects</Link>
             <Link href="/contact" style={{ color: ink, fontWeight: 600 }}>Contact us</Link>
-            <Link href="/site-map" style={{ color: ink, fontWeight: 600 }}>Site map</Link>
           </nav>
         </article>
       </div>
