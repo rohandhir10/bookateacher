@@ -140,8 +140,6 @@ export default function SpokenEnglishSubjectPage() {
           { "@type": "ListItem", position: 3, name: "Spoken English", item: "https://bookateacher.in/subjects/spoken-english" },
         ],
       },
-      SPOKEN_COURSE_SCHEMA,
-      SPOKEN_FAQ_SCHEMA,
     ],
   });
 
