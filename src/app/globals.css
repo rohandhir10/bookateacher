@@ -1867,3 +1867,16 @@ svg {
     grid-template-columns: 1fr;
   }
 }
+
+.dashboard-two-column {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 980px) {
+  .dashboard-two-column {
+    grid-template-columns: 1fr;
+  }
+}
