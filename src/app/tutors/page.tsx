@@ -108,8 +108,17 @@ function buildJsonLd(tutors: TutorData[]): string {
   }`;
 }
 
-export default async function TutorsPage() {
-  const tutors = await getTutors();
+export default async function TutorsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ subject?: string }>;
+}) {
+  const { subject: requestedSubject } = await searchParams;
+  const subject = requestedSubject && SUBJECT_LABELS[requestedSubject] ? requestedSubject : "";
+  const allTutors = await getTutors();
+  const tutors = subject
+    ? allTutors.filter((tutor) => tutor.subjects?.includes(subject))
+    : allTutors;
   const jsonLd = buildJsonLd(tutors);
 
   return (
@@ -159,8 +168,21 @@ export default async function TutorsPage() {
               Tutor directory
             </h1>
             <p style={{ fontSize: "1.0625rem", color: INK_SOFT, lineHeight: 1.6, maxWidth: 600, margin: "0 auto" }}>
-              Browse current IELTS, TOEFL, and Spoken English tutor profiles. Review credentials and rates before requesting a match.
+              {subject
+                ? `Showing ${SUBJECT_LABELS[subject]} tutors. Compare current profiles and choose who to contact.`
+                : "Browse current IELTS, TOEFL, and Spoken English tutor profiles. Review credentials and rates before requesting a match."}
             </p>
+            <form method="get" action="/tutors" className="directory-filter" aria-label="Filter tutors by subject">
+              <label htmlFor="directory-subject">Filter by subject</label>
+              <select id="directory-subject" name="subject" defaultValue={subject}>
+                <option value="">All subjects</option>
+                {Object.entries(SUBJECT_LABELS).filter(([value]) => value !== "other").map(([value, label]) => (
+                  <option key={value} value={value}>{label}</option>
+                ))}
+              </select>
+              <button type="submit">Show tutors</button>
+              {subject && <Link href="/tutors">Clear filter</Link>}
+            </form>
           </div>
 
           {/* Tutor cards */}

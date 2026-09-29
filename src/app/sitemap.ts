@@ -31,6 +31,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/contact` },
     { url: `${baseUrl}/privacy` },
     { url: `${baseUrl}/terms` },
+    { url: `${baseUrl}/site-map` },
   ];
 
   return [...publicPages, ...(await getActiveTutorUrls(baseUrl))];

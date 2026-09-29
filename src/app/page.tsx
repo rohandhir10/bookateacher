@@ -1,371 +1,135 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { homepageJsonLd } from "@/lib/seo";
-import BandScoreTool from "@/components/BandScoreTool";
-import LearningMatchVisual from "@/components/LearningMatchVisual";
 
 export const metadata: Metadata = {
   title: "English preparation & tutor directory",
   description:
-    "Explore IELTS, TOEFL, and Spoken English preparation guides, then check current tutor profiles and availability.",
+    "Find tutors for IELTS, TOEFL, and Spoken English. Browse tutor profiles and compare subjects, rates, and teaching approaches.",
   openGraph: {
     title: "English preparation & tutor directory",
     description:
-      "Explore preparation guides for IELTS, TOEFL, and Spoken English, then check current tutor profiles and availability.",
+      "Find tutors for IELTS, TOEFL, and Spoken English. Browse profiles and compare subjects, rates, and teaching approaches.",
     type: "website",
     locale: "en_IN",
     siteName: "bookateacher.in",
     url: "https://bookateacher.in",
-    images: [
-      {
-        url: "https://bookateacher.in/og-social.png",
-        width: 1200,
-        height: 630,
-        alt: "bookateacher.in — English preparation and tutor directory",
-      },
-    ],
+    images: [{ url: "https://bookateacher.in/og-social.png", width: 1200, height: 630, alt: "BookATeacher — English tutor directory" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "English preparation & tutor directory",
-    description:
-      "English preparation guides and current tutor profiles for IELTS, TOEFL, and Spoken English.",
+    description: "Find tutors for IELTS, TOEFL, and Spoken English.",
     images: ["https://bookateacher.in/og-social.png"],
   },
   alternates: { canonical: "https://bookateacher.in" },
 };
 
-const focusAreas = [
-  {
-    tag: "IELTS",
-    title: "Target the score you actually need.",
-    copy: "Use focused practice for writing, speaking, reading and listening, then compare tutors who teach the test you are preparing for.",
-  },
-  {
-    tag: "TOEFL",
-    title: "Prepare for the test format, not generic English.",
-    copy: "Find tutors who work with TOEFL-style tasks, timed practice and section-specific feedback.",
-  },
-  {
-    tag: "Spoken English",
-    title: "Build confidence through real conversation.",
-    copy: "Work on fluency, pronunciation and everyday communication with one-to-one practice.",
-  },
-  {
-    tag: "Retakes",
-    title: "Get a fresh pair of eyes.",
-    copy: "Coming back for another attempt? A new tutor can help you identify the specific patterns holding your score back.",
-  },
-];
-
-const vetting = [
-  ["01", "Identity & credentials", "Profiles can be reviewed against the information provided during onboarding."],
-  ["02", "Teaching approach", "Tutors can explain their experience, subjects and session style before you book."],
-  ["03", "Profile transparency", "Rates, subjects and other public details are shown before you decide."],
-];
-
-const testimonials = [
-  {
-    score: "6.5 → 7.5",
-    quote:
-      "My tutor focused on the two skills I was struggling with instead of making me repeat the whole syllabus.",
-    name: "Priya M.",
-    role: "IELTS student",
-    initials: "PM",
-  },
-  {
-    score: "TOEFL · 105",
-    quote:
-      "I wanted structured practice around the test format and a tutor I could speak to before committing to sessions.",
-    name: "Ananya S.",
-    role: "TOEFL student",
-    initials: "AS",
-  },
-  {
-    score: "Tutor perspective",
-    quote:
-      "The useful part is being able to understand the student's goal before a session starts.",
-    name: "Rahul K.",
-    role: "English tutor",
-    initials: "RK",
-  },
-];
-
 const faqs = [
   {
-    q: "What if I don't see a suitable tutor?",
-    a: "Tutor availability depends on the current public listings. Browse the directory first, then use the contact or profile flow if you need help.",
+    q: "Can I browse without creating an account?",
+    a: "Yes. Tutor profiles are publicly browsable, so you can compare the available options before signing up.",
   },
   {
     q: "How much does tutoring cost?",
-    a: "Rates vary by tutor, subject and experience. Review the price shown on a tutor's profile before you book.",
+    a: "Rates vary by tutor, subject, and experience. Review the rate shown on a tutor's profile before you contact them.",
   },
   {
-    q: "Can I browse without creating an account?",
-    a: "Yes. The tutor directory is designed to be publicly browsable so you can compare profiles before signing up.",
+    q: "What if I don't see a suitable tutor?",
+    a: "Tutor availability depends on current listings. Contact us and tell us what subject and schedule you need.",
   },
-  {
-    q: "Can I speak with a tutor before booking?",
-    a: "Use the messaging or contact option shown on an eligible tutor profile to ask questions about fit and availability.",
-  },
+];
+
+const subjects = [
+  { value: "ielts", label: "IELTS", detail: "Test strategy, section practice, and feedback" },
+  { value: "toefl", label: "TOEFL", detail: "Format-focused practice for the TOEFL test" },
+  { value: "spoken-english", label: "Spoken English", detail: "Fluency, pronunciation, and confidence" },
 ];
 
 export default function HomePage() {
   return (
-    <div>
+    <div className="home-page">
       <main id="main-content" tabIndex={-1}>
-        <section className="hero">
-          <div className="wrap hero-grid">
-            <div className="hero-copy">
-              <span className="eyebrow">IELTS · TOEFL · Spoken English</span>
-              <h1 className="hero-title">
-                Find a teacher who makes <em>progress</em> feel possible.
-              </h1>
-              <p>
-                Browse current tutor profiles, compare how they teach and choose
-                one-to-one English support that fits your goal.
+        <section className="home-hero">
+          <div className="wrap home-hero-grid">
+            <div className="home-hero-copy">
+              <p className="home-overline">English tutoring, made easier to choose</p>
+              <h1>Find the right help for <span>your next step.</span></h1>
+              <p className="home-intro">
+                Compare tutors for IELTS, TOEFL, and Spoken English by what they teach,
+                how they work, and what they charge.
               </p>
-
-              <div className="hero-actions">
-                <Link className="btn btn-primary" href="/tutors">
-                  Find a tutor
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-                    <path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </Link>
-                <Link className="btn btn-secondary" href="/register?role=tutor">
-                  Teach on BookATeacher
-                </Link>
-              </div>
-              <p className="hero-note">
-                Public tutor profiles are available before you create an account.
-              </p>
-            </div>
-
-            <div className="hero-panel" aria-label="IELTS score improvement example">
-              <div className="hero-panel-inner">
-                <div className="panel-topline">
-                  <div className="panel-kicker">Example learning snapshot</div>
-                  <div className="panel-status">One-to-one</div>
+              <form className="tutor-search" action="/tutors" method="get">
+                <label htmlFor="home-subject">What do you want to work on?</label>
+                <div className="tutor-search-row">
+                  <select id="home-subject" name="subject" defaultValue="">
+                    <option value="">All subjects</option>
+                    {subjects.map((subject) => (
+                      <option key={subject.value} value={subject.value}>{subject.label}</option>
+                    ))}
+                  </select>
+                  <button className="btn btn-primary" type="submit">
+                    Find tutors <span aria-hidden="true">→</span>
+                  </button>
                 </div>
-                <div className="panel-body">
-                  <div className="panel-score">
-                    <strong>7.5</strong>
-                    <span>target band</span>
-                  </div>
-
-                  <div className="panel-bars">
-                    <div className="panel-bar">
-                      <span>Speaking</span>
-                      <div className="panel-bar-track"><div className="panel-bar-fill" style={{ width: "76%" }} /></div>
-                      <strong>7.0</strong>
-                    </div>
-                    <div className="panel-bar">
-                      <span>Writing</span>
-                      <div className="panel-bar-track"><div className="panel-bar-fill" style={{ width: "66%" }} /></div>
-                      <strong>6.5</strong>
-                    </div>
-                    <div className="panel-bar">
-                      <span>Reading</span>
-                      <div className="panel-bar-track"><div className="panel-bar-fill" style={{ width: "84%" }} /></div>
-                      <strong>7.5</strong>
-                    </div>
-                    <div className="panel-bar">
-                      <span>Listening</span>
-                      <div className="panel-bar-track"><div className="panel-bar-fill" style={{ width: "88%" }} /></div>
-                      <strong>8.0</strong>
-                    </div>
-                  </div>
-
-                  <div style={{ marginTop: 28 }}>
-                    <BandScoreTool />
-                  </div>
-                </div>
-              </div>
+                <p className="tutor-search-note">Browse public profiles first. No account needed.</p>
+              </form>
             </div>
+            <aside className="home-subject-panel" aria-label="Browse by learning goal">
+              <p className="home-panel-label">Choose your focus</p>
+              <ul>
+                {subjects.map((subject) => (
+                  <li key={subject.value}>
+                    <Link href={`/tutors?subject=${subject.value}`}>
+                      <span><strong>{subject.label}</strong><small>{subject.detail}</small></span>
+                      <span className="home-subject-arrow" aria-hidden="true">↗</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <p className="home-panel-foot">Start with a subject. Compare tutors at your own pace.</p>
+            </aside>
           </div>
         </section>
 
-        <section className="trust-strip" aria-label="Platform highlights">
-          <div className="wrap trust-grid">
-            <div className="trust-item">
-              <div className="trust-label">Browse first</div>
-              <div className="trust-value">See profiles before signing up</div>
+        <section className="home-how" aria-labelledby="home-how-heading">
+          <div className="wrap home-how-wrap">
+            <div className="home-how-heading">
+              <h2 id="home-how-heading">A clearer way to choose.</h2>
+              <p>See what matters before you decide who to contact.</p>
             </div>
-            <div className="trust-item">
-              <div className="trust-label">Focused learning</div>
-              <div className="trust-value">IELTS · TOEFL · Spoken English</div>
-            </div>
-            <div className="trust-item">
-              <div className="trust-label">Make the choice</div>
-              <div className="trust-value">Compare fit, subjects and rates</div>
-            </div>
+            <ol className="home-steps">
+              <li><span>01</span><div><strong>Pick your goal</strong><p>Choose an exam or the kind of English support you need.</p></div></li>
+              <li><span>02</span><div><strong>Compare profiles</strong><p>Review each tutor's subjects, approach, experience, and rate.</p></div></li>
+              <li><span>03</span><div><strong>Decide when ready</strong><p>Browse first. Create an account when you want to take the next step.</p></div></li>
+            </ol>
           </div>
         </section>
 
-        <section id="for" className="section">
-          <div className="wrap">
-            <div className="section-head center">
-              <span className="eyebrow">Built around your goal</span>
-              <h2 className="section-title">Start with the reason you need a teacher.</h2>
-              <p className="section-copy">
-                A good tutor match starts with a clear goal. Whether you are
-                chasing a test score or simply want to speak with more confidence,
-                start from the outcome.
-              </p>
-            </div>
-
-            <div className="intent-grid">
-              {focusAreas.map((item) => (
-                <article className="intent-card" key={item.tag}>
-                  <div className="intent-tag">{item.tag}</div>
-                  <h3 className="intent-title">{item.title}</h3>
-                  <p className="intent-copy">{item.copy}</p>
-                  <Link href="/tutors" className="intent-link">
-                    Explore tutors
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-                      <path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </Link>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="section learning-match-section" aria-labelledby="learning-match-heading">
-          <div className="wrap learning-match-grid">
-            <div className="learning-match-copy">
-              <span className="eyebrow">The choice gets clearer</span>
-              <h2 id="learning-match-heading" className="section-title">
-                Your goal should shape the tutor search.
-              </h2>
-              <p className="section-copy">
-                Instead of scanning a long list and guessing where to start, begin
-                with the kind of help you need. Then compare the tutors who fit.
-              </p>
-              <div className="learning-match-points">
-                <div><strong>01</strong><span>Choose the subject or exam.</span></div>
-                <div><strong>02</strong><span>Compare real tutor profiles.</span></div>
-                <div><strong>03</strong><span>Decide when the fit feels right.</span></div>
-              </div>
-            </div>
-            <LearningMatchVisual />
-          </div>
-        </section>
-
-        <section id="how" className="section vetting">
-          <div className="wrap vetting-grid">
+        <section className="home-faq" aria-labelledby="home-faq-heading">
+          <div className="wrap home-faq-wrap">
             <div>
-              <span className="eyebrow">A calmer way to choose</span>
-              <h2 className="section-title">Know what you are looking at before you book.</h2>
-              <p className="section-copy">
-                The goal of the directory is simple: make it easier to compare
-                teachers without making you fight through a maze of forms.
-              </p>
+              <p className="home-overline">Before you start</p>
+              <h2 id="home-faq-heading">Good to know.</h2>
             </div>
-
-            <div className="vetting-list">
-              {vetting.map(([number, title, copy]) => (
-                <div className="vetting-item" key={number}>
-                  <div className="vetting-number">{number}</div>
-                  <div>
-                    <strong>{title}</strong>
-                    <span>{copy}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="section-sm">
-          <div className="wrap">
-            <div className="section-head center">
-              <span className="eyebrow">Three simple steps</span>
-              <h2 className="section-title">From “I need help” to “let&apos;s start”.</h2>
-            </div>
-
-            <div className="steps">
-              {[
-                ["01", "Tell us what you need", "Share the subject, goal, level and timing that matter to you."],
-                ["02", "Compare tutor profiles", "Review current profiles, subjects, rates and the tutor's approach."],
-                ["03", "Book with confidence", "Ask questions, confirm the fit and then move into a session."],
-              ].map(([number, title, copy]) => (
-                <article className="step" key={number}>
-                  <div className="step-number">{number}</div>
-                  <h3>{title}</h3>
-                  <p>{copy}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="stories" className="section">
-          <div className="wrap">
-            <div className="section-head">
-              <span className="eyebrow">Student stories</span>
-              <h2 className="section-title">Keep the proof human.</h2>
-              <p className="section-copy">
-                Real experiences should explain the value without turning the
-                homepage into a wall of marketing claims.
-              </p>
-            </div>
-
-            <div className="testimonials">
-              {testimonials.map((item) => (
-                <article className="testimonial" key={item.name}>
-                  <div className="testimonial-score">{item.score}</div>
-                  <blockquote>&ldquo;{item.quote}&rdquo;</blockquote>
-                  <div className="testimonial-author">
-                    <div className="avatar" aria-hidden="true">{item.initials}</div>
-                    <div>
-                      <div className="author-name">{item.name}</div>
-                      <div className="author-role">{item.role}</div>
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="faq" className="section">
-          <div className="wrap" style={{ maxWidth: 800 }}>
-            <div className="section-head">
-              <span className="eyebrow">FAQ</span>
-              <h2 className="section-title">The useful answers, up front.</h2>
-            </div>
-
-            <div className="faq-list">
+            <div className="home-faq-list">
               {faqs.map((item) => (
-                <div className="faq-item" key={item.q}>
-                  <div className="faq-q">{item.q}</div>
-                  <p className="faq-a">{item.a}</p>
-                </div>
+                <details key={item.q}>
+                  <summary>{item.q}</summary>
+                  <p>{item.a}</p>
+                </details>
               ))}
             </div>
           </div>
         </section>
 
-        <section className="final-cta">
-          <div className="wrap">
-            <div className="final-cta-inner">
-              <h2>Take the first step without overthinking it.</h2>
-              <p>
-                Browse current tutor profiles, see what fits your goal and decide
-                from there.
-              </p>
-              <div className="final-cta-actions">
-                <Link className="btn btn-light" href="/tutors">Browse tutors</Link>
-                <Link className="btn btn-ghost-light" href="/register?role=tutor">Become a tutor</Link>
-              </div>
-            </div>
+        <section className="home-bottom-cta">
+          <div className="wrap home-bottom-cta-inner">
+            <div><h2>Ready to find your tutor?</h2><p>Browse current profiles and see who fits your goal.</p></div>
+            <Link className="btn btn-light" href="/tutors">Browse tutors <span aria-hidden="true">→</span></Link>
           </div>
         </section>
       </main>
-
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: homepageJsonLd() }} />
     </div>
   );

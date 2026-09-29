@@ -39,6 +39,7 @@ export function SiteFooter() {
             <Link href="/register">Create an account</Link>
             <Link href="/privacy">Privacy</Link>
             <Link href="/terms">Terms</Link>
+            <Link href="/site-map">Site map</Link>
           </div>
         </div>
 

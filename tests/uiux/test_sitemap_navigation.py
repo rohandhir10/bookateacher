@@ -41,24 +41,11 @@ class SitemapNavigationTests(unittest.TestCase):
         self.assertIn('aria-label="Breadcrumb"', source)
         self.assertIn('id="main-content" tabIndex={-1}', source)
 
-    def test_public_footers_link_to_human_sitemap(self):
-        for relative in (
-            "src/app/page.tsx",
-            "src/app/subjects/page.tsx",
-            "src/app/subjects/ielts/page.tsx",
-            "src/app/subjects/toefl/page.tsx",
-            "src/app/subjects/spoken-english/page.tsx",
-            "src/app/tutors/page.tsx",
-            "src/app/about/page.tsx",
-            "src/app/contact/page.tsx",
-            "src/app/privacy/page.tsx",
-            "src/app/terms/page.tsx",
-            "src/app/login/page.tsx",
-            "src/app/register/page.tsx",
-            "src/app/tutors/[id]/page.tsx",
-        ):
-            source = (ROOT / relative).read_text(encoding="utf-8")
-            self.assertIn('href="/site-map"', source, f"No site-map link in {relative}")
+    def test_shared_footer_links_to_human_sitemap(self):
+        footer = (ROOT / "src/components/SiteFooter.tsx").read_text(encoding="utf-8")
+        chrome = (ROOT / "src/components/SiteChrome.tsx").read_text(encoding="utf-8")
+        self.assertIn('href="/site-map"', footer)
+        self.assertIn("<SiteFooter />", chrome)
 
     def test_auth_pages_are_noindex_and_robots_excludes_private_app_routes(self):
         for relative in ("src/app/login/page.tsx", "src/app/register/page.tsx"):
@@ -70,7 +57,7 @@ class SitemapNavigationTests(unittest.TestCase):
         self.assertNotIn("/login", robots)
         self.assertNotIn("/register", robots)
         self.assertIn("/api/", robots)
-        self.assertIn("/_next/", robots)
+        self.assertIn('allow: "/"', robots)
         self.assertIn("https://bookateacher.in/sitemap.xml", robots)
 
     def test_tutor_onboarding_has_wayfinding_and_exit_paths(self):
