@@ -584,6 +584,7 @@ export default async function TutorDashboardPage() {
               );
             })()}
           </aside>
+        </div>
     </DashboardShell>
   );
 }
