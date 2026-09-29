@@ -1,7 +1,6 @@
-// Shared SEO helpers — structured data + metadata for topic + tutor pages
-import { Metadata } from "next";
+import type { Metadata } from "next";
+import { SITE_URL } from "@/lib/seo";
 
-// Tutor profile publicly visible data
 export type TutorProfile = {
   id: string;
   name: string;
@@ -17,42 +16,60 @@ export type TutorProfile = {
   } | null;
   verified: number;
   avatar_url: string | null;
-  ielts_score?: string | null; // e.g. "8.5"
-  toefl_score?: string | null;  // e.g. "112"
+  ielts_score?: string | null;
+  toefl_score?: string | null;
 };
 
-export function tutorProfileMetadata(tutor: TutorProfile, subjectLabel: string): Metadata {
-  const priceRange = tutor.hourly_rate
-    ? `₹${tutor.hourly_rate.toLocaleString("en-IN")}/hr`
-    : "From ₹800/hr";
+function cleanDescription(value: string, fallback: string): string {
+  const text = value.replace(/\s+/g, " ").trim();
+  return (text || fallback).slice(0, 160);
+}
+
+export function tutorProfileMetadata(
+  tutor: TutorProfile,
+  subjectLabel: string,
+): Metadata {
+  const description = cleanDescription(
+    tutor.bio || "",
+    `${tutor.name} is a ${subjectLabel.toLowerCase()} tutor on bookateacher.in. View their public profile, subjects and current rate.`,
+  );
 
   return {
     title: `${tutor.name} — ${subjectLabel} Tutor`,
-    description: `${tutor.name}, ${subjectLabel.toLowerCase()} tutor on bookateacher.in. ${tutor.bio ? tutor.bio.slice(0, 155) + "…" : `Certified ${subjectLabel} coaching, live 1-on-1 sessions.`} Hourly rate: ${priceRange}. Book a session.`,
+    description,
     openGraph: {
       title: `${tutor.name} — ${subjectLabel} Tutor`,
-      description: `${tutor.name} is a verified ${subjectLabel.toLowerCase()} tutor on bookateacher.in. Live 1-on-1 coaching, ₹${tutor.hourly_rate?.toLocaleString("en-IN") ?? "800"}/hr.`,
+      description,
       type: "profile",
       locale: "en_IN",
       siteName: "bookateacher.in",
-      url: `https://bookateacher.in/tutors/${tutor.id}`,
-      images: [
-        {
-          url: tutor.avatar_url || `https://bookateacher.in/og-social.png`,
-          width: 1200,
-          height: 630,
-          alt: `${tutor.name} — ${subjectLabel} tutor`,
-        },
-      ],
+      url: `${SITE_URL}/tutors/${tutor.id}`,
+      images: tutor.avatar_url
+        ? [
+            {
+              url: tutor.avatar_url,
+              width: 1200,
+              height: 1200,
+              alt: `${tutor.name} — ${subjectLabel} tutor`,
+            },
+          ]
+        : [
+            {
+              url: "/og-social.png",
+              width: 1200,
+              height: 630,
+              alt: "bookateacher.in — tutor directory",
+            },
+          ],
     },
     twitter: {
       card: "summary_large_image",
       title: `${tutor.name} — ${subjectLabel} Tutor`,
-      description: `Verified ${subjectLabel.toLowerCase()} tutor on bookateacher.in. ₹${tutor.hourly_rate?.toLocaleString("en-IN") ?? "800"}/hr.`,
-      images: [tutor.avatar_url || "https://bookateacher.in/og-social.png"],
+      description,
+      images: [tutor.avatar_url || "/og-social.png"],
     },
     alternates: {
-      canonical: `https://bookateacher.in/tutors/${tutor.id}`,
+      canonical: `${SITE_URL}/tutors/${tutor.id}`,
     },
     robots: {
       index: true,
@@ -61,34 +78,43 @@ export function tutorProfileMetadata(tutor: TutorProfile, subjectLabel: string):
   };
 }
 
-export function subjectPageMetadata(subject: string, subjectLabel: string, subjectDescription: string): Metadata {
+export function subjectPageMetadata(
+  subject: string,
+  subjectLabel: string,
+  subjectDescription: string,
+): Metadata {
+  const description = cleanDescription(
+    subjectDescription,
+    `${subjectLabel} preparation resources and current tutor profiles on bookateacher.in.`,
+  );
+
   return {
     title: `${subjectLabel} Preparation — Tutor Directory`,
-    description: subjectDescription,
+    description,
     openGraph: {
       title: `${subjectLabel} Preparation — Tutor Directory`,
-      description: subjectDescription,
+      description,
       type: "website",
       locale: "en_IN",
       siteName: "bookateacher.in",
-      url: `https://bookateacher.in/subjects/${subject}`,
+      url: `${SITE_URL}/subjects/${subject}`,
       images: [
         {
-          url: `https://bookateacher.in/og-social.png`,
+          url: "/og-social.png",
           width: 1200,
           height: 630,
-          alt: "bookateacher.in — English preparation guides",
+          alt: `${subjectLabel} preparation and tutor directory`,
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
       title: `${subjectLabel} Preparation — Tutor Directory`,
-      description: subjectDescription.slice(0, 155),
-      images: ["https://bookateacher.in/og-social.png"],
+      description,
+      images: ["/og-social.png"],
     },
     alternates: {
-      canonical: `https://bookateacher.in/subjects/${subject}`,
+      canonical: `${SITE_URL}/subjects/${subject}`,
     },
     robots: {
       index: true,
@@ -97,24 +123,27 @@ export function subjectPageMetadata(subject: string, subjectLabel: string, subje
   };
 }
 
-// BreadcrumbList schema builder
-export function breadcrumbSchema(items: { name: string; url: string }[]): object {
+export function breadcrumbSchema(
+  items: { name: string; url: string }[],
+): object {
   return {
-    "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    itemListElement: items.map((item, i) => ({
+    itemListElement: items.map((item, index) => ({
       "@type": "ListItem",
-      position: i + 1,
+      position: index + 1,
       name: item.name,
       item: item.url,
     })),
   };
 }
 
-// WebPage schema
-export function webpageSchema(title: string, description: string, url: string, pageType: string = "WebPage"): object {
+export function webpageSchema(
+  title: string,
+  description: string,
+  url: string,
+  pageType = "WebPage",
+): object {
   return {
-    "@context": "https://schema.org",
     "@type": pageType,
     "@id": `${url}#webpage`,
     url,
@@ -122,10 +151,10 @@ export function webpageSchema(title: string, description: string, url: string, p
     description,
     inLanguage: "en-IN",
     isPartOf: {
-      "@id": "https://bookateacher.in/#website",
+      "@id": `${SITE_URL}/#website`,
     },
     about: {
-      "@id": "https://bookateacher.in/#organization",
+      "@id": `${SITE_URL}/#organization`,
     },
   };
 }
