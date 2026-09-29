@@ -357,10 +357,7 @@ export default function HomePage() {
         }}
       />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: FAQ_SCHEMA }} />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(COURSE_SCHEMA) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: homepageJsonLd() }} />
     </div>
   );
 }
