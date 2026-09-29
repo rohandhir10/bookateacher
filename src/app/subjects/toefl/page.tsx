@@ -165,8 +165,6 @@ export default function ToeflSubjectPage() {
           { "@type": "ListItem", position: 3, name: "TOEFL", item: "https://bookateacher.in/subjects/toefl" },
         ],
       },
-      TOEFL_COURSE_SCHEMA,
-      TOEFL_FAQ_SCHEMA,
     ],
   });
 
