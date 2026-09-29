@@ -1,11 +1,10 @@
-// bookateacher — Server-side session management for Railway backend
-// Used in RSC pages to check auth state before rendering.
-//
-// Reads the bookateacher_session cookie from the incoming request and
-// validates it against the Railway backend.
+// bookateacher — unified server-side auth session helper
+// Prefer NextAuth (the primary app auth layer). The legacy backend cookie remains
+// as a fallback while the backend migration is being retired.
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { auth } from "@/lib/auth";
 
 const BACKEND_URL =
   process.env.BACKEND_URL ??
@@ -27,17 +26,28 @@ export interface ServerSession {
 }
 
 export async function getServerSession(): Promise<ServerSession> {
-  if (typeof process === "undefined") {
-    // Never runs in browser
-    return { user: null };
+  // Primary auth: NextAuth JWT session.
+  try {
+    const nextAuthSession = await auth();
+    if (nextAuthSession?.user) {
+      return {
+        user: {
+          id: nextAuthSession.user.id,
+          email: nextAuthSession.user.email,
+          name: nextAuthSession.user.name,
+          role: nextAuthSession.user.role,
+          verified: Boolean(nextAuthSession.user.verified),
+        },
+      };
+    }
+  } catch {
+    // Fall through to the legacy backend session during migration.
   }
 
+  // Legacy backend session fallback.
   const cookieStore = await cookies();
   const sessionCookie = cookieStore.get("bookateacher_session")?.value;
-
-  if (!sessionCookie) {
-    return { user: null };
-  }
+  if (!sessionCookie) return { user: null };
 
   try {
     const res = await fetch(`${BACKEND_URL}/api/auth/session`, {
@@ -46,14 +56,10 @@ export async function getServerSession(): Promise<ServerSession> {
         Cookie: `bookateacher_session=${sessionCookie}`,
         Accept: "application/json",
       },
-      // Don't follow redirects — if the session is invalid the backend
-      // may redirect to login, which we don't want in an RSC fetch
-      redirect: "manual",
+      cache: "no-store",
     });
 
-    if (!res.ok) {
-      return { user: null };
-    }
+    if (!res.ok) return { user: null };
 
     const data = (await res.json()) as ServerSession;
     return data;
@@ -65,12 +71,8 @@ export async function getServerSession(): Promise<ServerSession> {
 export function requireAuth(role?: "student" | "tutor" | "admin") {
   return async function checkAuth() {
     const session = await getServerSession();
-    if (!session.user) {
-      redirect("/login");
-    }
-    if (role && session.user.role !== role) {
-      redirect("/dashboard");
-    }
+    if (!session.user) redirect("/login");
+    if (role && session.user.role !== role) redirect("/dashboard");
     return session;
   };
 }
