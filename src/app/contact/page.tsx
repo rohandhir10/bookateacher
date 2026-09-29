@@ -42,42 +42,6 @@ export default function ContactPage() {
         fontFamily: "Inter, system-ui, sans-serif",
       }}
     >
-      <header style={{ background: inkSoft, borderBottom: `1px solid ${line}` }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: 24,
-            minHeight: 64,
-            maxWidth: 1180,
-            margin: "0 auto",
-            padding: "12px 24px",
-          }}
-        >
-          <Link
-            href="/"
-            style={{
-              color: paper,
-              fontFamily: "'Playfair Display', Georgia, serif",
-              fontSize: "1.125rem",
-              fontWeight: 600,
-              textDecoration: "none",
-            }}
-          >
-            bookateacher.in
-          </Link>
-          <nav aria-label="Primary navigation" style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
-            <Link href="/tutors" style={{ color: paper, textDecoration: "none" }}>
-              Browse tutors
-            </Link>
-            <Link href="/login" style={{ color: paper, textDecoration: "none" }}>
-              Sign in
-            </Link>
-          </nav>
-        </div>
-      </header>
-
       <main id="main-content" tabIndex={-1} style={{ flex: 1, padding: "28px 24px 72px" }}>
         <div style={{ maxWidth: 760, margin: "0 auto" }}>
           <article style={{ marginTop: 36 }}>
@@ -133,16 +97,6 @@ export default function ContactPage() {
         </div>
       </main>
 
-      <footer style={{ borderTop: `1px solid ${line}`, padding: "20px 24px", background: paper2 }}>
-        <div style={{ maxWidth: 1180, margin: "0 auto" }}>
-          <nav aria-label="Legal and support" style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>
-            <Link href="/contact" style={{ color: inkSoft, textDecoration: "none" }}>Contact</Link>
-            <Link href="/privacy" style={{ color: inkSoft, textDecoration: "none" }}>Privacy</Link>
-            <Link href="/terms" style={{ color: inkSoft, textDecoration: "none" }}>Terms</Link>
-            <Link href="/site-map" style={{ color: inkSoft, textDecoration: "none" }}>Site map</Link>
-          </nav>
-        </div>
-      </footer>
-    </div>
+      </div>
   );
 }
