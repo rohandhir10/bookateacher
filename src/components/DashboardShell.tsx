@@ -42,10 +42,6 @@ export function DashboardShell({
                 <span aria-hidden="true">⌕</span>
                 Find a tutor
               </Link>
-              <Link href="/matching-status" className="dashboard-nav-link">
-                <span aria-hidden="true">◷</span>
-                Match request
-              </Link>
             </>
           ) : (
             <>
