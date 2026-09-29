@@ -1086,3 +1086,150 @@ svg {
   outline: 3px solid rgb(166 61 50 / 0.34);
   outline-offset: 3px;
 }
+
+
+.account-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(circle at 20% 10%, rgb(166 61 50 / 0.06), transparent 24%),
+    var(--page-bg);
+}
+
+.account-header {
+  border-bottom: 1px solid var(--line);
+  background: rgb(251 250 247 / 0.86);
+  backdrop-filter: blur(18px);
+}
+
+.account-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 72px;
+}
+
+.account-header-link {
+  color: var(--muted);
+  font-size: 0.87rem;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.account-main {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding: 64px 0;
+}
+
+.account-wrap {
+  width: min(100%, 620px);
+  margin-inline: auto;
+}
+
+.account-wrap.narrow {
+  max-width: 460px;
+}
+
+.account-intro {
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+.account-intro h1 {
+  margin: 13px 0 11px;
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  line-height: 1.02;
+  letter-spacing: -0.055em;
+}
+
+.account-intro p {
+  max-width: 520px;
+  margin: 0 auto;
+  color: var(--muted);
+  line-height: 1.68;
+}
+
+.account-card {
+  padding: 30px;
+  border: 1px solid var(--line);
+  border-radius: 1.5rem;
+  background: rgb(255 255 255 / 0.84);
+  box-shadow: 0 24px 60px rgb(23 33 58 / 0.08);
+}
+
+.account-legal {
+  margin: 20px auto 0;
+  max-width: 520px;
+  color: var(--subtle);
+  font-size: 0.78rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.account-legal a {
+  color: var(--muted);
+}
+
+.account-benefits {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.account-benefit {
+  padding: 16px 13px;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: rgb(247 245 240 / 0.88);
+  text-align: center;
+}
+
+.account-benefit-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  margin: 0 auto 10px;
+  border-radius: 10px;
+  background: var(--ink);
+  color: #fff;
+}
+
+.account-benefit strong {
+  display: block;
+  font-size: 0.78rem;
+}
+
+.account-benefit span {
+  display: block;
+  margin-top: 4px;
+  color: var(--subtle);
+  font-size: 0.7rem;
+  line-height: 1.42;
+}
+
+.account-footer {
+  padding: 24px 0;
+  border-top: 1px solid var(--line);
+  background: var(--cream);
+}
+
+@media (max-width: 760px) {
+  .account-main {
+    padding: 44px 0;
+  }
+
+  .account-card {
+    padding: 22px 18px;
+    border-radius: 1.25rem;
+  }
+
+  .account-benefits {
+    grid-template-columns: 1fr;
+  }
+}
