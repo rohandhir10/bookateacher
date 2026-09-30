@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { auth } from "@/lib/auth";
 import {
   createLead,
@@ -115,14 +116,32 @@ export async function POST(request: Request) {
       const parsed = sessionUpdateSchema.parse(body.data);
       const lead = await getLeadById(body.leadId);
       if (!lead) return NextResponse.json({ error: "Lead not found" }, { status: 404 });
-      if (!canCreateSession(actor, lead, body.tutorId, body.studentId)) {
+
+      // A student can only create a session for themselves; a tutor can only
+      // create one for themselves. Admins may specify both sides explicitly.
+      const tutorId = actor.role === "tutor" ? actor.id : body.tutorId;
+      const studentId = actor.role === "student" ? actor.id : body.studentId;
+      if (!tutorId || !studentId) {
+        return NextResponse.json({ error: "Tutor and student are required" }, { status: 400 });
+      }
+
+      const [tutor, student] = await Promise.all([
+        getUserById(tutorId),
+        getUserById(studentId),
+      ]);
+      if (tutor?.role !== "tutor" || student?.role !== "student") {
+        return NextResponse.json({ error: "Invalid tutor or student" }, { status: 400 });
+      }
+
+      if (!canCreateSession(actor, lead, tutorId, studentId)) {
         return NextResponse.json({ error: "Forbidden" }, { status: 403 });
       }
+
       const id = generateId();
       await createSession({
         id,
-        tutor_id: body.tutorId,
-        student_id: body.studentId,
+        tutor_id: tutorId,
+        student_id: studentId,
         scheduled_at: parsed.scheduled_at || new Date().toISOString(),
         duration_minutes: parsed.duration_minutes ?? 60,
         meeting_link: parsed.meeting_link || undefined,
@@ -138,7 +157,7 @@ export async function POST(request: Request) {
         "created_session",
         "session",
         id,
-        { leadId: body.leadId, tutorId: body.tutorId, studentId: body.studentId },
+        { leadId: body.leadId, tutorId, studentId },
       );
 
       return NextResponse.json({ success: true, sessionId: id });
@@ -150,11 +169,21 @@ export async function POST(request: Request) {
       const existing = await getSessionById(id);
       if (!existing) return NextResponse.json({ error: "Session not found" }, { status: 404 });
       if (!canUpdateSession(actor, existing)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+
       const safeUpdates = sanitizeSessionUpdates(actor, updates);
       if (Object.keys(safeUpdates).length === 0) {
         return NextResponse.json({ error: "No permitted fields to update" }, { status: 400 });
       }
-      await updateSession(id, safeUpdates);
+
+      const parsedUpdates = sessionUpdateSchema.strict().parse(safeUpdates);
+      if (actor.role === "tutor" && parsedUpdates.status === "completed") {
+        return NextResponse.json(
+          { error: "Use the completion action to complete a session" },
+          { status: 400 },
+        );
+      }
+
+      await updateSession(id, parsedUpdates);
       return NextResponse.json({ success: true });
     }
 
@@ -176,31 +205,42 @@ export async function POST(request: Request) {
     }
 
     if (action === "complete-session") {
-      const { id, notes, rating, feedback } = body.data;
-      if (!id) return NextResponse.json({ error: "Session ID required" }, { status: 400 });
-      const existing = await getSessionById(id);
+      const parsed = z.object({
+        id: z.string().min(1),
+        notes: z.string().max(2000).optional(),
+        rating: z.number().int().min(1).max(5).optional(),
+        feedback: z.string().max(2000).optional(),
+      }).strict().parse(body.data);
+
+      const existing = await getSessionById(parsed.id);
       if (!existing) return NextResponse.json({ error: "Session not found" }, { status: 404 });
       if (!canCompleteSession(actor, existing)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-      await updateSession(id, {
+
+      await updateSession(parsed.id, {
         status: "completed",
-        notes: notes || undefined,
-        rating: rating !== undefined ? rating : undefined,
-        feedback: feedback || undefined,
+        notes: parsed.notes,
+        rating: parsed.rating,
+        feedback: parsed.feedback,
       });
       return NextResponse.json({ success: true });
     }
 
     if (action === "send-testimonial-request") {
-      const { sessionId, studentId, message } = body.data;
-      if (!sessionId || !studentId) return NextResponse.json({ error: "sessionId and studentId required" }, { status: 400 });
-      const sessionRow = await getSessionById(sessionId);
-      if (!sessionRow || sessionRow.student_id !== studentId || !canRequestTestimonial(actor, sessionRow)) {
+      const parsed = z.object({
+        sessionId: z.string().min(1),
+        message: z.string().max(1000).optional(),
+      }).strict().parse(body.data);
+
+      const sessionRow = await getSessionById(parsed.sessionId);
+      if (!sessionRow || !canRequestTestimonial(actor, sessionRow)) {
         return NextResponse.json({ error: "Forbidden" }, { status: 403 });
       }
+
       const id = generateId();
       await executeStmt(
-        `INSERT INTO testimonial_requests (id, session_id, student_id, tutor_id, status, message, created_at) VALUES (?, ?, ?, ?, 'pending', ?, datetime('now'))`,
-        [id, sessionId, studentId, session.user.id, message || null],
+        `INSERT INTO testimonial_requests (id, session_id, student_id, tutor_id, status, message, created_at)
+         VALUES (?, ?, ?, ?, 'pending', ?, datetime('now'))`,
+        [id, parsed.sessionId, sessionRow.student_id, sessionRow.tutor_id, parsed.message || null],
       );
       return NextResponse.json({ success: true, requestId: id });
     }
