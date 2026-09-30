@@ -1,7 +1,6 @@
-import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
 import { getServerSession } from "@/lib/session";
-import { apiGetLead, apiUpdateLead } from "@/lib/api";
+import { getLeadById } from "@/lib/db";
+import { toActor, canReadLead } from "@/lib/authorization";
 import { redirect, notFound } from "next/navigation";
 
 const INK = "#14213D";
@@ -23,14 +22,17 @@ export default async function LeadDetailPage({
   if (!session?.user) redirect("/login");
 
   const { id } = await params;
-  const { lead } = await apiGetLead(id);
-
-  if (!lead) notFound();
-
-  const user = session.user as unknown as { role: string };
-  if (user.role !== "tutor") redirect("/dashboard");
-
-  await apiUpdateLead(id, { status: "contacted" });
+  const actor = toActor(session.user);
+  if (actor.role !== "tutor") redirect("/dashboard");
+  const rawLead = await getLeadById(id);
+  if (!rawLead) notFound();
+  if (!canReadLead(actor, rawLead)) redirect("/tutor/dashboard");
+  const lead = {
+    ...rawLead,
+    student_name: rawLead.name,
+    student_email: rawLead.assigned_tutor_id === actor.id ? rawLead.email : null,
+    student_phone: rawLead.assigned_tutor_id === actor.id ? rawLead.phone : "",
+  };
 
   type PreferredDays = string | string[] | null;
   type PreferredTimes = string | string[] | null;

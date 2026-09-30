@@ -95,6 +95,7 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS sessions (
   id TEXT PRIMARY KEY,
+  lead_id TEXT REFERENCES leads(id) ON DELETE SET NULL,
   tutor_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   student_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   scheduled_at TEXT NOT NULL,
@@ -158,6 +159,19 @@ CREATE TABLE IF NOT EXISTS testimonial_requests (
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
+CREATE TABLE IF NOT EXISTS payment_orders (
+  id TEXT PRIMARY KEY,
+  session_id TEXT NOT NULL UNIQUE REFERENCES sessions(id) ON DELETE CASCADE,
+  user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  provider_order_id TEXT NOT NULL UNIQUE,
+  amount INTEGER NOT NULL CHECK (amount >= 0),
+  currency TEXT NOT NULL DEFAULT 'INR',
+  status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','paid','refunded')),
+  payment_id TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  paid_at TEXT
+);
+
 CREATE TABLE IF NOT EXISTS admin_actions (
   id TEXT PRIMARY KEY,
   admin_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -171,6 +185,7 @@ CREATE TABLE IF NOT EXISTS admin_actions (
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 CREATE INDEX IF NOT EXISTS idx_users_role ON users(role);
 CREATE INDEX IF NOT EXISTS idx_users_verified ON users(verified);
+CREATE INDEX IF NOT EXISTS idx_sessions_lead ON sessions(lead_id);
 CREATE INDEX IF NOT EXISTS idx_sessions_tutor ON sessions(tutor_id);
 CREATE INDEX IF NOT EXISTS idx_sessions_student ON sessions(student_id);
 CREATE INDEX IF NOT EXISTS idx_sessions_scheduled ON sessions(scheduled_at);
@@ -179,12 +194,15 @@ CREATE INDEX IF NOT EXISTS idx_leads_status ON leads(status);
 CREATE INDEX IF NOT EXISTS idx_leads_subject ON leads(subject);
 CREATE INDEX IF NOT EXISTS idx_testimonials_tutor ON testimonials(tutor_id);
 CREATE INDEX IF NOT EXISTS idx_testimonial_requests_tutor ON testimonial_requests(tutor_id);
+CREATE INDEX IF NOT EXISTS idx_payment_orders_user ON payment_orders(user_id);
 `;
 
 function initSchemaLocal(db: any) {
   db.exec(SCHEMA_SQL);
   try { db.exec("ALTER TABLE leads ADD COLUMN student_id TEXT"); } catch {}
+  try { db.exec("ALTER TABLE sessions ADD COLUMN lead_id TEXT REFERENCES leads(id) ON DELETE SET NULL"); } catch {}
   db.exec("CREATE INDEX IF NOT EXISTS idx_leads_student ON leads(student_id)");
+  db.exec("CREATE INDEX IF NOT EXISTS idx_sessions_lead ON sessions(lead_id)");
 }
 
 // Async schema init for Turso (called lazily on first use)
@@ -201,7 +219,9 @@ async function initSchemaTurso() {
     }
   }
   try { await client.execute("ALTER TABLE leads ADD COLUMN student_id TEXT"); } catch {}
+  try { await client.execute("ALTER TABLE sessions ADD COLUMN lead_id TEXT REFERENCES leads(id) ON DELETE SET NULL"); } catch {}
   await client.execute("CREATE INDEX IF NOT EXISTS idx_leads_student ON leads(student_id)");
+  await client.execute("CREATE INDEX IF NOT EXISTS idx_sessions_lead ON sessions(lead_id)");
 }
 
 // Ensure Turso schema is initialized lazily
@@ -381,6 +401,7 @@ export async function updateUserVerification(
 // ----------------------------------------------------------------------
 export async function createSession(data: {
   id: string;
+  lead_id?: string | null;
   tutor_id: string;
   student_id: string;
   scheduled_at: string;
@@ -388,10 +409,11 @@ export async function createSession(data: {
   meeting_link?: string | null;
 }) {
   await executeStmt(
-    `INSERT INTO sessions (id, tutor_id, student_id, scheduled_at, duration_minutes, meeting_link)
-     VALUES (?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO sessions (id, lead_id, tutor_id, student_id, scheduled_at, duration_minutes, meeting_link)
+     VALUES (?, ?, ?, ?, ?, ?, ?)`,
     [
       data.id,
+      data.lead_id ?? null,
       data.tutor_id,
       data.student_id,
       data.scheduled_at,
@@ -399,6 +421,35 @@ export async function createSession(data: {
       data.meeting_link ?? null,
     ],
   );
+}
+
+export async function getPaymentOrderBySessionId(sessionId: string): Promise<any | undefined> {
+  return queryOne("SELECT * FROM payment_orders WHERE session_id = ?", [sessionId]);
+}
+
+export async function createPaymentOrder(data: {
+  id: string;
+  session_id: string;
+  user_id: string;
+  provider_order_id: string;
+  amount: number;
+  currency: string;
+}) {
+  await executeStmt(
+    `INSERT INTO payment_orders (id, session_id, user_id, provider_order_id, amount, currency)
+     VALUES (?, ?, ?, ?, ?, ?)`,
+    [data.id, data.session_id, data.user_id, data.provider_order_id, data.amount, data.currency],
+  );
+}
+
+export async function markPaymentOrderPaid(providerOrderId: string, paymentId: string): Promise<boolean> {
+  const changed = await executeStmt(
+    `UPDATE payment_orders
+     SET status = 'paid', payment_id = ?, paid_at = datetime('now')
+     WHERE provider_order_id = ? AND status = 'pending'`,
+    [paymentId, providerOrderId],
+  );
+  return changed > 0;
 }
 
 export async function getSessionsForTutor(

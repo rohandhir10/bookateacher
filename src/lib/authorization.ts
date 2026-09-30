@@ -60,6 +60,12 @@ export function canCompleteSession(actor: Actor, session: any): boolean {
   return actor.role === "admin" || (actor.role === "tutor" && session.tutor_id === actor.id);
 }
 
+export function canReadSession(actor: Actor, session: any): boolean {
+  return actor.role === "admin" ||
+    (actor.role === "tutor" && session.tutor_id === actor.id) ||
+    (actor.role === "student" && session.student_id === actor.id);
+}
+
 export function canRequestTestimonial(actor: Actor, session: any): boolean {
   return actor.role === "tutor" && session.tutor_id === actor.id && session.status === "completed";
 }

@@ -15,6 +15,7 @@ class ApiAuthorizationArchitectureTests(unittest.TestCase):
             "canCompleteSession",
             "canRequestTestimonial",
             "canPublishTestimonial",
+            "canReadSession",
             "sanitizeLeadUpdates",
             "sanitizeSessionUpdates",
         ):
@@ -37,6 +38,14 @@ class ApiAuthorizationArchitectureTests(unittest.TestCase):
         self.assertIn("const allowedFields = new Set", source)
         self.assertIn("getLeadsForTutor", source)
         self.assertIn("student_id", source)
+        self.assertIn("lead_id", source)
+        self.assertIn("payment_orders", source)
+
+    def test_session_lifecycle_has_explicit_transition_policy(self):
+        source = (ROOT / "src/lib/session-policy.ts").read_text(encoding="utf-8")
+        self.assertIn("canTransitionSession", source)
+        self.assertIn("scheduled: [\"completed\", \"cancelled\", \"no_show\"]", source)
+        self.assertIn("canTransitionPayment", source)
 
     def test_matching_status_uses_server_data_access_and_shared_policy(self):
         source = (ROOT / "src/app/matching-status/page.tsx").read_text(encoding="utf-8")

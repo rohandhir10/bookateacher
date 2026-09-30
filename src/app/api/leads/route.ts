@@ -12,11 +12,11 @@ import {
   acceptLead,
   declineLead,
   getUserById,
-  recordAdminAction,
   executeStmt,
 } from "@/lib/db";
 import { leadSchema, sessionUpdateSchema } from "@/lib/validations";
 import { generateId } from "@/lib/utils";
+import { canTransitionSession, canTransitionPayment } from "@/lib/session-policy";
 import {
   toActor,
   canCreateSession,
@@ -137,13 +137,35 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: "Forbidden" }, { status: 403 });
       }
 
+      if (lead.assigned_tutor_id !== tutorId) return NextResponse.json({ error: "Lead is not assigned to this tutor" }, { status: 409 });
+      if (lead.student_id && lead.student_id !== studentId) return NextResponse.json({ error: "Lead belongs to a different student" }, { status: 409 });
+      if (!lead.student_id) {
+        const studentEmail = typeof student.email === "string" ? student.email.toLowerCase() : "";
+        if (!studentEmail || typeof lead.email !== "string" || lead.email.toLowerCase() !== studentEmail) {
+          return NextResponse.json({ error: "Lead relationship does not match session student" }, { status: 409 });
+        }
+        await updateLead(body.leadId, { student_id: studentId });
+      }
+      const scheduledAt = parsed.scheduled_at || new Date().toISOString();
+      const durationMinutes = parsed.duration_minutes ?? 60;
+      const existingConflict = await queryOne(
+        `SELECT id FROM sessions
+         WHERE status = 'scheduled'
+           AND (tutor_id = ? OR student_id = ?)
+           AND datetime(scheduled_at) < datetime(?, '+' || duration_minutes || ' minutes')
+           AND datetime(?, '+' || ? || ' minutes') > datetime(scheduled_at)
+         LIMIT 1`,
+        [tutorId, studentId, scheduledAt, scheduledAt, durationMinutes],
+      );
+      if (existingConflict) return NextResponse.json({ error: "The tutor or student already has a session at that time" }, { status: 409 });
       const id = generateId();
       await createSession({
         id,
+        lead_id: body.leadId,
         tutor_id: tutorId,
         student_id: studentId,
-        scheduled_at: parsed.scheduled_at || new Date().toISOString(),
-        duration_minutes: parsed.duration_minutes ?? 60,
+        scheduled_at: scheduledAt,
+        duration_minutes: durationMinutes,
         meeting_link: parsed.meeting_link || undefined,
       });
 
@@ -151,14 +173,6 @@ export async function POST(request: Request) {
         status: "matched",
         matched_at: new Date().toISOString(),
       });
-
-      await recordAdminAction(
-        session.user.id,
-        "created_session",
-        "session",
-        id,
-        { leadId: body.leadId, tutorId, studentId },
-      );
 
       return NextResponse.json({ success: true, sessionId: id });
     }
@@ -176,6 +190,12 @@ export async function POST(request: Request) {
       }
 
       const parsedUpdates = sessionUpdateSchema.strict().parse(safeUpdates);
+      if (parsedUpdates.status && !canTransitionSession(existing.status, parsedUpdates.status)) {
+        return NextResponse.json({ error: "Invalid session status transition" }, { status: 409 });
+      }
+      if (parsedUpdates.payment_status && !canTransitionPayment(existing.payment_status, parsedUpdates.payment_status)) {
+        return NextResponse.json({ error: "Invalid payment status transition" }, { status: 409 });
+      }
       if (actor.role === "tutor" && parsedUpdates.status === "completed") {
         return NextResponse.json(
           { error: "Use the completion action to complete a session" },
@@ -215,6 +235,9 @@ export async function POST(request: Request) {
       const existing = await getSessionById(parsed.id);
       if (!existing) return NextResponse.json({ error: "Session not found" }, { status: 404 });
       if (!canCompleteSession(actor, existing)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      if (!canTransitionSession(existing.status, "completed")) {
+        return NextResponse.json({ error: "Session is already closed" }, { status: 409 });
+      }
 
       await updateSession(parsed.id, {
         status: "completed",
