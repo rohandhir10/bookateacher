@@ -12,7 +12,7 @@ export default async function StudentDashboardPage() {
 
   const [sessions, leads] = await Promise.all([
     getSessionsForStudent(session.user.id),
-    getLeadsForStudent(session.user.email),
+    getLeadsForStudent(session.user.id, session.user.email),
   ]);
 
   const upcoming = sessions.filter(

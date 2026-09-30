@@ -112,6 +112,7 @@ CREATE TABLE IF NOT EXISTS sessions (
 
 CREATE TABLE IF NOT EXISTS leads (
   id TEXT PRIMARY KEY,
+  student_id TEXT,
   name TEXT NOT NULL,
   email TEXT,
   phone TEXT NOT NULL,
@@ -173,6 +174,7 @@ CREATE INDEX IF NOT EXISTS idx_users_verified ON users(verified);
 CREATE INDEX IF NOT EXISTS idx_sessions_tutor ON sessions(tutor_id);
 CREATE INDEX IF NOT EXISTS idx_sessions_student ON sessions(student_id);
 CREATE INDEX IF NOT EXISTS idx_sessions_scheduled ON sessions(scheduled_at);
+CREATE INDEX IF NOT EXISTS idx_leads_student ON leads(student_id);
 CREATE INDEX IF NOT EXISTS idx_leads_status ON leads(status);
 CREATE INDEX IF NOT EXISTS idx_leads_subject ON leads(subject);
 CREATE INDEX IF NOT EXISTS idx_testimonials_tutor ON testimonials(tutor_id);
@@ -181,6 +183,8 @@ CREATE INDEX IF NOT EXISTS idx_testimonial_requests_tutor ON testimonial_request
 
 function initSchemaLocal(db: any) {
   db.exec(SCHEMA_SQL);
+  try { db.exec("ALTER TABLE leads ADD COLUMN student_id TEXT"); } catch {}
+  db.exec("CREATE INDEX IF NOT EXISTS idx_leads_student ON leads(student_id)");
 }
 
 // Async schema init for Turso (called lazily on first use)
@@ -196,6 +200,8 @@ async function initSchemaTurso() {
       }
     }
   }
+  try { await client.execute("ALTER TABLE leads ADD COLUMN student_id TEXT"); } catch {}
+  await client.execute("CREATE INDEX IF NOT EXISTS idx_leads_student ON leads(student_id)");
 }
 
 // Ensure Turso schema is initialized lazily
@@ -424,15 +430,23 @@ export async function getSessionsForStudent(
   );
 }
 
+export async function getSessionById(id: string): Promise<any | undefined> {
+  return queryOne("SELECT * FROM sessions WHERE id = ?", [id]);
+}
+
 export async function updateSession(
   id: string,
   data: Record<string, any>,
 ) {
+  const allowedFields = new Set([
+    "tutor_id", "student_id", "scheduled_at", "duration_minutes", "status",
+    "notes", "meeting_link", "payment_status", "paid_at", "rating", "feedback",
+  ]);
   const fields: string[] = [];
   const values: any[] = [];
 
   for (const [key, value] of Object.entries(data)) {
-    if (key === "id" || key === "created_at") continue;
+    if (key === "id" || key === "created_at" || !allowedFields.has(key)) continue;
     fields.push(`${key} = ?`);
     values.push(value);
   }
@@ -452,6 +466,7 @@ export async function updateSession(
 // ----------------------------------------------------------------------
 export async function createLead(data: {
   id: string;
+  student_id?: string | null;
   name: string;
   email?: string | null;
   phone: string;
@@ -466,10 +481,11 @@ export async function createLead(data: {
   challenge?: string | null;
 }) {
   await executeStmt(
-    `INSERT INTO leads (id, name, email, phone, subject, goal, budget_per_hour, preferred_days, preferred_times, online_or_local, location, current_level, challenge)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO leads (id, student_id, name, email, phone, subject, goal, budget_per_hour, preferred_days, preferred_times, online_or_local, location, current_level, challenge)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       data.id,
+      data.student_id ?? null,
       data.name,
       data.email ?? null,
       data.phone,
@@ -504,12 +520,30 @@ export async function getLeads(
 }
 
 export async function getLeadsForStudent(
-  studentEmail: string,
+  studentId: string,
+  studentEmail?: string,
 ): Promise<any[]> {
   return query(
-    `SELECT * FROM leads WHERE email = ? ORDER BY created_at DESC LIMIT 1`,
-    [studentEmail],
+    `SELECT * FROM leads
+     WHERE student_id = ? OR (student_id IS NULL AND email = ?)
+     ORDER BY created_at DESC`,
+    [studentId, studentEmail ?? ""],
   );
+}
+
+export async function getLeadsForTutor(
+  tutorId: string,
+  opts?: { limit?: number },
+): Promise<any[]> {
+  let sql = `SELECT * FROM leads
+             WHERE status = 'new' OR assigned_tutor_id = ?
+             ORDER BY created_at DESC`;
+  const params: any[] = [tutorId];
+  if (opts?.limit) {
+    sql += " LIMIT ?";
+    params.push(opts.limit);
+  }
+  return query(sql, params);
 }
 
 export async function getLeadById(id: string): Promise<any | undefined> {
@@ -517,11 +551,16 @@ export async function getLeadById(id: string): Promise<any | undefined> {
 }
 
 export async function updateLead(id: string, data: Record<string, any>) {
+  const allowedFields = new Set([
+    "student_id", "email", "goal", "budget_per_hour", "preferred_days", "preferred_times",
+    "online_or_local", "location", "current_level", "challenge", "status",
+    "assigned_tutor_id", "contacted_at", "matched_at", "converted_at", "closed_reason",
+  ]);
   const fields: string[] = [];
   const values: any[] = [];
 
   for (const [key, value] of Object.entries(data)) {
-    if (key === "id" || key === "created_at" || key === "name" || key === "phone" || key === "subject")
+    if (key === "id" || key === "created_at" || !allowedFields.has(key))
       continue;
     fields.push(`${key} = ?`);
     values.push(

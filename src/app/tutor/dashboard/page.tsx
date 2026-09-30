@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { DashboardShell } from "@/components/DashboardShell";
 import { getServerSession } from "@/lib/session";
 import {
-  getLeads,
+  getLeadsForTutor,
   getSessionsForTutor,
   getTestimonialsForTutor,
   getPendingTestimonialRequests,
@@ -25,19 +25,13 @@ export default async function TutorDashboardPage() {
   if (session.user.role !== "tutor") redirect("/dashboard");
 
   const tutorId = session.user.id;
-  const [allLeads, sessions, testimonials, pendingRequests, profile] = await Promise.all([
-    getLeads(),
+  const [leads, sessions, testimonials, pendingRequests, profile] = await Promise.all([
+    getLeadsForTutor(tutorId),
     getSessionsForTutor(tutorId),
     getTestimonialsForTutor(tutorId),
     getPendingTestimonialRequests(tutorId),
     getUserById(tutorId),
   ]);
-
-  const leads = allLeads.filter(
-    (lead: any) =>
-      lead.status === "new" ||
-      lead.assigned_tutor_id === tutorId,
-  );
 
   const user = {
     id: tutorId,

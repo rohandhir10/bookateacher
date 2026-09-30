@@ -3,6 +3,9 @@ import { auth } from "@/lib/auth";
 import {
   createLead,
   updateLead,
+  getLeadById,
+  getSessionById,
+  queryOne,
   createSession,
   updateSession,
   acceptLead,
@@ -10,10 +13,18 @@ import {
   getUserById,
   recordAdminAction,
   executeStmt,
-  queryOne,
 } from "@/lib/db";
 import { leadSchema, sessionUpdateSchema } from "@/lib/validations";
 import { generateId } from "@/lib/utils";
+import {
+  toActor,
+  canCreateSession,
+  canUpdateLead,
+  canUpdateSession,
+  canCompleteSession,
+  canRequestTestimonial,
+  canPublishTestimonial,
+} from "@/lib/authorization";
 
 export async function POST(request: Request) {
   try {
@@ -50,11 +61,14 @@ export async function POST(request: Request) {
     }
     const action = body?.action;
 
+    const actor = toActor(session.user);
+
     if (action === "create-lead") {
       const parsed = leadSchema.parse(body.data);
       const id = generateId();
       await createLead({
         id,
+        student_id: session.user.role === "student" ? session.user.id : undefined,
         name: parsed.name,
         email: parsed.email || undefined,
         phone: parsed.phone,
@@ -84,12 +98,20 @@ export async function POST(request: Request) {
     if (action === "update-lead") {
       const { id, ...updates } = body.data;
       if (!id) return NextResponse.json({ error: "Lead ID required" }, { status: 400 });
+      const lead = await getLeadById(id);
+      if (!lead) return NextResponse.json({ error: "Lead not found" }, { status: 404 });
+      if (!canUpdateLead(actor, lead)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
       await updateLead(id, updates);
       return NextResponse.json({ success: true });
     }
 
     if (action === "create-session") {
       const parsed = sessionUpdateSchema.parse(body.data);
+      const lead = await getLeadById(body.leadId);
+      if (!lead) return NextResponse.json({ error: "Lead not found" }, { status: 404 });
+      if (!canCreateSession(actor, lead, body.tutorId, body.studentId)) {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
       const id = generateId();
       await createSession({
         id,
@@ -119,11 +141,15 @@ export async function POST(request: Request) {
     if (action === "update-session") {
       const { id, ...updates } = body.data;
       if (!id) return NextResponse.json({ error: "Session ID required" }, { status: 400 });
+      const existing = await getSessionById(id);
+      if (!existing) return NextResponse.json({ error: "Session not found" }, { status: 404 });
+      if (!canUpdateSession(actor, existing)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
       await updateSession(id, updates);
       return NextResponse.json({ success: true });
     }
 
     if (action === "accept-lead") {
+      if (actor.role !== "tutor") return NextResponse.json({ error: "Only tutors can accept leads" }, { status: 403 });
       const { id } = body.data;
       if (!id) return NextResponse.json({ error: "Lead ID required" }, { status: 400 });
       const ok = await acceptLead(id, session.user.id);
@@ -132,6 +158,7 @@ export async function POST(request: Request) {
     }
 
     if (action === "decline-lead") {
+      if (actor.role !== "tutor") return NextResponse.json({ error: "Only tutors can decline leads" }, { status: 403 });
       const { id, reason } = body.data;
       if (!id) return NextResponse.json({ error: "Lead ID required" }, { status: 400 });
       await declineLead(id, session.user.id, reason || undefined);
@@ -141,6 +168,9 @@ export async function POST(request: Request) {
     if (action === "complete-session") {
       const { id, notes, rating, feedback } = body.data;
       if (!id) return NextResponse.json({ error: "Session ID required" }, { status: 400 });
+      const existing = await getSessionById(id);
+      if (!existing) return NextResponse.json({ error: "Session not found" }, { status: 404 });
+      if (!canCompleteSession(actor, existing)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
       await updateSession(id, {
         status: "completed",
         notes: notes || undefined,
@@ -153,6 +183,10 @@ export async function POST(request: Request) {
     if (action === "send-testimonial-request") {
       const { sessionId, studentId, message } = body.data;
       if (!sessionId || !studentId) return NextResponse.json({ error: "sessionId and studentId required" }, { status: 400 });
+      const sessionRow = await getSessionById(sessionId);
+      if (!sessionRow || sessionRow.student_id !== studentId || !canRequestTestimonial(actor, sessionRow)) {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
       const id = generateId();
       await executeStmt(
         `INSERT INTO testimonial_requests (id, session_id, student_id, tutor_id, status, message, created_at) VALUES (?, ?, ?, ?, 'pending', ?, datetime('now'))`,
@@ -168,6 +202,9 @@ export async function POST(request: Request) {
         "SELECT * FROM testimonial_requests WHERE id = ? AND tutor_id = ?",
         [requestId, session.user.id],
       );
+      if (row && !canPublishTestimonial(actor, row)) {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
       if (!row) return NextResponse.json({ error: "Request not found" }, { status: 404 });
       if ((row as any).status !== "received") return NextResponse.json({ error: "Testimonial not yet received from student" }, { status: 400 });
       if (!(row as any).session_id || !(row as any).student_id || !(row as any).tutor_id) return NextResponse.json({ error: "Invalid request" }, { status: 400 });
