@@ -2,12 +2,14 @@ import type { Session } from "next-auth";
 
 export type Actor = {
   id: string;
+  email: string;
   role: "student" | "tutor" | "admin";
 };
 
 export function toActor(sessionUser: Session["user"]): Actor {
   return {
     id: sessionUser.id,
+    email: sessionUser.email,
     role: sessionUser.role,
   };
 }
@@ -17,7 +19,11 @@ export function canReadLead(actor: Actor, lead: any): boolean {
   if (actor.role === "tutor") {
     return lead.assigned_tutor_id === actor.id || lead.status === "new";
   }
-  return lead.student_id === actor.id;
+  return lead.student_id === actor.id ||
+    (actor.role === "student" &&
+      !lead.student_id &&
+      typeof lead.email === "string" &&
+      lead.email.toLowerCase() === actor.email.toLowerCase());
 }
 
 export function canUpdateLead(actor: Actor, lead: any): boolean {
@@ -33,9 +39,16 @@ export function canCreateSession(
   studentId: string,
 ): boolean {
   if (actor.role === "admin") return true;
-  if (lead.assigned_tutor_id !== tutorId || lead.student_id !== studentId) return false;
+  if (lead.assigned_tutor_id !== tutorId) return false;
   if (actor.role === "tutor") return actor.id === tutorId;
-  if (actor.role === "student") return actor.id === studentId;
+  if (actor.role === "student") {
+    const ownsLead =
+      lead.student_id === studentId ||
+      (!lead.student_id &&
+        typeof lead.email === "string" &&
+        lead.email.toLowerCase() === actor.email.toLowerCase());
+    return ownsLead && actor.id === studentId;
+  }
   return false;
 }
 

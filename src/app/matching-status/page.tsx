@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { getServerSession } from "@/lib/session";
-import { apiGetLead } from "@/lib/api";
+import { getLeadById } from "@/lib/db";
+import { toActor, canReadLead } from "@/lib/authorization";
 import { redirect } from "next/navigation";
 import { MatchingStatusContent } from "./MatchingStatusContent";
 
@@ -42,10 +43,10 @@ export default async function MatchingStatusPage({
   const { leadId } = await searchParams;
   if (!leadId) redirect("/dashboard?error=no-lead-id");
 
-  const { lead } = await apiGetLead(leadId);
+  const lead = await getLeadById(leadId);
   if (!lead) redirect("/dashboard?error=lead-not-found");
 
-  if (lead.student_id !== session.user.id) {
+  if (!canReadLead(toActor(session.user), lead)) {
     redirect("/dashboard?error=lead-not-mine");
   }
 

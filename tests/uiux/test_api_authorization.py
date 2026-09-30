@@ -41,3 +41,11 @@ class ApiAuthorizationArchitectureTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+    def test_matching_status_uses_server_data_access_and_shared_policy(self):
+        source = (ROOT / "src/app/matching-status/page.tsx").read_text(encoding="utf-8")
+        self.assertIn('from "@/lib/db"', source)
+        self.assertIn('getLeadById', source)
+        self.assertIn('canReadLead', source)
+        self.assertNotIn('apiGetLead', source)
+
