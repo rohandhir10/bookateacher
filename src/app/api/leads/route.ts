@@ -24,6 +24,8 @@ import {
   canCompleteSession,
   canRequestTestimonial,
   canPublishTestimonial,
+  sanitizeLeadUpdates,
+  sanitizeSessionUpdates,
 } from "@/lib/authorization";
 
 export async function POST(request: Request) {
@@ -101,7 +103,11 @@ export async function POST(request: Request) {
       const lead = await getLeadById(id);
       if (!lead) return NextResponse.json({ error: "Lead not found" }, { status: 404 });
       if (!canUpdateLead(actor, lead)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-      await updateLead(id, updates);
+      const safeUpdates = sanitizeLeadUpdates(actor, updates);
+      if (Object.keys(safeUpdates).length === 0) {
+        return NextResponse.json({ error: "No permitted fields to update" }, { status: 400 });
+      }
+      await updateLead(id, safeUpdates);
       return NextResponse.json({ success: true });
     }
 
@@ -144,7 +150,11 @@ export async function POST(request: Request) {
       const existing = await getSessionById(id);
       if (!existing) return NextResponse.json({ error: "Session not found" }, { status: 404 });
       if (!canUpdateSession(actor, existing)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-      await updateSession(id, updates);
+      const safeUpdates = sanitizeSessionUpdates(actor, updates);
+      if (Object.keys(safeUpdates).length === 0) {
+        return NextResponse.json({ error: "No permitted fields to update" }, { status: 400 });
+      }
+      await updateSession(id, safeUpdates);
       return NextResponse.json({ success: true });
     }
 

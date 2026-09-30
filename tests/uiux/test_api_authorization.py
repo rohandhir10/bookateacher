@@ -15,6 +15,8 @@ class ApiAuthorizationArchitectureTests(unittest.TestCase):
             "canCompleteSession",
             "canRequestTestimonial",
             "canPublishTestimonial",
+            "sanitizeLeadUpdates",
+            "sanitizeSessionUpdates",
         ):
             self.assertIn(f"function {name}", source)
 

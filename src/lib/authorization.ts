@@ -54,3 +54,39 @@ export function canRequestTestimonial(actor: Actor, session: any): boolean {
 export function canPublishTestimonial(actor: Actor, request: any): boolean {
   return actor.role === "tutor" && request.tutor_id === actor.id && request.status === "received";
 }
+
+export function sanitizeLeadUpdates(actor: Actor, updates: Record<string, unknown>): Record<string, unknown> {
+  const allowedByRole: Record<Actor["role"], Set<string>> = {
+    admin: new Set([
+      "student_id", "email", "goal", "budget_per_hour", "preferred_days", "preferred_times",
+      "online_or_local", "location", "current_level", "challenge", "status",
+      "assigned_tutor_id", "contacted_at", "matched_at", "converted_at", "closed_reason",
+    ]),
+    tutor: new Set([
+      "status", "contacted_at", "matched_at", "converted_at", "closed_reason",
+    ]),
+    student: new Set([
+      "goal", "budget_per_hour", "preferred_days", "preferred_times",
+      "online_or_local", "location", "current_level", "challenge",
+    ]),
+  };
+
+  const allowed = allowedByRole[actor.role];
+  return Object.fromEntries(Object.entries(updates).filter(([key]) => allowed.has(key)));
+}
+
+export function sanitizeSessionUpdates(actor: Actor, updates: Record<string, unknown>): Record<string, unknown> {
+  const allowedByRole: Record<Actor["role"], Set<string>> = {
+    admin: new Set([
+      "tutor_id", "student_id", "scheduled_at", "duration_minutes", "status",
+      "notes", "meeting_link", "payment_status", "paid_at", "rating", "feedback",
+    ]),
+    tutor: new Set([
+      "scheduled_at", "duration_minutes", "status", "notes", "meeting_link",
+    ]),
+    student: new Set(),
+  };
+
+  const allowed = allowedByRole[actor.role];
+  return Object.fromEntries(Object.entries(updates).filter(([key]) => allowed.has(key)));
+}
