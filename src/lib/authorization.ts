@@ -1,12 +1,12 @@
-import type { Session } from "next-auth";
-
 export type Actor = {
   id: string;
   email: string;
   role: "student" | "tutor" | "admin";
 };
 
-export function toActor(sessionUser: Session["user"]): Actor {
+type SessionUserLike = Pick<Actor, "id" | "email" | "role">;
+
+export function toActor(sessionUser: SessionUserLike): Actor {
   return {
     id: sessionUser.id,
     email: sessionUser.email,
