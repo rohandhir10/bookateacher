@@ -238,13 +238,15 @@ async function runQuery(
 async function runExec(
   sql: string,
   params: any[] = [],
-): Promise<void> {
+): Promise<number> {
   if (usingTurso()) {
     await ensureTursoSchema();
-    await getTursoClient().execute({ sql, args: params });
+    const result = await getTursoClient().execute({ sql, args: params });
+    return Number(result.rowsAffected ?? 0);
   } else {
     const d = getLocalDb();
-    d.prepare(sql).run(...params);
+    const result = d.prepare(sql).run(...params);
+    return Number(result.changes ?? 0);
   }
 }
 
@@ -277,8 +279,8 @@ export async function queryOne<T = any>(
 export async function executeStmt(
   sql: string,
   params?: any[],
-): Promise<void> {
-  await runExec(sql, params ?? []);
+): Promise<number> {
+  return runExec(sql, params ?? []);
 }
 
 // ----------------------------------------------------------------------
@@ -535,10 +537,20 @@ export async function getLeadsForTutor(
   tutorId: string,
   opts?: { limit?: number },
 ): Promise<any[]> {
-  let sql = `SELECT * FROM leads
-             WHERE status = 'new' OR assigned_tutor_id = ?
-             ORDER BY created_at DESC`;
-  const params: any[] = [tutorId];
+  // New leads are marketplace opportunities, not yet accepted relationships.
+  // Keep contact details server-side until this tutor has claimed the lead.
+  let sql = `SELECT
+    id, student_id, name,
+    CASE WHEN assigned_tutor_id = ? THEN email ELSE NULL END AS email,
+    CASE WHEN assigned_tutor_id = ? THEN phone ELSE NULL END AS phone,
+    subject, goal, budget_per_hour, preferred_days, preferred_times,
+    online_or_local, location, current_level, challenge, status,
+    assigned_tutor_id, contacted_at, matched_at, converted_at, closed_reason,
+    created_at, updated_at
+    FROM leads
+    WHERE status = 'new' OR assigned_tutor_id = ?
+    ORDER BY created_at DESC`;
+  const params: any[] = [tutorId, tutorId, tutorId];
   if (opts?.limit) {
     sql += " LIMIT ?";
     params.push(opts.limit);
@@ -585,14 +597,19 @@ export async function acceptLead(
   leadId: string,
   tutorId: string,
 ): Promise<boolean> {
-  const lead = await queryOne("SELECT * FROM leads WHERE id = ?", [leadId]);
-  if (!lead) return false;
-  if ((lead as any).status !== "new") return false;
-  await executeStmt(
-    `UPDATE leads SET status = 'contacted', assigned_tutor_id = ?, contacted_at = datetime('now') WHERE id = ?`,
+  // Claim in one conditional write so two tutors cannot both win the same new lead.
+  const changed = await executeStmt(
+    `UPDATE leads
+     SET status = 'contacted',
+         assigned_tutor_id = ?,
+         contacted_at = datetime('now'),
+         updated_at = datetime('now')
+     WHERE id = ?
+       AND status = 'new'
+       AND assigned_tutor_id IS NULL`,
     [tutorId, leadId],
   );
-  return true;
+  return changed > 0;
 }
 
 /** Decline a lead — archive it */
@@ -601,17 +618,20 @@ export async function declineLead(
   tutorId: string,
   reason?: string,
 ): Promise<boolean> {
-  const lead = await queryOne("SELECT * FROM leads WHERE id = ?", [leadId]);
-  if (!lead) return false;
-  const canDecline =
-    (lead as any).status === "new" ||
-    (lead as any).assigned_tutor_id === tutorId;
-  if (!canDecline) return false;
-  await executeStmt(
-    `UPDATE leads SET status = 'archived', closed_reason = ?, updated_at = datetime('now') WHERE id = ?`,
-    [reason || "Declined by tutor", leadId],
+  // Only decline an unclaimed lead or a lead already owned by this tutor.
+  const changed = await executeStmt(
+    `UPDATE leads
+     SET status = 'archived',
+         closed_reason = ?,
+         updated_at = datetime('now')
+     WHERE id = ?
+       AND (
+         (status = 'new' AND assigned_tutor_id IS NULL)
+         OR assigned_tutor_id = ?
+       )`,
+    [reason || "Declined by tutor", leadId, tutorId],
   );
-  return true;
+  return changed > 0;
 }
 
 // ----------------------------------------------------------------------
