@@ -85,6 +85,17 @@ class SitemapNavigationTests(unittest.TestCase):
         ):
             self.assertIn(expected, source)
 
+    def test_tutor_lead_filters_navigate_and_filter_real_results(self):
+        source = (ROOT / "src/app/tutor/dashboard/page.tsx").read_text(encoding="utf-8")
+        self.assertIn("searchParams: Promise<{ status?: string }>", source)
+        self.assertIn('role="group"', source)
+        self.assertIn('aria-label="Filter leads by status"', source)
+        self.assertIn('aria-current={selected ? "page" : undefined}', source)
+        self.assertIn("leads.filter((lead) => lead.status === selectedLeadStatus)", source)
+        self.assertIn("filteredLeads.map((lead)", source)
+        self.assertIn("Show all leads", source)
+        self.assertNotIn("onClick=", source)
+
     def test_site_map_routes_have_real_page_files(self):
         for route, relative in PUBLIC_ROUTES.items():
             self.assertTrue((ROOT / relative).is_file(), f"No page file for {route}")

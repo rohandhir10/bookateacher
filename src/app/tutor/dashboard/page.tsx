@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { getServerSession, requireAuth } from "@/lib/session";
@@ -28,7 +29,12 @@ const AMBER = "#8A5A00";
 
 import { apiSignOut } from "@/lib/api";
 
-export default async function TutorDashboardPage() {
+export default async function TutorDashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ status?: string }>;
+}) {
+  const { status: requestedStatus } = await searchParams;
   const session = await getServerSession();
   if (!session?.user) redirect("/login");
 
@@ -46,6 +52,13 @@ export default async function TutorDashboardPage() {
     ]);
 
   const leads = leadsRes.leads ?? [];
+  const validLeadStatuses = ["all", "new", "contacted", "matched", "archived"] as const;
+  const selectedLeadStatus = validLeadStatuses.includes(requestedStatus as (typeof validLeadStatuses)[number])
+    ? (requestedStatus as (typeof validLeadStatuses)[number])
+    : "all";
+  const filteredLeads = selectedLeadStatus === "all"
+    ? leads
+    : leads.filter((lead) => lead.status === selectedLeadStatus);
   const sessions = sessionsRes.sessions ?? [];
   const testimonials = testimonialsRes.testimonials ?? [];
   const pendingRequests = requestsRes.requests ?? [];
@@ -70,7 +83,7 @@ export default async function TutorDashboardPage() {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <a
+          <Link
             href="/"
             style={{
               display: "flex",
@@ -100,7 +113,7 @@ export default async function TutorDashboardPage() {
             >
               .in
             </span>
-          </a>
+          </Link>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
           <span
@@ -314,6 +327,8 @@ export default async function TutorDashboardPage() {
 
             {/* Filter tabs */}
             <div
+              role="group"
+              aria-label="Filter leads by status"
               style={{
                 display: "flex",
                 gap: 4,
@@ -323,56 +338,47 @@ export default async function TutorDashboardPage() {
                 overflowX: "auto",
               }}
             >
-              {(["new", "contacted", "matched", "archived"] as const).map((status) => {
-                const count = leads.filter((l) => l.status === status).length;
-                if (count === 0 && status !== "new") return null;
-                return (
-                  <button
-                    key={status}
-                    style={{
-                      padding: "6px 14px",
-                      border: "none",
-                      borderBottom: "2px solid transparent",
-                      background: "transparent",
-                      color: status === "new" ? INK : MUTED,
-                      fontSize: "13px",
-                      fontWeight: status === "new" ? 600 : 450,
-                      cursor: "pointer",
-                      fontFamily: "Inter, sans-serif",
-                      textTransform: "capitalize",
-                      transition: "all 0.15s",
-                      whiteSpace: "nowrap",
-                    }}
-                    onClick={(e) => {
-                      const btn = e.currentTarget as HTMLButtonElement;
-                      document.querySelectorAll(".lead-filter-btn").forEach((b) => {
-                        const el = b as HTMLElement;
-                        el.style.color = MUTED;
-                        el.style.fontWeight = "450";
-                        el.style.borderBottomColor = "transparent";
-                      });
-                      btn.style.color = INK;
-                      btn.style.fontWeight = "600";
-                      btn.style.borderBottomColor = INK;
-                    }}
-                    className="lead-filter-btn"
-                  >
-                    {status === "archived" ? "Archived" : status}
-                    <span
+              {validLeadStatuses
+                .filter((status) => status === "all" || status === "new" || leads.some((lead) => lead.status === status))
+                .map((status) => {
+                  const count = status === "all" ? leads.length : leads.filter((lead) => lead.status === status).length;
+                  const selected = selectedLeadStatus === status;
+                  const label = status === "all" ? "All" : status === "archived" ? "Archived" : status;
+                  const href = status === "all" ? "/tutor/dashboard" : `/tutor/dashboard?status=${status}`;
+                  return (
+                    <Link
+                      key={status}
+                      href={href}
+                      aria-current={selected ? "page" : undefined}
                       style={{
-                        marginLeft: 6,
-                        padding: "1px 6px",
-                        background: LINE,
-                        borderRadius: 10,
-                        fontSize: "11px",
-                        color: INK_SOFT,
+                        padding: "6px 14px",
+                        borderBottom: selected ? `2px solid ${INK}` : "2px solid transparent",
+                        background: "transparent",
+                        color: selected ? INK : MUTED,
+                        fontSize: "13px",
+                        fontWeight: selected ? 600 : 450,
+                        fontFamily: "Inter, sans-serif",
+                        textTransform: "capitalize",
+                        whiteSpace: "nowrap",
+                        textDecoration: "none",
                       }}
                     >
-                      {count}
-                    </span>
-                  </button>
-                );
-              })}
+                      {label}
+                      <span
+                        style={{
+                          marginLeft: 6,
+                          padding: "1px 6px",
+                          background: LINE,
+                          borderRadius: 10,
+                          fontSize: "11px",
+                          color: INK_SOFT,
+                        }}
+                      >
+                        {count}
+                      </span>
+                    </Link>
+                  );
+                })}
             </div>
 
             {/* Lead cards */}
@@ -424,9 +430,13 @@ export default async function TutorDashboardPage() {
                   subjects, you can accept or decline it.
                 </p>
               </div>
+            ) : filteredLeads.length === 0 ? (
+              <p role="status" style={{ color: INK_SOFT, padding: "24px 0" }}>
+                No {selectedLeadStatus} leads. <Link href="/tutor/dashboard" style={{ color: INK, textDecoration: "underline" }}>Show all leads</Link>.
+              </p>
             ) : (
               <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                {leads.map((lead) => (
+                {filteredLeads.map((lead) => (
                   <LeadCard
                     key={lead.id}
                     lead={lead}
