@@ -63,7 +63,7 @@ export function RegisterForm() {
               data: {
                 name: parsed.name,
                 email: parsed.email,
-                phone: "",
+                phone: parsed.phone,
                 subject: formData.subject || "ielts",
               },
             }),
@@ -201,6 +201,25 @@ export function RegisterForm() {
         </div>
 
         <div className="form-group">
+          <label className="label" htmlFor="reg-phone">Phone number</label>
+          <input
+            id="reg-phone"
+            type="tel"
+            autoComplete="tel"
+            className="input"
+            placeholder="+91 98765 43210"
+            value={formData.phone}
+            onChange={(e) =>
+              setFormData((f) => ({ ...f, phone: e.target.value }))
+            }
+            required
+          />
+          <p className="text-xs text-foreground-subtle mt-1">
+            We&apos;ll use this to contact you about lessons and matches.
+          </p>
+        </div>
+
+        <div className="form-group">
           <label className="label" htmlFor="reg-password">
             Password
           </label>
@@ -260,27 +279,6 @@ export function RegisterForm() {
         {/* Tutor-specific fields */}
         {formData.role === "tutor" && (
           <div className="border-t border-border pt-4 space-y-4">
-            <div className="form-group">
-              <label className="label" htmlFor="phone">
-                Phone number
-                <span className="text-foreground-subtle font-normal"> (optional)</span>
-              </label>
-              <input
-                id="phone"
-                type="tel"
-                autoComplete="tel"
-                className="input"
-                placeholder="+91 98765 43210"
-                value={formData.phone}
-                onChange={(e) =>
-                  setFormData((f) => ({ ...f, phone: e.target.value }))
-                }
-              />
-              <p className="text-xs text-foreground-subtle mt-1">
-                Used to contact you about student matches
-              </p>
-            </div>
-
             <p className="text-sm text-foreground-muted">
               You&apos;ll complete your full tutor profile after registration.
               This includes your subjects, hourly rate, experience, and credentials.
