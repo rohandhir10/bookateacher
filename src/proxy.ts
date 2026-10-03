@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";
 
 export async function proxy(request: Request) {
   const session = await auth();
@@ -14,8 +13,9 @@ export async function proxy(request: Request) {
 
   // Protected routes — redirect to login if not authenticated
   if (isProtected && !session) {
+    const requestUrl = new URL(request.url);
     const url = new URL("/login", request.url);
-    url.searchParams.set("callbackUrl", pathname);
+    url.searchParams.set("callbackUrl", `${requestUrl.pathname}${requestUrl.search}`);
     return NextResponse.redirect(url);
   }
 

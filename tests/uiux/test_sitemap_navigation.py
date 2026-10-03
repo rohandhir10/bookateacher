@@ -96,6 +96,12 @@ class SitemapNavigationTests(unittest.TestCase):
         self.assertIn("Show all leads", source)
         self.assertNotIn("onClick=", source)
 
+    def test_protected_redirect_preserves_query_parameters_in_login_return_target(self):
+        source = (ROOT / "src/proxy.ts").read_text(encoding="utf-8")
+        self.assertIn("requestUrl.pathname}${requestUrl.search", source)
+        self.assertIn('url.searchParams.set("callbackUrl",', source)
+        self.assertNotIn("url.searchParams.set(\"callbackUrl\", pathname)", source)
+
     def test_site_map_routes_have_real_page_files(self):
         for route, relative in PUBLIC_ROUTES.items():
             self.assertTrue((ROOT / relative).is_file(), f"No page file for {route}")
