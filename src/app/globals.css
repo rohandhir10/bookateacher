@@ -2472,3 +2472,15 @@ svg {
     padding-top: 20px;
   }
 }
+
+
+/* Tutor dashboard lead filters */
+.lead-filter-btn { display:inline-flex; align-items:center; gap:4px; padding:7px 14px; border-bottom:2px solid transparent; color:var(--muted); background:transparent; font-size:.82rem; font-weight:500; font-family:var(--font-sans); text-transform:capitalize; text-decoration:none; white-space:nowrap; transition:color .16s ease,border-color .16s ease,background .16s ease; }
+.lead-filter-btn:hover,.lead-filter-btn:focus-visible { color:var(--ink); background:rgb(23 33 58 / .035); }
+.lead-filter-btn.is-active { color:var(--ink); border-bottom-color:var(--ink); font-weight:700; }
+.lead-filter-count { display:inline-flex; align-items:center; justify-content:center; min-width:22px; padding:2px 6px; border-radius:999px; background:var(--line); color:var(--ink); font-size:.68rem; font-weight:650; }
+.dashboard-filter-empty { padding:28px 24px; border:1px dashed var(--line); border-radius:.8rem; background:var(--cream); color:var(--muted); text-align:center; }
+.dashboard-filter-empty p { margin:0 0 8px; }
+.dashboard-filter-empty a { color:var(--ink); font-weight:700; text-underline-offset:3px; }
+.dashboard-lead-list { display:flex; flex-direction:column; gap:12px; }
+@media (max-width:760px) { .lead-filter-btn { padding-inline:11px; } }

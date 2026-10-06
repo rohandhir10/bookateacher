@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { DashboardShell } from "@/components/DashboardShell";
 import { getServerSession } from "@/lib/session";
@@ -19,7 +20,12 @@ const GREEN = "#2F5233";
 const RED = "#B23A2E";
 const AMBER = "#8A5A00";
 
-export default async function TutorDashboardPage() {
+export default async function TutorDashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ status?: string }>;
+}) {
+  const { status: requestedStatus } = await searchParams;
   const session = await getServerSession();
   if (!session.user) redirect("/login");
   if (session.user.role !== "tutor") redirect("/dashboard");
@@ -32,6 +38,17 @@ export default async function TutorDashboardPage() {
     getPendingTestimonialRequests(tutorId),
     getUserById(tutorId),
   ]);
+
+  const validLeadStatuses = ["all", "new", "contacted", "matched", "archived"] as const;
+  const selectedLeadStatus = validLeadStatuses.includes(
+    requestedStatus as (typeof validLeadStatuses)[number],
+  )
+    ? (requestedStatus as (typeof validLeadStatuses)[number])
+    : "all";
+  const filteredLeads =
+    selectedLeadStatus === "all"
+      ? leads
+      : leads.filter((lead) => lead.status === selectedLeadStatus);
 
   const user = {
     id: tutorId,
@@ -134,44 +151,41 @@ export default async function TutorDashboardPage() {
                 overflowX: "auto",
               }}
             >
-              {(["new", "contacted", "matched", "archived"] as const).map((status) => {
-                const count = leads.filter((l) => l.status === status).length;
-                if (count === 0 && status !== "new") return null;
-                return (
-                  <span
-                    key={status}
-                    style={{
-                      padding: "6px 14px",
-                      border: "none",
-                      borderBottom: "2px solid transparent",
-                      background: "transparent",
-                      color: status === "new" ? INK : MUTED,
-                      fontSize: "13px",
-                      fontWeight: status === "new" ? 600 : 450,
-                      cursor: "pointer",
-                      fontFamily: "Inter, sans-serif",
-                      textTransform: "capitalize",
-                      transition: "all 0.15s",
-                      whiteSpace: "nowrap",
-                    }}
-                    className="lead-filter-btn"
-                  >
-                    {status === "archived" ? "Archived" : status}
-                    <span
-                      style={{
-                        marginLeft: 6,
-                        padding: "1px 6px",
-                        background: LINE,
-                        borderRadius: 10,
-                        fontSize: "11px",
-                        color: INK_SOFT,
-                      }}
+              {validLeadStatuses
+                .filter(
+                  (status) =>
+                    status === "all" ||
+                    status === "new" ||
+                    leads.some((lead) => lead.status === status),
+                )
+                .map((status) => {
+                  const count =
+                    status === "all"
+                      ? leads.length
+                      : leads.filter((lead) => lead.status === status).length;
+                  const selected = selectedLeadStatus === status;
+                  const label =
+                    status === "all"
+                      ? "All"
+                      : status === "archived"
+                        ? "Archived"
+                        : status;
+                  const href =
+                    status === "all"
+                      ? "/tutor/dashboard"
+                      : `/tutor/dashboard?status=${status}`;
+                  return (
+                    <Link
+                      key={status}
+                      href={href}
+                      aria-current={selected ? "page" : undefined}
+                      className={`lead-filter-btn${selected ? " is-active" : ""}`}
                     >
-                      {count}
-                    </span>
-                  </span>
-                );
-              })}
+                      {label}
+                      <span className="lead-filter-count">{count}</span>
+                    </Link>
+                  );
+                })}
             </div>
 
             {/* Lead cards */}
@@ -223,9 +237,14 @@ export default async function TutorDashboardPage() {
                   subjects, you can accept or decline it.
                 </p>
               </div>
+            ) : filteredLeads.length === 0 ? (
+              <div className="dashboard-filter-empty" role="status">
+                <p>No {selectedLeadStatus} leads.</p>
+                <Link href="/tutor/dashboard">Show all leads</Link>
+              </div>
             ) : (
-              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                {leads.map((lead) => (
+              <div className="dashboard-lead-list">
+                {filteredLeads.map((lead) => (
                   <LeadCard
                     key={lead.id}
                     lead={lead}
