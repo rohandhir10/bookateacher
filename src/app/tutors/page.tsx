@@ -229,6 +229,7 @@ export default async function TutorsPage({
                   borderRadius: 14,
                   padding: "28px 32px",
                   display: "grid",
+                  className: "tutor-directory-card",
                   gridTemplateColumns: "1fr 280px",
                   gap: 24,
                   alignItems: "start",
@@ -412,6 +413,7 @@ export default async function TutorsPage({
 
                 {/* Right: rate + CTA */}
                 <div
+                  className="tutor-directory-side"
                   style={{
                     borderLeft: `1px solid ${LINE}`,
                     paddingLeft: 24,
