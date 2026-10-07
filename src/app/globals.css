@@ -2484,3 +2484,32 @@ svg {
 .dashboard-filter-empty a { color:var(--ink); font-weight:700; text-underline-offset:3px; }
 .dashboard-lead-list { display:flex; flex-direction:column; gap:12px; }
 @media (max-width:760px) { .lead-filter-btn { padding-inline:11px; } }
+
+
+/* Tutor dashboard responsive structure */
+.dashboard-hero-actions { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+.dashboard-sidebar-stack { display:flex; flex-direction:column; gap:20px; }
+.lead-card-header { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+.lead-card-actions { flex-shrink:0; }
+.lead-actions-row { display:flex; gap:6px; justify-content:flex-end; align-items:center; flex-wrap:wrap; }
+.lead-card-accepted { opacity:.72; }
+@media (max-width:980px) {
+  .dashboard-sidebar-stack { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media (max-width:680px) {
+  .dashboard-content { width:min(100% - 24px,1180px); padding-top:28px; }
+  .dashboard-title { font-size:clamp(2rem,11vw,2.8rem); }
+  .dashboard-copy { font-size:.9rem; }
+  .dashboard-hero-actions { width:100%; }
+  .dashboard-hero-actions .btn { flex:1 1 180px; justify-content:center; }
+  .dashboard-sidebar-stack { grid-template-columns:1fr; }
+  .lead-card-header { flex-direction:column; }
+  .lead-card-actions { width:100%; }
+  .lead-card-actions .lead-actions-row { justify-content:flex-start; }
+  .lead-card-actions .lead-actions-row a,
+  .lead-card-actions .lead-actions-row button { min-height:38px; }
+}
+@media (max-width:430px) {
+  .dashboard-hero-actions .dashboard-status { width:100%; justify-content:center; }
+  .dashboard-hero-actions .btn { width:100%; flex-basis:100%; }
+}

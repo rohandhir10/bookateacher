@@ -72,7 +72,7 @@ export default async function TutorDashboardPage({
               visual clutter of a traditional admin dashboard.
             </p>
           </div>
-          <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
+          <div className="dashboard-hero-actions">
             <span className={user.verified ? "dashboard-status dashboard-status-success" : "dashboard-status dashboard-status-warning"}>
               <span className="dashboard-status-dot" />
               {user.verified ? "Profile verified" : "Verification pending"}
@@ -257,7 +257,7 @@ export default async function TutorDashboardPage({
           </div>
 
           {/* Sidebar */}
-          <aside style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+          <aside className="dashboard-sidebar-stack">
             {/* Profile card */}
             <div
               style={{
@@ -626,7 +626,7 @@ function LeadCard({
         opacity: wasAccepted ? 0.7 : 1,
       }}
     >
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 }}>
+      <div className="lead-card-header">
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
             <div
@@ -787,7 +787,7 @@ function LeadCard({
           )}
         </div>
 
-        <div style={{ flexShrink: 0 }}>
+        <div className="lead-card-actions">
           <LeadActions
             lead={lead}
             tutorId={tutorId}
@@ -832,7 +832,7 @@ function LeadActions({
 
   if (lead.status === "new" && isMine) {
     return (
-      <div style={{ display: "flex", gap: 6, justifyContent: "flex-end" }}>
+      <div className="lead-actions-row">
         <form method="POST" action="/api/leads" style={{ display: "inline" }}>
           <input type="hidden" name="action" value="decline-lead" />
           <input type="hidden" name="data" value={JSON.stringify({ id: lead.id })} />
@@ -919,7 +919,7 @@ function LeadActions({
   }
 
   return (
-    <div style={{ display: "flex", gap: 6, justifyContent: "flex-end" }}>
+    <div className="lead-actions-row">
       <a
         href={`/tutor/leads/${lead.id}`}
         style={{
